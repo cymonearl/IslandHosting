@@ -15,13 +15,13 @@
             <Font name="Arial Black" size="64.0" />
          </font>
       </Label>
-      <TextField fx:id="passwordTextField" layoutX="271.0" layoutY="152.0" prefHeight="25.0" prefWidth="360.0" />
+      <TextField fx:id="loginTextField" layoutX="272.0" layoutY="110.0" prefHeight="25.0" prefWidth="360.0" />
       <Label layoutX="273.0" layoutY="135.0" text="email" textAlignment="CENTER">
          <font>
             <Font name="Arial" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="loginTextField" layoutX="272.0" layoutY="110.0" prefHeight="25.0" prefWidth="360.0" />
+      <TextField fx:id="passwordTextField" layoutX="271.0" layoutY="152.0" prefHeight="25.0" prefWidth="360.0" />
       <Label layoutX="271.0" layoutY="177.0" text="password" textAlignment="CENTER">
          <font>
             <Font name="Arial" size="12.0" />
