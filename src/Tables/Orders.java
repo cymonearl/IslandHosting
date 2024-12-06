@@ -21,7 +21,10 @@ public class Orders {
         EXPIRED
     }
 
-    public Orders(String order_id, String user_id, String server_id, String start_date, String end_date, String total_amount, String status, String created_at) {
+    public Orders(String order_id, String user_id, 
+                String server_id, String start_date, 
+                String end_date, String total_amount, 
+                String status, String created_at) {
         this.order_id = new SimpleIntegerProperty(Integer.parseInt(order_id));
         this.user_id = new SimpleIntegerProperty(Integer.parseInt(user_id));
         this.server_id = new SimpleIntegerProperty(Integer.parseInt(server_id));

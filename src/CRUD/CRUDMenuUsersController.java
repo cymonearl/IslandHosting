@@ -37,7 +37,7 @@ public class CRUDMenuUsersController {
 
         // Set items to the table
         usersTableView.setItems(userList);
-        userList.add(new Users(1, "Username", "Email", "Password", "Full Name", "Contact Number", "Address", "Active"));
+        userList.add(new Users(1, "Username", "Email", "Password", "Full Name", "Contact Number", "Address", "Active", 2024, 20240101));
     }
 
     public void Servers(ActionEvent event) {

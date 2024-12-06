@@ -55,7 +55,7 @@ public class UserDialogController {
         int UserId = 0;
 
         if (isNewUser) {
-            userList.add(new Users(UserId, username, email, password, full_name, contact_number, address, status));
+            userList.add(new Users(UserId, username, email, password, full_name, contact_number, address, status, 2024, 20241231));
         } else {
             user.setUser_id(UserId);
             user.setUsername(username);

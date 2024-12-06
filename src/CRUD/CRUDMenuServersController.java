@@ -44,7 +44,7 @@ public class CRUDMenuServersController {
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         serversTableView.setItems(serverList);
-        serverList.add(new Servers(1, "Server 1", "Hardware Type 1", 8, 100, 50.00, "Specs 1", "Location 1", "Active"));
+        serverList.add(new Servers(1, "Server 1", "Hardware Type 1", 8, 100, 50.00, "Specs 1", "Location 1", "Active", 2024));
     }
     
     public void Users(ActionEvent event) {
