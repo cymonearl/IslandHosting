@@ -16,6 +16,7 @@ public class App extends Application {
             Scene scene = new Scene(FXMLLoader.load(getClass().getResource("LoginMenu.fxml")));
             primaryStage.setScene(scene);
             primaryStage.show();
+            primaryStage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
