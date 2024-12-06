@@ -11,11 +11,22 @@ public class Servers {
     private SimpleIntegerProperty ram_gb;
     private SimpleIntegerProperty storage_gb;
     private SimpleDoubleProperty price_per_month;
-    private SimpleStringProperty specs;
     private SimpleStringProperty server_location;
     private SimpleStringProperty status;
+    private SimpleStringProperty specs;
+    private SimpleIntegerProperty created_at;
 
-    public Servers(int server_id, String name, String hardware_type, int ram_gb, int storage_gb, double price_per_month, String specs, String server_location, String status) {
+    public enum Status {
+        AVAILABLE,
+        OCCUPIED,
+        MAINTENANCE
+    }
+
+    public Servers(int server_id, String name, 
+                    String hardware_type, int ram_gb, 
+                    int storage_gb, double price_per_month, 
+                    String specs, String server_location, 
+                    String status, int created_at) {
         this.server_id = new SimpleIntegerProperty(server_id);
         this.name = new SimpleStringProperty(name);
         this.hardware_type = new SimpleStringProperty(hardware_type);
@@ -25,6 +36,7 @@ public class Servers {
         this.specs = new SimpleStringProperty(specs);
         this.server_location = new SimpleStringProperty(server_location);
         this.status = new SimpleStringProperty(status);
+        this.created_at = new SimpleIntegerProperty(created_at);
     }
 
     public int getServer_id() { return server_id.get();}
@@ -36,6 +48,7 @@ public class Servers {
     public String getSpecs() {return specs.get();}
     public String getServer_location() {return server_location.get();}
     public String getStatus() {return status.get();}
+    public int getCreated_at() {return created_at.get();}
 
     public void setServer_id(int server_id) {this.server_id.set(server_id);}
     public void setName(String name) {this.name.set(name);}
@@ -46,4 +59,5 @@ public class Servers {
     public void setSpecs(String specs) {this.specs.set(specs);}
     public void setServer_location(String server_location) {this.server_location.set(server_location);}
     public void setStatus(String status) {this.status.set(status);}
+    public void setCreated_at(int created_at) {this.created_at.set(created_at);}
 }
