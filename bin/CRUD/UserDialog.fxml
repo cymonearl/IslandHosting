@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UserDialogController">
+   <children>
+      <Label layoutX="13.0" layoutY="49.0" text="username" />
+      <TextField fx:id="usernameTextField" layoutX="13.0" layoutY="66.0" prefHeight="25.0" prefWidth="575.0" />
+      <Label layoutX="13.0" layoutY="91.0" text="email" />
+      <TextField fx:id="emailTextField" layoutX="13.0" layoutY="108.0" prefHeight="25.0" prefWidth="575.0" />
+      <Label layoutX="13.0" layoutY="133.0" text="password" />
+      <TextField fx:id="passwordTextField" layoutX="13.0" layoutY="150.0" prefHeight="25.0" prefWidth="575.0" />
+      <Label layoutX="13.0" layoutY="175.0" text="full_name" />
+      <TextField fx:id="full_nameTextField" layoutX="13.0" layoutY="192.0" prefHeight="25.0" prefWidth="575.0" />
+      <Label layoutX="13.0" layoutY="217.0" text="contact_number" />
+      <TextField fx:id="contact_numberTextField" layoutX="13.0" layoutY="234.0" prefHeight="25.0" prefWidth="575.0" />
+      <Label layoutX="13.0" layoutY="14.0" text="Create User">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="13.0" layoutY="259.0" text="address" />
+      <TextField fx:id="addressTextField" layoutX="13.0" layoutY="276.0" prefHeight="25.0" prefWidth="575.0" />
+      <Button layoutX="190.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="110.0" text="Save" />
+      <Button layoutX="301.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="110.0" text="Cancel" />
+      <Label layoutX="13.0" layoutY="301.0" text="status" />
+      <ComboBox fx:id="statusComboBox" layoutX="14.0" layoutY="318.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>
