@@ -20,16 +20,10 @@ public class Users {
     private SimpleStringProperty full_name;
     private SimpleStringProperty contact_number;
     private SimpleStringProperty address;
-    private SimpleDateFormat created_at;
-    private SimpleDateFormat last_login;
+    private SimpleStringProperty created_at;
+    private SimpleStringProperty last_login;
     private SimpleStringProperty status;
     
-    public enum Status { 
-        ACTIVE,
-        INACTIVE,
-        SUSPENDED
-    }
-
     // Empty Contructor
     public Users() {}
 
@@ -45,33 +39,24 @@ public class Users {
         this.contact_number = new SimpleStringProperty(contact_number);
         this.address = new SimpleStringProperty(address);
         this.status = new SimpleStringProperty(status);
-        this.created_at = new SimpleDateFormat("yyyy-MM-dd");
-        this.last_login = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        this.created_at = getCurrentDate();
-        this.last_login = getCurrentTime();
-    }
-
-    public SimpleDateFormat getCurrentDate() {
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        
-        String currentDate = dateFormat.format(date);
-        System.out.println(currentDate);
-
-        return dateFormat;
-    }
-
-    public SimpleDateFormat getCurrentTime() {
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        
-        String currentTime = dateFormat.format(date);
-        System.out.println(currentTime);
-
-        return dateFormat;
+        this.created_at = new SimpleStringProperty(getCurrentDate());
+        this.last_login = new SimpleStringProperty(getCurrentTime());
     }
     
+    // ======= HELPERS =======
+    private String getCurrentDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = dateFormat.format(new Date().getTime());
+        return currentDate;
+    }
+
+    private String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   
+        String currentTime = dateFormat.format(new Date().getTime());
+        return currentTime;
+    }
+    
+    // ======= GETTERS =======
     public int getUser_id() { return user_id.get(); }
     public String getUsername() { return username.get(); }
     public String getFull_name() { return full_name.get(); }
@@ -80,9 +65,10 @@ public class Users {
     public String getContact_number() { return contact_number.get(); }
     public String getAddress() { return address.get(); }
     public String getStatus() { return status.get(); }
-    public SimpleDateFormat getCreated_at() { return created_at; }
-    public SimpleDateFormat getLast_login() { return last_login; }
+    public String getCreated_at() { return created_at.get(); }
+    public String getLast_login() { return last_login.get(); }
 
+    // ======= SETTERS =======
     public void setUser_id(int user_id) {this.user_id = (new SimpleIntegerProperty(user_id));}
     public void setUsername(String username) {this.username = new SimpleStringProperty(username);}
     public void setFull_name(String full_name) {this.full_name = new SimpleStringProperty(full_name);}
@@ -93,11 +79,13 @@ public class Users {
     public void setStatus(String status) {this.status = new SimpleStringProperty(status);}
     public void setCreated_at(Date created_at) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        this.created_at = dateFormat;
+        SimpleStringProperty dateString = new SimpleStringProperty(dateFormat.format(created_at));
+        this.created_at = dateString;
     }
     public void setLast_login(Date last_login) {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        this.last_login = timeFormat;        
+        SimpleStringProperty timeString = new SimpleStringProperty(timeFormat.format(last_login));
+        this.last_login = timeString;        
     }
 
     public void setStatusActive() {this.status = new SimpleStringProperty("active");}
@@ -119,6 +107,7 @@ public class Users {
                 '}';
     }
 
+    // ======= Data Access Methods =======
     public ArrayList<Users> SELECT_ALL_USERS() {
         ArrayList<Users> userList = new ArrayList<>();
 
@@ -143,7 +132,6 @@ public class Users {
                 user.setLast_login(result.getDate("last_login"));
                 
                 userList.add(user);
-                System.out.println(user);
             }
             
         } catch (SQLException e) {
@@ -213,6 +201,22 @@ public class Users {
         return user;
     }
 
+    private int GET_USER_ID_MAX() {
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("SELECT MAX(user_id) AS max_id FROM users");
+
+            ResultSet result = statement.executeQuery();
+
+            while(result.next()) {
+                return result.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public void INSERT_USER(Users user) {
         String username = user.getUsername();
         String email = user.getEmail();
@@ -221,24 +225,23 @@ public class Users {
         String contact_number = user.getContact_number();
         String address = user.getAddress();
         String status = user.getStatus();
-        Date date = new Date();
-        Date time = new Date();
-        String created_at = user.created_at.format(date);
-        String last_login = user.last_login.format(time);
+        String created_at = user.getCreated_at();
+        String last_login = user.getLast_login();
 
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO users (username, email, password_hash, full_name, contact_number, address, last_login, created_at, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO users (user_id, username, email, password_hash, full_name, contact_number, address, last_login, created_at, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-            statement.setString(1, username);
-            statement.setString(2, email);
-            statement.setString(3, password);
-            statement.setString(4, full_name);
-            statement.setString(5, contact_number);
-            statement.setString(6, address);
-            statement.setString(7, last_login);
-            statement.setString(8, created_at);
-            statement.setString(9, status);
+            statement.setInt(1, GET_USER_ID_MAX() + 1);
+            statement.setString(2, username);
+            statement.setString(3, email);
+            statement.setString(4, password);
+            statement.setString(5, full_name);
+            statement.setString(6, contact_number);
+            statement.setString(7, address);
+            statement.setString(8, last_login);
+            statement.setString(9, created_at);
+            statement.setString(10, status);
             statement.executeUpdate();
             System.out.println("User " + username + " has been added.");
 
@@ -255,10 +258,8 @@ public class Users {
         String contact_number = user.getContact_number();
         String address = user.getAddress();
         String status = user.getStatus();
-        Date date = new Date();
-        Date time = new Date();
-        String created_at = user.created_at.format(date);
-        String last_login = user.last_login.format(time);
+        String created_at = user.getCreated_at();
+        String last_login = user.getLast_login();
 
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);

@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -69,5 +71,18 @@
             <Font name="HP Simplified" size="30.0" />
          </font>
       </Button>
+      <TableView fx:id="usersTableView" editable="true" fixedCellSize="20.0" layoutX="395.0" layoutY="90.0" prefHeight="785.0" prefWidth="780.0">
+         <columns>
+            <TableColumn fx:id="user_id" minWidth="80.0" resizable="false" text="user_id" />
+            <TableColumn fx:id="username" minWidth="100.0" prefWidth="100.0" text="username" />
+            <TableColumn fx:id="email" minWidth="120.0" prefWidth="120.0" text="email" />
+            <TableColumn fx:id="full_name" minWidth="170.0" prefWidth="170.0" text="full_name" />
+            <TableColumn fx:id="contact_number" minWidth="120.0" prefWidth="120.0" text="contact_number" />
+            <TableColumn fx:id="status" minWidth="60.0" prefWidth="60.0" resizable="false" text="status" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
    </children>
 </AnchorPane>

@@ -1,138 +1,102 @@
 package CRUD;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import java.util.ArrayList;
 import Tables.Servers;
 
 public class CRUDMenuServersController {
 
-    private Scene scene;
-    private Parent root;
-    private Stage stage;
-
+    // UI Components
     @FXML private TableView<Servers> serversTableView;
     @FXML private TableColumn<Servers, Integer> server_id;
-    @FXML private TableColumn<Servers, String> name;
-    @FXML private TableColumn<Servers, String> hardware_type;
-    @FXML private TableColumn<Servers, Integer> ram_gb;
-    @FXML private TableColumn<Servers, String> specs;
-    @FXML private TableColumn<Servers, Integer> storage_gb;
-    @FXML private TableColumn<Servers, Double> price_per_month;
-    @FXML private TableColumn<Servers, String> server_location;
-    @FXML private TableColumn<Servers, String> status;
-    
-    private ObservableList<Servers> serverList = FXCollections.observableArrayList();
-    
+
+    // Data and Stage Properties
+    private ObservableList<Servers> userList = FXCollections.observableArrayList();
+    private ArrayList<Servers> servers_ar = new ArrayList<>();
+    private Scene scene;
+    private Stage stage;
+
+    // ========= Initialization =========
     public void initialize() {
-        server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        hardware_type.setCellValueFactory(new PropertyValueFactory<>("hardware_type"));
-        ram_gb.setCellValueFactory(new PropertyValueFactory<>("ram_gb"));
-        specs.setCellValueFactory(new PropertyValueFactory<>("specs"));
-        storage_gb.setCellValueFactory(new PropertyValueFactory<>("storage_gb"));
-        price_per_month.setCellValueFactory(new PropertyValueFactory<>("price_per_month"));
-        server_location.setCellValueFactory(new PropertyValueFactory<>("server_location"));
-        status.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        serversTableView.setItems(serverList);
-        serverList.add(new Servers(1, "Server 1", "Hardware Type 1", 8, 100, 50.00, "Specs 1", "Location 1", "Active", 2024));
+        initializeTableColumns();
+        populateTable();
     }
-    
-    public void Users(ActionEvent event) {
+
+    private void initializeTableColumns() {
+        // Map Users class fields to TableView columns
+
+    }
+
+    private void populateTable() {
+            // TODO: Fetch servers from database and populate table
+    }
+
+    // ========= Navigation Methods =========
+    public void navigateToServers(ActionEvent event) {
+        navigateToScene(event, "CRUDServersMenu.fxml");
+    }
+
+    public void navigateToOrders(ActionEvent event) {
+        navigateToScene(event, "CRUDOrdersMenu.fxml");
+    }
+
+    public void navigateToAuditLogs(ActionEvent event) {
+        navigateToScene(event, "CRUDAuditLogsMenu.fxml");
+    }
+
+    private void navigateToScene(ActionEvent event, String fxmlFile) {
         try {
-            FXMLLoader root = new FXMLLoader(getClass().getResource("CRUDUsersMenu.fxml"));
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root.load());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.show();
             stage.centerOnScreen();
-        }   catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-    public void Orders(ActionEvent event) {
-        System.out.println("what");
+
+    // ========= CRUD Functions =========
+    private void showUserDialog(Servers servers) {
         try {
-            FXMLLoader root = new FXMLLoader(getClass().getResource("CRUDOrdersMenu.fxml"));
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root.load());
-            stage.setScene(scene);
-            stage.show();
-            stage.centerOnScreen();
-        }   catch(Exception e) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("UserDialog.fxml"));
+            Parent root = loader.load();
+
+            // Pass data to UserDialogController
+            UserDialogController controller = loader.getController();
+            controller.setUserList(userList);
+            if (servers != null) {
+                controller.setUser(servers); // Existing user for editing
+            }
+
+            // Show the dialog
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(servers == null ? "Create User" : "Update User");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(serversTableView.getScene().getWindow());
+            dialogStage.setScene(new Scene(root));
+            dialogStage.centerOnScreen();
+            dialogStage.showAndWait();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void Auditlogs(ActionEvent event) {
-        try {
-            FXMLLoader root = new FXMLLoader(getClass().getResource("CRUDAuditLogsMenu.fxml"));
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root.load());
-            stage.setScene(scene);
-            stage.show();
-            stage.centerOnScreen();
-        }   catch(Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void createUser(ActionEvent event) {
-        try {
-            root = FXMLLoader.load(getClass().getResource("CreateWindow.fxml"));
-            stage = new Stage();            
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            stage.centerOnScreen();
-        } catch(Exception e) {
-            System.err.println(e);
-        }
-    }
-
-    public void deleteUser(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete User");
-        alert.setHeaderText("Are you sure you want to delete this user?");
+    // ========= Utility Methods =========
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
         alert.showAndWait();
-    }
-
-    public void updateUser(ActionEvent event) {
-        try {
-            root = FXMLLoader.load(getClass().getResource("CreateWindow.fxml"));
-            stage = new Stage();            
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            stage.centerOnScreen();
-        } catch(Exception e) {
-            System.err.println(e);
-        }
-    }
-
-    public void createUserCancel(ActionEvent event) {
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        stage.close();
-    }
-    
-    public void createUserSave(ActionEvent event) {
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        stage.close();
-    }
-    
-    public void createUserUpdate(ActionEvent event) {
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        stage.close();
     }
 }

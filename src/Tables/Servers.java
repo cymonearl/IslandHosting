@@ -1,6 +1,7 @@
 package Tables;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javafx.beans.property.SimpleDoubleProperty;
@@ -17,7 +18,7 @@ public class Servers {
     private SimpleStringProperty server_location;
     private SimpleStringProperty status;
     private SimpleStringProperty specs;
-    private SimpleDateFormat created_at;
+    private SimpleStringProperty created_at;
 
     public enum Status {
         AVAILABLE,
@@ -25,11 +26,11 @@ public class Servers {
         MAINTENANCE
     }
 
-    public Servers(int server_id, String name, 
+    public Servers( int server_id, String name, 
                     String hardware_type, int ram_gb, 
                     int storage_gb, double price_per_month, 
                     String specs, String server_location, 
-                    String status, int created_at) {
+                    String status) {
         this.server_id = new SimpleIntegerProperty(server_id);
         this.name = new SimpleStringProperty(name);
         this.hardware_type = new SimpleStringProperty(hardware_type);
@@ -39,7 +40,9 @@ public class Servers {
         this.specs = new SimpleStringProperty(specs);
         this.server_location = new SimpleStringProperty(server_location);
         this.status = new SimpleStringProperty(status);
-        this.created_at = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat created_at = new SimpleDateFormat("yyyy-MM-dd");
+        created_at = getCurrentDate();
+        this.created_at = new SimpleStringProperty(created_at.format(new Date()));
     }
 
     public int getServer_id() { return server_id.get();}
@@ -51,7 +54,7 @@ public class Servers {
     public String getSpecs() {return specs.get();}
     public String getServer_location() {return server_location.get();}
     public String getStatus() {return status.get();}
-    public SimpleDateFormat getCreated_at() { return created_at; }
+    public String getCreated_at() { return created_at.get(); }
 
     public void setServer_id(int server_id) {this.server_id.set(server_id);}
     public void setName(String name) {this.name.set(name);}
@@ -62,10 +65,35 @@ public class Servers {
     public void setSpecs(String specs) {this.specs.set(specs);}
     public void setServer_location(String server_location) {this.server_location.set(server_location);}
     public void setStatus(String status) {this.status.set(status);}
-    public void setCreated_at(Date created_at) {
+    private SimpleDateFormat getCurrentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        this.created_at = dateFormat;
+        String currentDate = dateFormat.format(new Date());
+        System.out.println(currentDate);
+
+        return dateFormat;
     }
 
+    @Override
+    public String toString() {
+        return "Servers{" + 
+                "server_id=" + server_id + 
+                ", name='" + name + '\'' + 
+                ", hardware_type='" + hardware_type + '\'' + 
+                ", ram_gb=" + ram_gb + 
+                ", storage_gb=" + storage_gb + 
+                ", price_per_month=" + price_per_month + 
+                ", specs='" + specs + '\'' + 
+                ", server_location='" + server_location + '\'' + 
+                ", status='" + status + '\'' + 
+                ", created_at=" + created_at + 
+                '}';
+    }
 
+    // ======= Data Access Methods =======
+    public ArrayList<Servers> SELECT_ALL_SERVERS() {}
+    public Servers SELECT_SERVER(int server_id) {}
+    public Servers SELECT_SERVER(String name) {}
+    public void INSERT_SERVER(String name, String hardware_type, int ram_gb, int storage_gb, double price_per_month, String specs, String server_location) {}
+    public void UPDATE_SERVER(int server_id, String name, String hardware_type, int ram_gb, int storage_gb, double price_per_month, String specs, String server_location) {}
+    public void DELETE_SERVER(int server_id) {}
 }

@@ -23,17 +23,17 @@
                   <Font name="HP Simplified" size="30.0" />
                </font>
             </Button>
-            <Button layoutX="10.0" layoutY="420.0" mnemonicParsing="false" onAction="#Servers" prefHeight="60.0" prefWidth="350.0" text="Servers">
+            <Button layoutX="10.0" layoutY="420.0" mnemonicParsing="false" onAction="#navigateToServers" prefHeight="60.0" prefWidth="350.0" text="Servers">
                <font>
                   <Font name="HP Simplified" size="30.0" />
                </font>
             </Button>
-            <Button layoutX="10.0" layoutY="560.0" mnemonicParsing="false" onAction="#Auditlogs" prefHeight="60.0" prefWidth="350.0" text="Audit Logs">
+            <Button layoutX="10.0" layoutY="560.0" mnemonicParsing="false" onAction="#navigateToAuditLogs" prefHeight="60.0" prefWidth="350.0" text="Audit Logs">
                <font>
                   <Font name="HP Simplified" size="30.0" />
                </font>
             </Button>
-            <Button layoutX="10.0" layoutY="490.0" mnemonicParsing="false" onAction="#Orders" prefHeight="60.0" prefWidth="350.0" text="Orders">
+            <Button layoutX="10.0" layoutY="490.0" mnemonicParsing="false" onAction="#navigateToOrders" prefHeight="60.0" prefWidth="350.0" text="Orders">
                <font>
                   <Font name="HP Simplified" size="30.0" />
                </font>
@@ -53,6 +53,8 @@
             <TableColumn fx:id="full_name" minWidth="170.0" prefWidth="170.0" text="full_name" />
             <TableColumn fx:id="contact_number" minWidth="120.0" prefWidth="120.0" text="contact_number" />
             <TableColumn fx:id="status" minWidth="60.0" prefWidth="60.0" resizable="false" text="status" />
+            <TableColumn fx:id="created_at" prefWidth="75.0" text="created_at" />
+            <TableColumn fx:id="last_login" prefWidth="75.0" text="last_login" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

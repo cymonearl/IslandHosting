@@ -1,59 +1,116 @@
 import java.util.ArrayList;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import javafx.stage.*;
 import javafx.scene.control.*;
-
+import javafx.stage.*;
 import Tables.Users;
+
 public class LoginMenuController {
 
+    // FXML Components
+    public TextField loginTextField;
+    public TextField passwordTextField;
+    public Label confirmPasswordLabel;
+    public TextField confirmPasswordTextField;
+    public TextField usernameTextField;
+    public TextField full_nameTextField;
+    public TextField contact_numberTextField;
+    public TextField addressTextField;
+
+    // Class-level properties
     private Scene scene;
     private Parent root;
     private Stage stage;
-
-    public TextField loginTextField;
-    public TextField passwordTextField;
-
     private ArrayList<Users> users_ar = new Users().SELECT_ALL_USERS();
+    public String email, password;
 
+    // ========= Event Handlers =========
+
+    // Login button handler
     public void loginButton(ActionEvent event) {
         String email = loginTextField.getText();
         String password = passwordTextField.getText();
+        
         System.out.println(email);
         System.out.println(password);
 
         if (email.equals("admin") && password.equals("admin")) {
             try {
-                root = FXMLLoader.load(getClass().getResource("CRUD/CRUDUsersMenu.fxml"));
-                stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-                scene = new Scene(root);
-                stage.setScene(scene);
-                stage.setTitle("CRUD Menu");
-                stage.show();
-                stage.centerOnScreen();
-            } catch(Exception e) {
-                System.err.println(e);
-            } 
-        }
-        else if (validateUser(email, password)) {
-            try {
-                // TODO: Open Client Menu\
-                System.out.println();
-            } catch(Exception e) {
-                System.err.println(e);
+                loadScene(event, "CRUD/CRUDUsersMenu.fxml", "CRUD Menu");
+            } catch (Exception e) {
+                handleError(e);
             }
-        }
-        else {
-            System.out.println("Email or Password is incorrect");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("User Not Found");
-            alert.setHeaderText("Email or Password is incorrect");
-            alert.showAndWait();            
+        } else if (validateUser(email, password)) {
+            try {
+                // TODO: Implement Client Menu navigation
+                System.out.println();
+            } catch (Exception e) {
+                handleError(e);
+            }
+        } else {
+            showAlert(Alert.AlertType.ERROR, "User Not Found", "Email or Password is incorrect");
         }
     }
 
+    // Register button handler
+    public void registerButton(ActionEvent event) {
+        email = loginTextField.getText();
+        password = passwordTextField.getText();
+        String confirmPassword = confirmPasswordTextField.getText();
+
+        if (!isValidEmail(email)) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Email", "Invalid email address");
+        } else if (validateUser(email, password)) {
+            showAlert(Alert.AlertType.ERROR, "Duplicate User", "User already exists");
+        } else if (confirmPasswordLabel.isVisible() && confirmPassword.equals(password)) {
+            try {
+                loadScene(event, "RegisterMenu.fxml", "Register Menu");
+            } catch (Exception e) {
+                handleError(e);
+            }
+        } else if (confirmPasswordLabel.isVisible() && !confirmPassword.equals(password)) {
+            showAlert(Alert.AlertType.ERROR, "Password Mismatch", "Passwords do not match");
+        }
+
+        if (!passwordTextField.getText().isEmpty()) {
+            confirmPasswordLabel.setVisible(true);
+            confirmPasswordTextField.setVisible(true);
+        }
+    }
+
+    // Create user button handler
+    public void createUserButton(ActionEvent event) {
+        String username = usernameTextField.getText();
+        String fullName = full_nameTextField.getText();
+        String contactNumber = contact_numberTextField.getText();
+        String address = addressTextField.getText();
+
+        Users user = new Users(username, email, password, fullName, contactNumber, address, "active");
+        if (!validateInput()) return;
+
+        if (validateUser(user)) {
+            try {
+                // TODO: Implement Client Menu navigation
+                System.exit(0);
+            } catch (Exception e) {
+                handleError(e);
+            }
+        }
+    }
+
+    // Cancel button handler
+    public void cancelButton(ActionEvent event) {
+        try {
+            loadScene(event, "LoginMenu.fxml", "Login Menu");
+        } catch (Exception e) {
+            handleError(e);
+        }
+    }
+
+    // ========= Validation Methods =========
+
+    // Validate user on email and password
     private boolean validateUser(String email, String password) {
         for (Users user : users_ar) {
             if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
@@ -63,144 +120,79 @@ public class LoginMenuController {
         return false;
     }
 
+    // Validate user for duplicate information
     private boolean validateUser(Users user) {
         for (Users u : users_ar) {
             if (!u.getUsername().equals(user.getUsername())) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Duplicate Username Number");
-                alert.setHeaderText("Username already exists");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.ERROR, "Duplicate Username", "Username already exists");
                 return false;
             } else if (!u.getFull_name().equals(user.getFull_name())) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Duplicate Full Name");
-                alert.setHeaderText("Full Name already exists");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.ERROR, "Duplicate Full Name", "Full Name already exists");
                 return false;
             } else if (!u.getContact_number().equals(user.getContact_number())) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Duplicate Contact Number");
-                alert.setHeaderText("Contact number already exists");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.ERROR, "Duplicate Contact Number", "Contact number already exists");
                 return false;
             } else if (!u.getAddress().equals(user.getAddress())) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Duplicate Address");
-                alert.setHeaderText("Address already exists");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.ERROR, "Duplicate Address", "Address already exists");
                 return false;
             }
         }
         return true;
     }
 
+    // Validate input fields
     private boolean validateInput() {
-        String errorMessage = "";
-        
+        StringBuilder errorMessage = new StringBuilder();
+
         if (usernameTextField.getText().isEmpty()) {
-            errorMessage += "Username is required!\n";
+            errorMessage.append("Username is required!\n");
         }
         if (full_nameTextField.getText().isEmpty()) {
-            errorMessage += "Full name is required!\n";
+            errorMessage.append("Full name is required!\n");
         }
         if (contact_numberTextField.getText().isEmpty() || !contact_numberTextField.getText().matches("\\d+")) {
-            errorMessage += "Invalid contact number!\n";
+            errorMessage.append("Invalid contact number!\n");
         }
         if (addressTextField.getText().isEmpty()) {
-            errorMessage += "Address is required!\n";
+            errorMessage.append("Address is required!\n");
         }
 
-        if (errorMessage.isEmpty()) {
+        if (errorMessage.length() == 0) {
             return true;
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Fields");
-            alert.setHeaderText("Please correct invalid fields");
-            alert.setContentText(errorMessage);
-            alert.showAndWait();
+            showAlert(Alert.AlertType.ERROR, "Invalid Fields", "Please correct invalid fields\n" + errorMessage.toString());
             return false;
         }
     }
 
-    
-    public Label confirmPasswordLabel;
-    public TextField confirmPasswordTextField;
-    public String email, password;
-    public void registerButton(ActionEvent event) {
-        email = loginTextField.getText();
-        password = passwordTextField.getText();
-        String confirmPassword = confirmPasswordTextField.getText();
+    // ========= Utility Methods =========
 
-        if (loginTextField.getText().isEmpty() || !loginTextField.getText().matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Email");
-            alert.setHeaderText("Invalid email address");
-            alert.showAndWait();
-        } 
-        else if (validateUser(email, password)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Duplicate User");
-            alert.setHeaderText("User already exists");
-            alert.showAndWait();
-        }
-        else if (confirmPasswordLabel.isVisible() && confirmPassword.equals(password)) {
-            try {
-                root = FXMLLoader.load(getClass().getResource("RegisterMenu.fxml"));
-                stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-                scene = new Scene(root);
-                stage.setScene(scene);
-                stage.setTitle("Register Menu");
-                stage.show();
-                stage.centerOnScreen();
-            } catch (Exception e) {
-                System.err.println(e);
-            }
-        } else if (confirmPasswordLabel.isVisible() && !confirmPassword.equals(password)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Password Mismatch");
-            alert.setHeaderText("Passwords do not match");
-            alert.showAndWait();
-        }
-
-        if (!passwordTextField.getText().isEmpty()) {
-            confirmPasswordLabel.setVisible(true);
-            confirmPasswordTextField.setVisible(true);
-        }
+    // Load a new FXML scene
+    private void loadScene(ActionEvent event, String fxmlFile, String title) throws java.io.IOException {
+        root = FXMLLoader.load(getClass().getResource(fxmlFile));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle(title);
+        stage.show();
+        stage.centerOnScreen();
     }
 
-    public TextField usernameTextField;
-    public TextField full_nameTextField;
-    public TextField contact_numberTextField;
-    public TextField addressTextField;    
-    public void createUserButton(ActionEvent event) {
-        String username = usernameTextField.getText();
-        String full_name = full_nameTextField.getText();
-        String contact_number = contact_numberTextField.getText();
-        String address = addressTextField.getText();
-
-        Users user = new Users(username, email, password, full_name, contact_number, address, "active");
-        if (validateInput()) {return;} 
-        else if (validateUser(user)) {
-            try {
-                // TODO: Open Client Menu
-                System.exit(0);
-            } catch (Exception e) {
-                System.err.println(e);
-            }
-        }
+    // Show alert dialog
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        alert.showAndWait();
     }
 
-    public void cancelButton(ActionEvent event) {
-        try {
-            root = FXMLLoader.load(getClass().getResource("LoginMenu.fxml"));
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Login Menu");
-            stage.show();
-            stage.centerOnScreen();
-        } catch (Exception e) {
-            System.err.println(e);
-        }
+    // Handle exceptions
+    private void handleError(Exception e) {
+        System.err.println(e);
+    }
+
+    // Validate email format
+    private boolean isValidEmail(String email) {
+        return email.matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}");
     }
 }
