@@ -100,6 +100,8 @@ public class Users {
         this.last_login = timeFormat;        
     }
 
+    public void setStatusActive() {this.status = new SimpleStringProperty("active");}
+    public void setStatusInactive() {this.status = new SimpleStringProperty("inactive");}
 
     @Override
     public String toString() {
@@ -178,7 +180,38 @@ public class Users {
         }
 
         return user;
-    } 
+    }
+
+    public Users SELECT_USER(String email, String password) {
+        Users user = new Users();
+
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM users WHERE email = ? AND password_hash = ?");
+
+            statement.setString(1, email);
+            statement.setString(2, password);
+
+            ResultSet result = statement.executeQuery();
+
+            while(result.next()) {
+                user.setUser_id(result.getInt("user_id"));
+                user.setUsername(result.getString("username"));
+                user.setEmail(result.getString("email"));
+                user.setPassword(result.getString("password_hash"));
+                user.setFull_name(result.getString("full_name"));
+                user.setContact_number(result.getString("contact_number"));
+                user.setAddress(result.getString("address"));
+                user.setStatus(result.getString("status"));
+                user.setCreated_at(result.getDate("created_at"));
+                user.setLast_login(result.getDate("last_login"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
 
     public void INSERT_USER(Users user) {
         String username = user.getUsername();
