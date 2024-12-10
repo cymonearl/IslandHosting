@@ -1,5 +1,7 @@
 package Tables;
 
+import java.util.ArrayList;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -31,4 +33,10 @@ public class Audit_Logs {
     public void setAction_type(String action_type) { this.action_type.set(action_type); }
     public void setDescription(String description) { this.description.set(description); }
     public void setIp_address(String ip_address) { this.ip_address.set(ip_address); }
+
+    public ArrayList<Audit_Logs> SELECT_ALL_AUDIT_LOGS() {}
+    public Audit_Logs SELECT_AUDIT_LOG_ID() {}
+    public void INSERT_AUDIT_LOG() {}
+    public void UPDATE_AUDIT_LOG() {}
+    public void DELETE_AUDIT_LOG() {}
 }
