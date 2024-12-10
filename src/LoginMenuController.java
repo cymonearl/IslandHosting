@@ -3,7 +3,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.control.*;
-
 public class LoginMenuController {
 
     private Scene scene;
@@ -36,17 +35,27 @@ public class LoginMenuController {
     
     public Label confirmPasswordLabel;
     public TextField confirmPasswordTextField;
+    public String email, password;
     public void registerButton(ActionEvent event) {
-        String email = loginTextField.getText();
-        String password = passwordTextField.getText();
-        System.out.println(email);
-        System.out.println(password);
-        
-        if (confirmPasswordLabel.isVisible())
-        System.exit(0);
+        email = loginTextField.getText();
+        password = passwordTextField.getText();
+        String confirmPassword = confirmPasswordTextField.getText();
+
+        if (confirmPasswordLabel.isVisible() && confirmPassword.equals(password)) {
+            try {
+                root = FXMLLoader.load(getClass().getResource("RegisterMenu.fxml"));
+                stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setTitle("Register Menu");
+                stage.show();
+                stage.centerOnScreen();
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        }
 
         confirmPasswordLabel.setVisible(true);
         confirmPasswordTextField.setVisible(true);
     }
-
 }

@@ -2,6 +2,7 @@ package CRUD;
 import javafx.scene.control.*;
 import javafx.stage.*;
 import javafx.collections.*;
+import javafx.fxml.FXML;
 
 import Tables.Users;
 
@@ -18,12 +19,17 @@ public class UserDialogController {
     private ObservableList<Users> userList;
     private boolean isNewUser = true;
 
+
+    @FXML public Label CreateUserLabel;
+
     public void initialize() {
+
         statusComboBox.getItems().addAll("Active", "Inactive");
-        statusComboBox.setValue("Active");
+        statusComboBox.setValue("Inactive");
     }
 
     public void setUser(Users user) {
+        CreateUserLabel.setText("Update User");
         this.user = user;
         isNewUser = false;
 
@@ -40,26 +46,25 @@ public class UserDialogController {
     }
 
     public void handleSave() {
-        if (!validateInput()) {
+        if (!validateInput())
             return;
-        }
-
-        String username = usernameTextField.getText();
-        String email = emailTextField.getText();
-        String password = passwordTextField.getText();
-        String full_name = full_nameTextField.getText();
-        String contact_number = contact_numberTextField.getText();
-        String address = addressTextField.getText();
-        String status = statusComboBox.getValue();
-
-        int UserId = 0;
-
+            
+            String username = usernameTextField.getText();
+            String email = emailTextField.getText();
+            String password = passwordTextField.getText();
+            String full_name = full_nameTextField.getText();
+            String contact_number = contact_numberTextField.getText();
+            String address = addressTextField.getText();
+            String status = statusComboBox.getValue();
+            
         if (isNewUser) {
-            userList.add(new Users(UserId, username, email, password, full_name, contact_number, address, status, 2024, 20241231));
+            if (!validateUser())
+                return;
+            new Users().INSERT_USER(new Users(username, email, password, full_name, contact_number, address, status));
+            userList.add(new Users(username, email, password, full_name, contact_number, address, status));
         } else {
-            user.setUser_id(UserId);
             user.setUsername(username);
-            user.setEmail(email);
+            user.setEmail(email);                                
             user.setPassword(password);
             user.setFull_name(full_name);    
             user.setContact_number(contact_number);
@@ -67,6 +72,7 @@ public class UserDialogController {
             user.setStatus(status);
             Users updateUser = user;
             userList.set(userList.indexOf(user), updateUser);
+            new Users().UPDATE_USER(updateUser, updateUser.getUser_id());
         }
         closeDialog();
     }
@@ -75,9 +81,40 @@ public class UserDialogController {
         closeDialog();
     }
 
+    public boolean validateUser() {
+        for (Users user : userList) {
+            if (user.getUsername().equals(usernameTextField.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Duplicate Username");
+                alert.setHeaderText("Username already exists");
+                alert.showAndWait();
+                return false;
+            } else if (user.getEmail().equals(emailTextField.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Duplicate Email");
+                alert.setHeaderText("Email already exists");
+                alert.showAndWait();
+                return false;
+            } else if (user.getContact_number().equals(contact_numberTextField.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Duplicate Contact Number");
+                alert.setHeaderText("Contact number already exists");
+                alert.showAndWait();
+                return false;
+            } else if (user.getFull_name().equals(full_nameTextField.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Duplicate Full Name");
+                alert.setHeaderText("Full name already exists");
+                alert.showAndWait();
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean validateInput() {
         String errorMessage = "";
-
+        
         if (usernameTextField.getText().isEmpty()) {
             errorMessage += "Username is required!\n";
         }

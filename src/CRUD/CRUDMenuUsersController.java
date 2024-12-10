@@ -10,6 +10,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 import Tables.Users;
 public class CRUDMenuUsersController {
 
@@ -25,6 +27,7 @@ public class CRUDMenuUsersController {
     @FXML private TableColumn<Users, String> status;
 
     private ObservableList<Users> userList = FXCollections.observableArrayList();
+    ArrayList<Users> users_ar = new ArrayList<Users>();
 
     public void initialize() {
         // Initialize columns
@@ -37,7 +40,12 @@ public class CRUDMenuUsersController {
 
         // Set items to the table
         usersTableView.setItems(userList);
-        userList.add(new Users(1, "Username", "Email", "Password", "Full Name", "Contact Number", "Address", "Active", 2024, 20240101));
+        users_ar = new Users().SELECT_ALL_USERS();
+        for (Users user : users_ar) {
+            System.out.println("added");
+            userList.add(user);
+        }
+
     }
 
     public void Servers(ActionEvent event) {
@@ -96,13 +104,22 @@ public class CRUDMenuUsersController {
     }
 
     public void updateUser() {
+        if (usersTableView.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Update User");
+            alert.setHeaderText("Please select a user to update.");
+            alert.showAndWait();
+            return;
+        }            
         Users selectedUser = usersTableView.getSelectionModel().getSelectedItem();
-        showUserDialog(selectedUser);
-    }
+        Users selectedUser_ar = new Users();
+        for (Users user : users_ar) {    
+            if (user.getUser_id() == selectedUser.getUser_id()) {
+                selectedUser_ar = user;
+            }
+        }
 
-    public void createUserCancel(ActionEvent event) {
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        stage.close();
+        showUserDialog(selectedUser_ar);
     }
 
     public void showUserDialog(Users user) {

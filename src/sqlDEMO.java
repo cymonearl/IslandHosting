@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
+import Tables.Users;
 public class sqlDEMO {
     public static void main(String[] args) {
         String url = "jdbc:mysql://localhost:3306/island_hosting_database";
@@ -14,15 +16,17 @@ public class sqlDEMO {
 
         try {
             Connection connect = DriverManager.getConnection(url, user, password);
-            String sql = "show tables";
-            PreparedStatement statement = connect.prepareStatement(sql);
-            ResultSet result = statement.executeQuery(sql);
+            PreparedStatement statement = connect.prepareStatement("show columns from users");
+            ResultSet result = statement.executeQuery();
 
-            while(result.next()) 
-                System.out.println(result.getString(1));
-
+            for (Users userll : new Users().SELECT_ALL_USERS()) {
+                System.out.println(userll);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-        }        
+        }
+
+        Users users = new Users();
+        System.out.println(users.getCurrentTime());
     }
 }
