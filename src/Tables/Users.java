@@ -250,7 +250,8 @@ public class Users {
         }
     }
 
-    public void UPDATE_USER(Users user, int user_id) {
+    public void UPDATE_USER(Users user) {
+        int user_id = user.getUser_id();
         String username = user.getUsername();
         String email = user.getEmail();
         String password = user.getPassword();
@@ -278,22 +279,18 @@ public class Users {
             statement.setInt(10, user_id);
             statement.executeUpdate();
             System.out.println("User " + username + " has been updated.");
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void DELETE_USER(int user_id) {
-
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("DELETE FROM users WHERE user_id = ?");
             statement.setInt(1, user_id);
-
             statement.executeUpdate();
             System.out.println("User " + username + " has been deleted.");
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

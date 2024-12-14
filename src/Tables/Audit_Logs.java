@@ -34,8 +34,27 @@ public class Audit_Logs {
     public void setDescription(String description) { this.description.set(description); }
     public void setIp_address(String ip_address) { this.ip_address.set(ip_address); }
 
-    public ArrayList<Audit_Logs> SELECT_ALL_AUDIT_LOGS() {}
-    public Audit_Logs SELECT_AUDIT_LOG_ID() {}
+    @Override
+    public String toString() {
+        return "Audit_Logs{" +
+                "log_id=" + log_id +
+                ", user_id=" + user_id +
+                ", action_type='" + action_type + '\'' +
+                ", description='" + description + '\'' +
+                ", ip_address='" + ip_address + '\'' +
+                '}';
+    }
+
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/island_hosting_database"; //DB URL
+    private static final String USER = "root"; //DB user
+    private static final String PASS = ""; //DB password
+
+    public ArrayList<Audit_Logs> SELECT_ALL_AUDIT_LOGS() {
+        // TODO
+    }
+    public Audit_Logs SELECT_AUDIT_LOG_ID() {
+        // TODO
+    }
     public void INSERT_AUDIT_LOG() {}
     public void UPDATE_AUDIT_LOG() {}
     public void DELETE_AUDIT_LOG() {}

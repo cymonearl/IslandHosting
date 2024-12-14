@@ -24,8 +24,8 @@ public class UserDialogController {
 
     public void initialize() {
 
-        statusComboBox.getItems().addAll("Active", "Inactive");
-        statusComboBox.setValue("Inactive");
+        statusComboBox.getItems().addAll("active", "inactive");
+        statusComboBox.setValue("inactive");
     }
 
     public void setUser(Users user) {
@@ -72,7 +72,7 @@ public class UserDialogController {
             user.setStatus(status);
             Users updateUser = user;
             userList.set(userList.indexOf(user), updateUser);
-            new Users().UPDATE_USER(updateUser, updateUser.getUser_id());
+            new Users().UPDATE_USER(updateUser);
         }
         closeDialog();
     }

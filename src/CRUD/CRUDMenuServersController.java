@@ -18,10 +18,18 @@ public class CRUDMenuServersController {
     // UI Components
     @FXML private TableView<Servers> serversTableView;
     @FXML private TableColumn<Servers, Integer> server_id;
+    @FXML private TableColumn<Servers, String> name;
+    @FXML private TableColumn<Servers, String> hardware_type;
+    @FXML private TableColumn<Servers, Integer> ram_gb;
+    @FXML private TableColumn<Servers, Integer> storage_gb;
+    @FXML private TableColumn<Servers, Double> price_per_month;
+    @FXML private TableColumn<Servers, String> specs;
+    @FXML private TableColumn<Servers, String> status;
+    @FXML private TableColumn<Servers, String> created_at;
 
     // Data and Stage Properties
     private ObservableList<Servers> userList = FXCollections.observableArrayList();
-    private ArrayList<Servers> servers_ar = new ArrayList<>();
+    private ArrayList<Servers> servers_ar = new Servers().SELECT_ALL_SERVERS();
     private Scene scene;
     private Stage stage;
 
@@ -33,16 +41,28 @@ public class CRUDMenuServersController {
 
     private void initializeTableColumns() {
         // Map Users class fields to TableView columns
-
+        server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        hardware_type.setCellValueFactory(new PropertyValueFactory<>("hardware_type"));
+        ram_gb.setCellValueFactory(new PropertyValueFactory<>("ram_gb"));
+        storage_gb.setCellValueFactory(new PropertyValueFactory<>("storage_gb"));
+        price_per_month.setCellValueFactory(new PropertyValueFactory<>("price_per_month"));
+        specs.setCellValueFactory(new PropertyValueFactory<>("specs"));
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        created_at.setCellValueFactory(new PropertyValueFactory<>("created_at"));
+        serversTableView.setItems(userList); // Set ObservableList to TableView
     }
 
     private void populateTable() {
             // TODO: Fetch servers from database and populate table
+        for (Servers server : servers_ar) {
+            userList.add(server);
+        }
     }
 
     // ========= Navigation Methods =========
-    public void navigateToServers(ActionEvent event) {
-        navigateToScene(event, "CRUDServersMenu.fxml");
+    public void navigateToUsers(ActionEvent event) {
+        navigateToScene(event, "CRUDUsersMenu.fxml");
     }
 
     public void navigateToOrders(ActionEvent event) {
@@ -67,16 +87,16 @@ public class CRUDMenuServersController {
     }
 
     // ========= CRUD Functions =========
-    private void showUserDialog(Servers servers) {
+    private void showServerDialog(Servers servers) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("UserDialog.fxml"));
             Parent root = loader.load();
 
             // Pass data to UserDialogController
-            UserDialogController controller = loader.getController();
-            controller.setUserList(userList);
+            ServerDialogController controller = loader.getController();
+            controller.setServerList(userList);
             if (servers != null) {
-                controller.setUser(servers); // Existing user for editing
+                controller.setServer(servers); // Existing user for editing
             }
 
             // Show the dialog
