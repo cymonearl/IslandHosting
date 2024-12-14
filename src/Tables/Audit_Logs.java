@@ -1,7 +1,7 @@
 package Tables;
 
 import java.util.ArrayList;
-
+import java.sql.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -50,10 +50,46 @@ public class Audit_Logs {
     private static final String PASS = ""; //DB password
 
     public ArrayList<Audit_Logs> SELECT_ALL_AUDIT_LOGS() {
-        // TODO
+        ArrayList<Audit_Logs> audit_logs = new ArrayList<>();
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM audit_logs");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                Audit_Logs audit_log = new Audit_Logs(
+                        result.getInt("log_id"),
+                        result.getInt("user_id"),
+                        result.getString("action_type"),
+                        result.getString("description"),
+                        result.getString("ip_address")
+                );
+                audit_logs.add(audit_log);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return audit_logs;
     }
     public Audit_Logs SELECT_AUDIT_LOG_ID() {
-        // TODO
+        Audit_Logs audit_log = null;
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM audit_logs WHERE log_id = ?");
+            statement.setInt(1, log_id.get());
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                audit_log = new Audit_Logs(
+                        result.getInt("log_id"),
+                        result.getInt("user_id"),
+                        result.getString("action_type"),
+                        result.getString("description"),
+                        result.getString("ip_address")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return audit_log;
     }
     public void INSERT_AUDIT_LOG() {}
     public void UPDATE_AUDIT_LOG() {}

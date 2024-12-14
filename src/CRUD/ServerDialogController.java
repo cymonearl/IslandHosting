@@ -1,9 +1,7 @@
 package CRUD;
 
 import javafx.scene.control.*;
-import javafx.stage.*;
 import javafx.collections.*;
-import javafx.fxml.FXML;
 import Tables.Servers;
 public class ServerDialogController {
     public TextField nameTextField;
