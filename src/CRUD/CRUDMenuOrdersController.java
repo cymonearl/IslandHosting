@@ -12,40 +12,31 @@ public class CRUDMenuOrdersController {
     private Parent root;
     private Stage stage;
 
-    public void Users(ActionEvent event) {
+    public void navigateToUsers(ActionEvent event) {
+        navigateToScene(event, "CRUDUsersMenu.fxml");
+    }
+
+    public void navigateToServers(ActionEvent event) {
+        navigateToScene(event, "CRUDServersMenu.fxml");
+    }
+
+    public void navigateToAuditLogs(ActionEvent event) {
+        navigateToScene(event, "CRUDAuditLogsMenu.fxml");
+    }
+
+    public void navigateToScene(ActionEvent event, String fxmlFile) {
         try {
-            FXMLLoader root = new FXMLLoader(getClass().getResource("CRUDUsersMenu.fxml"));
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root.load());
+            root = FXMLLoader.load(getClass().getResource(fxmlFile));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            Double width = stage.getWidth();
+            Double height = stage.getHeight();
             stage.setScene(scene);
+            stage.setWidth(width);
+            stage.setHeight(height);
             stage.show();
-            stage.centerOnScreen();
-        }   catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    public void Servers(ActionEvent event) {
-        try {
-            root = FXMLLoader.load(getClass().getResource("CRUDServersMenu.fxml"));
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            stage.centerOnScreen();
-        }   catch(Exception e) {
-            e.printStackTrace();
-        } 
-    }
-    public void Auditlogs(ActionEvent event) {
-        try {
-            root = FXMLLoader.load(getClass().getResource("CRUDAuditLogsMenu.fxml"));
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            stage.centerOnScreen();
-        }   catch(Exception e) {
-            e.printStackTrace();
-        }    
     }
 }

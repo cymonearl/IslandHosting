@@ -54,6 +54,7 @@ public class Servers {
     public String getSpecs() {return specs.get();}
     public String getServer_location() {return server_location.get();}
     public String getStatus() {return status.get();}
+    public String getCreated_at() {return created_at.get();}
     private String getCurrentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = dateFormat.format(new Date().getTime());
