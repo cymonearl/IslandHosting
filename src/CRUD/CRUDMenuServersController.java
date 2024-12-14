@@ -57,6 +57,7 @@ public class CRUDMenuServersController {
             // TODO: Fetch servers from database and populate table
         for (Servers server : servers_ar) {
             userList.add(server);
+            System.out.println(server);
         }
     }
 
@@ -77,10 +78,13 @@ public class CRUDMenuServersController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Double width = stage.getWidth();
+            Double height = stage.getHeight();
             scene = new Scene(loader.load());
             stage.setScene(scene);
+            stage.setWidth(width);
+            stage.setHeight(height);
             stage.show();
-            stage.centerOnScreen();
         } catch (Exception e) {
             e.printStackTrace();
         }

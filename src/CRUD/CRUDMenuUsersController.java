@@ -77,10 +77,13 @@ public class CRUDMenuUsersController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Double width = stage.getWidth();
+            Double height = stage.getHeight();
             scene = new Scene(loader.load());
             stage.setScene(scene);
+            stage.setWidth(width);
+            stage.setHeight(height);
             stage.show();
-            stage.centerOnScreen();
         } catch (Exception e) {
             e.printStackTrace();
         }

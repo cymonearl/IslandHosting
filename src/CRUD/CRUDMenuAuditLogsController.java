@@ -7,43 +7,33 @@ import javafx.stage.*;
 public class CRUDMenuAuditLogsController {
     
     private Scene scene;
+    private Parent root;
     private Stage stage;
 
-    public void Orders(ActionEvent event) {
-        try {
-            FXMLLoader root = new FXMLLoader(getClass().getResource("CRUDOrdersMenu.fxml"));
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root.load());
-            stage.setScene(scene);
-            stage.show();
-            stage.centerOnScreen();
-        }   catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void navigateToUsers(ActionEvent event) {
+        navigateToScene(event, "CRUDUsersMenu.fxml");
     }
 
-    public void Users(ActionEvent event) {
-        try {
-            FXMLLoader root = new FXMLLoader(getClass().getResource("CRUDUsersMenu.fxml"));
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root.load());
-            stage.setScene(scene);
-            stage.show();
-            stage.centerOnScreen();
-        }   catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void navigateToServers(ActionEvent event) {
+        navigateToScene(event, "CRUDServersMenu.fxml");
     }
 
-    public void Servers(ActionEvent event) {
+    public void navigateToOrders(ActionEvent event) {
+        navigateToScene(event, "CRUDOrdersMenu.fxml");
+    }
+
+    public void navigateToScene(ActionEvent event, String fxmlFile) {
         try {
-            FXMLLoader root = new FXMLLoader(getClass().getResource("CRUDServersMenu.fxml"));
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root.load());
+            root = FXMLLoader.load(getClass().getResource(fxmlFile));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            Double width = stage.getWidth();
+            Double height = stage.getHeight();
             stage.setScene(scene);
+            stage.setWidth(width);
+            stage.setHeight(height);
             stage.show();
-            stage.centerOnScreen();
-        }   catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
