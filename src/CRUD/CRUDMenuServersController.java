@@ -28,8 +28,8 @@ public class CRUDMenuServersController {
     @FXML private TableColumn<Servers, String> created_at;
 
     // Data and Stage Properties
-    private ObservableList<Servers> userList = FXCollections.observableArrayList();
-    private ArrayList<Servers> servers_ar = new Servers().SELECT_ALL_SERVERS();
+    private ObservableList<Servers> serverList = FXCollections.observableArrayList();
+    private ArrayList<Servers> servers_ar = new ArrayList<>();
     private Scene scene;
     private Stage stage;
 
@@ -50,14 +50,13 @@ public class CRUDMenuServersController {
         specs.setCellValueFactory(new PropertyValueFactory<>("specs"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
         created_at.setCellValueFactory(new PropertyValueFactory<>("created_at"));
-        serversTableView.setItems(userList); // Set ObservableList to TableView
+        serversTableView.setItems(serverList); // Set ObservableList to TableView
     }
 
     private void populateTable() {
-            // TODO: Fetch servers from database and populate table
+            servers_ar = new Servers().SELECT_ALL_SERVERS();
         for (Servers server : servers_ar) {
-            userList.add(server);
-            System.out.println(server);
+            serverList.add(server);
         }
     }
 
@@ -91,24 +90,62 @@ public class CRUDMenuServersController {
     }
 
     // ========= CRUD Functions =========
+    public void createServer(ActionEvent event) {
+        showServerDialog(null); // Pass null to create a new user
+    }
+
+    public void updateServer(ActionEvent event) {
+        Servers selectedServer = serversTableView.getSelectionModel().getSelectedItem();
+        if (selectedServer == null) {
+            showAlert(Alert.AlertType.WARNING, "No User Selected", "Please select a user to update.");
+            return;
+        }
+
+        // Find the original `Users` object in the `users_ar` list
+        Servers selectedServer_original = servers_ar.stream()
+                .filter(user -> user.getServer_id() == selectedServer.getServer_id())
+                .findFirst()
+                .orElse(null);
+
+        if (selectedServer_original != null) {
+            showServerDialog(selectedServer_original); // Pass the selected user for editing
+        }
+    }
+
+    public void deleteServer(ActionEvent event) {
+        Servers selectedServer = serversTableView.getSelectionModel().getSelectedItem();
+        if (selectedServer == null) {
+            showAlert(Alert.AlertType.WARNING, "No User Selected", "Please select a user to delete.");
+            return;
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete User");
+            alert.setHeaderText("Are you sure you want to delete this user?");
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                serverList.remove(selectedServer); // Remove from TableView
+                new Servers().DELETE_SERVER(selectedServer); // Remove from database
+            }
+        }
+    }
     private void showServerDialog(Servers servers) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("UserDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerDialog.fxml"));
             Parent root = loader.load();
 
             // Pass data to UserDialogController
             ServerDialogController controller = loader.getController();
-            controller.setServerList(userList);
+            controller.setServerList(serverList);
             if (servers != null) {
                 controller.setServer(servers); // Existing user for editing
             }
 
             // Show the dialog
             Stage dialogStage = new Stage();
-            dialogStage.setTitle(servers == null ? "Create User" : "Update User");
+            dialogStage.setTitle(servers == null ? "Create Server" : "Update Server");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(serversTableView.getScene().getWindow());
             dialogStage.setScene(new Scene(root));
+            dialogStage.setResizable(false);
             dialogStage.centerOnScreen();
             dialogStage.showAndWait();
         } catch (Exception e) {

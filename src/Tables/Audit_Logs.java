@@ -12,14 +12,16 @@ public class Audit_Logs {
     private SimpleStringProperty description;
     private SimpleStringProperty ip_address;
 
-    public Audit_Logs(int log_id, int user_id, 
+    public Audit_Logs() {}
+
+    public Audit_Logs(int user_id, 
                     String action_type, String description, 
                     String ip_address) {
-        this.log_id = new SimpleIntegerProperty(log_id);
         this.user_id = new SimpleIntegerProperty(user_id);
         this.action_type = new SimpleStringProperty(action_type);
         this.description = new SimpleStringProperty(description);
         this.ip_address = new SimpleStringProperty(ip_address);
+        newLog_id();
     }
 
     public int getLog_id() { return log_id.get(); }
@@ -28,11 +30,12 @@ public class Audit_Logs {
     public String getDescription() { return description.get(); }
     public String getIp_address() { return ip_address.get(); }
 
-    public void setLog_id(int log_id) { this.log_id.set(log_id); }
-    public void setUser_id(int user_id) { this.user_id.set(user_id); }
-    public void setAction_type(String action_type) { this.action_type.set(action_type); }
-    public void setDescription(String description) { this.description.set(description); }
-    public void setIp_address(String ip_address) { this.ip_address.set(ip_address); }
+    public void newLog_id() { this.log_id.set(GET_LOG_ID_MAX() + 1); }
+    public void setLog_id(int log_id) { this.log_id = new SimpleIntegerProperty(log_id); }
+    public void setUser_id(int user_id) { this.user_id = new SimpleIntegerProperty(user_id); }
+    public void setAction_type(String action_type) { this.action_type = new SimpleStringProperty(action_type); }
+    public void setDescription(String description) { this.description = new SimpleStringProperty(description); }
+    public void setIp_address(String ip_address) { this.ip_address = new SimpleStringProperty(ip_address); }
 
     @Override
     public String toString() {
@@ -56,13 +59,12 @@ public class Audit_Logs {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM audit_logs");
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                Audit_Logs audit_log = new Audit_Logs(
-                        result.getInt("log_id"),
-                        result.getInt("user_id"),
-                        result.getString("action_type"),
-                        result.getString("description"),
-                        result.getString("ip_address")
-                );
+                Audit_Logs audit_log = new Audit_Logs();
+                audit_log.setLog_id(result.getInt("log_id"));
+                audit_log.setUser_id(result.getInt("user_id"));
+                audit_log.setAction_type(result.getString("action_type"));
+                audit_log.setDescription(result.getString("description"));
+                audit_log.setIp_address(result.getString("ip_address"));
                 audit_logs.add(audit_log);
             }
         } catch (SQLException e) {
@@ -71,27 +73,72 @@ public class Audit_Logs {
         return audit_logs;
     }
     public Audit_Logs SELECT_AUDIT_LOG_ID() {
-        Audit_Logs audit_log = null;
+        Audit_Logs audit_log = new Audit_Logs();
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM audit_logs WHERE log_id = ?");
             statement.setInt(1, log_id.get());
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                audit_log = new Audit_Logs(
-                        result.getInt("log_id"),
-                        result.getInt("user_id"),
-                        result.getString("action_type"),
-                        result.getString("description"),
-                        result.getString("ip_address")
-                );
+                audit_log.setLog_id(result.getInt("log_id"));
+                audit_log.setUser_id(result.getInt("user_id"));
+                audit_log.setAction_type(result.getString("action_type"));
+                audit_log.setDescription(result.getString("description"));
+                audit_log.setIp_address(result.getString("ip_address"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return audit_log;
     }
-    public void INSERT_AUDIT_LOG() {}
-    public void UPDATE_AUDIT_LOG() {}
-    public void DELETE_AUDIT_LOG() {}
+    public int GET_LOG_ID_MAX() {
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("SELECT MAX(log_id) FROM audit_logs");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public void INSERT_AUDIT_LOG(Audit_Logs audit_log) {
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO audit_logs (user_id, action_type, description, ip_address) VALUES (?, ?, ?, ?)");
+            statement.setInt(1, audit_log.getUser_id());
+            statement.setString(2, audit_log.getAction_type());
+            statement.setString(3, audit_log.getDescription());
+            statement.setString(4, audit_log.getIp_address());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void UPDATE_AUDIT_LOG(Audit_Logs audit_log) {
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("UPDATE audit_logs SET user_id = ?, action_type = ?, description = ?, ip_address = ? WHERE log_id = ?");
+            statement.setInt(1, audit_log.getUser_id());
+            statement.setString(2, audit_log.getAction_type());
+            statement.setString(3, audit_log.getDescription());
+            statement.setString(4, audit_log.getIp_address());
+            statement.setInt(5, audit_log.getLog_id());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void DELETE_AUDIT_LOG(Audit_Logs audit_log) {
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("DELETE FROM audit_logs WHERE log_id = ?");
+            statement.setInt(1, audit_log.getLog_id());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

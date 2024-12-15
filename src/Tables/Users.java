@@ -41,6 +41,7 @@ public class Users {
         this.status = new SimpleStringProperty(status);
         this.created_at = new SimpleStringProperty(getCurrentDate());
         this.last_login = new SimpleStringProperty(getCurrentTime());
+        newUser_id();
     }
     
     // ======= HELPERS =======
@@ -69,6 +70,7 @@ public class Users {
     public String getLast_login() { return last_login.get(); }
 
     // ======= SETTERS =======
+    public void newUser_id() {this.user_id.set(GET_USER_ID_MAX() + 1);}
     public void setUser_id(int user_id) {this.user_id = (new SimpleIntegerProperty(user_id));}
     public void setUsername(String username) {this.username = new SimpleStringProperty(username);}
     public void setFull_name(String full_name) {this.full_name = new SimpleStringProperty(full_name);}
@@ -284,11 +286,11 @@ public class Users {
         }
     }
 
-    public void DELETE_USER(int user_id) {
+    public void DELETE_USER(Users user) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("DELETE FROM users WHERE user_id = ?");
-            statement.setInt(1, user_id);
+            statement.setInt(1, user.getUser_id());
             statement.executeUpdate();
             System.out.println("User " + username + " has been deleted.");
         } catch (SQLException e) {

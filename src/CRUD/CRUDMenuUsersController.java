@@ -120,6 +120,7 @@ public class CRUDMenuUsersController {
             alert.setHeaderText("Are you sure you want to delete this user?");
             if (alert.showAndWait().get() == ButtonType.OK) {
                 userList.remove(selectedUser); // Remove from TableView
+                new Users().DELETE_USER(selectedUser); // Remove from database
             }
         } else {
             showAlert(Alert.AlertType.INFORMATION, "Delete User", "Please select a user to delete.");
@@ -144,6 +145,8 @@ public class CRUDMenuUsersController {
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(usersTableView.getScene().getWindow());
             dialogStage.setScene(new Scene(root));
+            dialogStage.setAlwaysOnTop(true);
+            dialogStage.setResizable(false);
             dialogStage.centerOnScreen();
             dialogStage.showAndWait();
         } catch (Exception e) {

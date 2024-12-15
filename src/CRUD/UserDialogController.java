@@ -23,7 +23,6 @@ public class UserDialogController {
     @FXML public Label CreateUserLabel;
 
     public void initialize() {
-
         statusComboBox.getItems().addAll("active", "inactive");
         statusComboBox.setValue("inactive");
     }
@@ -84,28 +83,15 @@ public class UserDialogController {
     public boolean validateUser() {
         for (Users user : userList) {
             if (user.getUsername().equals(usernameTextField.getText())) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Duplicate Username");
-                alert.setHeaderText("Username already exists");
-                alert.showAndWait();
+                alert("Duplicate Username", "Username already exists.");
                 return false;
             } else if (user.getEmail().equals(emailTextField.getText())) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Duplicate Email");
-                alert.setHeaderText("Email already exists");
-                alert.showAndWait();
                 return false;
             } else if (user.getContact_number().equals(contact_numberTextField.getText())) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Duplicate Contact Number");
-                alert.setHeaderText("Contact number already exists");
-                alert.showAndWait();
+                alert("Duplicate Contact Number", "Contact number already exists.");
                 return false;
             } else if (user.getFull_name().equals(full_nameTextField.getText())) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Duplicate Full Name");
-                alert.setHeaderText("Full name already exists");
-                alert.showAndWait();
+                alert("Duplicate Full Name", "Full name already exists.");                
                 return false;
             }
         }
@@ -131,11 +117,7 @@ public class UserDialogController {
         if (errorMessage.isEmpty()) {
             return true;
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Fields");
-            alert.setHeaderText("Please correct invalid fields");
-            alert.setContentText(errorMessage);
-            alert.showAndWait();
+            alert("Invalid Fields", errorMessage);
             return false;
         }
     }
@@ -143,5 +125,13 @@ public class UserDialogController {
     public void closeDialog() {
         Stage stage = (Stage) usernameTextField.getScene().getWindow();
         stage.close();
+    }
+
+    private void alert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
