@@ -81,8 +81,12 @@ public class CRUDMenuServersController {
             Double height = stage.getHeight();
             scene = new Scene(loader.load());
             stage.setScene(scene);
-            stage.setWidth(width);
-            stage.setHeight(height);
+            if (!fxmlFile.equals("../LoginMenu.fxml")) {
+                stage.setWidth(width);
+                stage.setHeight(height);
+            } else {
+                stage.centerOnScreen();
+            }
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -159,5 +163,13 @@ public class CRUDMenuServersController {
         alert.setTitle(title);
         alert.setHeaderText(message);
         alert.showAndWait();
+    }
+
+    public void logout(ActionEvent event) {
+        try {
+            navigateToScene(event, "../LoginMenu.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

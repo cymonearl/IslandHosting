@@ -66,9 +66,73 @@ public class CRUDMenuAuditLogsController {
             Double height = stage.getHeight();
             scene = new Scene(root.load());
             stage.setScene(scene);
-            stage.setWidth(width);
-            stage.setHeight(height);
+            if (!fxmlFile.equals("../LoginMenu.fxml")) {
+                stage.setWidth(width);
+                stage.setHeight(height);
+            } else {
+                stage.centerOnScreen();
+            }
             stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // TODO: Implement CRUD for Audit Logs
+    public void createAudit_logs() {
+        showAudit_logsDialog(null);
+    }
+
+    public void updateAudit_logs() {
+        Audit_Logs selectedAudit_logs = auditLogsTable.getSelectionModel().getSelectedItem();
+        if (selectedAudit_logs == null) {
+            showAlert(Alert.AlertType.WARNING, "No Audit Logs Selected", "Please select an Audit Logs to update.");
+            return;
+        }
+    
+    }
+
+    public void deleteAudit_logs() {
+        Audit_Logs selectedAudit_logs = auditLogsTable.getSelectionModel().getSelectedItem();
+        if (selectedAudit_logs == null) {
+            showAlert(Alert.AlertType.WARNING, "No Audit Logs Selected", "Please select an Audit Logs to delete.");
+            return;
+        }
+    }
+
+    public void showAudit_logsDialog(Audit_Logs audit_logs) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Audit_logsDialog.fxml"));
+            Parent root = loader.load();
+
+            Audit_logsDialogController controller = loader.getController();
+            controller.setAudit_logsList(auditLogsList);
+            if (audit_logs != null) {
+                controller.setAudit_logs(audit_logs); // Existing user for editing
+            }
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(audit_logs == null ? "Create Audit Logs" : "Update Audit Logs");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setScene(new Scene(root));
+            dialogStage.setResizable(false);
+            dialogStage.centerOnScreen();
+            dialogStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        alert.showAndWait();
+    }
+
+    public void logout(ActionEvent event) {
+        try {
+            navigateToScene(event, "../LoginMenu.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }

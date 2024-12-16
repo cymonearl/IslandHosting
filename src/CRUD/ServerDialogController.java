@@ -70,7 +70,7 @@ public class ServerDialogController {
             server.setServer_location(server_location);
             Servers updateServer = server;
             serverList.set(serverList.indexOf(server), updateServer);
-            new Servers().UPDATE_SERVER(server);
+            new Servers().UPDATE_SERVER(updateServer);
         }
         closeDialog();
     }

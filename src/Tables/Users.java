@@ -70,7 +70,7 @@ public class Users {
     public String getLast_login() { return last_login.get(); }
 
     // ======= SETTERS =======
-    public void newUser_id() {this.user_id.set(GET_USER_ID_MAX() + 1);}
+    public void newUser_id() {this.user_id = new SimpleIntegerProperty(GET_USER_ID_MAX() + 1);}
     public void setUser_id(int user_id) {this.user_id = (new SimpleIntegerProperty(user_id));}
     public void setUsername(String username) {this.username = new SimpleStringProperty(username);}
     public void setFull_name(String full_name) {this.full_name = new SimpleStringProperty(full_name);}

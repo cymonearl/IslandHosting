@@ -1,7 +1,12 @@
 package Tables;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,7 +14,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class Orders {
     private SimpleIntegerProperty order_id;
     private SimpleIntegerProperty user_id;
-    private SimpleStringProperty server_id;
+    private SimpleIntegerProperty server_id;
     private SimpleStringProperty start_date;
     private SimpleStringProperty end_date;
     private SimpleDoubleProperty total_amount;
@@ -25,23 +30,41 @@ public class Orders {
 
     public Orders() {}
 
-    public Orders(String user_id, 
-                String server_id, String start_date, 
-                String end_date, String total_amount, 
-                String status, String created_at) {
+    public Orders(String user_id,
+                String server_id, String total_amount, 
+                String status) {
         this.user_id = new SimpleIntegerProperty(Integer.parseInt(user_id));
-        this.server_id = new SimpleStringProperty(server_id);
-        this.start_date = new SimpleStringProperty(start_date);
-        this.end_date = new SimpleStringProperty(end_date);
+        this.server_id = new SimpleIntegerProperty(Integer.parseInt(server_id));
+        this.start_date = new SimpleStringProperty(getCurrentDate());
+        this.end_date = new SimpleStringProperty(getNext12Months(start_date));
         this.total_amount = new SimpleDoubleProperty(Double.parseDouble(total_amount));
         this.status = new SimpleStringProperty(status);
-        this.created_at = new SimpleStringProperty(created_at);
+        this.created_at = new SimpleStringProperty(getCurrentDate());
         newOrder_id();
+    }
+
+    private String getCurrentDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = dateFormat.format(new Date().getTime());
+        return currentDate;
+    }
+
+    private String getNext12Months(SimpleStringProperty date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(dateFormat.parse(date.getValue()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        calendar.add(Calendar.MONTH, 12);
+        String next12Months = dateFormat.format(calendar.getTime());
+        return next12Months;
     }
 
     public int getOrder_id() { return order_id.get(); }
     public int getUser_id() { return user_id.get(); }
-    public String getServer_id() { return server_id.get(); }
+    public int getServer_id() { return server_id.get(); }
     public String getStart_date() { return start_date.get(); }
     public String getEnd_date() { return end_date.get(); }
     public double getTotal_amount() { return total_amount.get(); }
@@ -51,12 +74,13 @@ public class Orders {
     public void newOrder_id() { this.order_id = new SimpleIntegerProperty(GET_ORDER_ID_MAX() + 1); }
     public void setOrder_id(int order_id) { this.order_id = new SimpleIntegerProperty(order_id); }
     public void setUser_id(int user_id) { this.user_id = new SimpleIntegerProperty(user_id); }
-    public void setServer_id(String server_id) { this.server_id = new SimpleStringProperty(server_id); }
+    public void setServer_id(int server_id) { this.server_id = new SimpleIntegerProperty(server_id); }
     public void setStart_date(String start_date) { this.start_date = new SimpleStringProperty(start_date); }
     public void setEnd_date(String end_date) { this.end_date = new SimpleStringProperty(end_date); }
     public void setTotal_amount(double total_amount) { this.total_amount = new SimpleDoubleProperty(total_amount); }
     public void setStatus(String status) { this.status = new SimpleStringProperty(status); }
     public void setCreated_at(String created_at) { this.created_at = new SimpleStringProperty(created_at); }
+
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/island_hosting_database"; //DB URL
     private static final String USER = "root"; //DB user
@@ -74,7 +98,7 @@ public class Orders {
 
                 order.setOrder_id(result.getInt("order_id"));
                 order.setUser_id(result.getInt("user_id"));
-                order.setServer_id(result.getString("server_id"));
+                order.setServer_id(result.getInt("server_id"));
                 order.setStart_date(result.getString("start_date"));
                 order.setEnd_date(result.getString("end_date"));
                 order.setTotal_amount(result.getDouble("total_amount"));
@@ -99,7 +123,7 @@ public class Orders {
 
                 order.setOrder_id(result.getInt("order_id"));
                 order.setUser_id(result.getInt("user_id"));
-                order.setServer_id(result.getString("server_id"));
+                order.setServer_id(result.getInt("server_id"));
                 order.setStart_date(result.getString("start_date"));
                 order.setEnd_date(result.getString("end_date"));
                 order.setTotal_amount(result.getDouble("total_amount"));
@@ -129,7 +153,7 @@ public class Orders {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("INSERT INTO orders (user_id, server_id, start_date, end_date, total_amount, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
             statement.setInt(1, order.getUser_id());
-            statement.setString(2, order.getServer_id());
+            statement.setInt(2, order.getServer_id());
             statement.setString(3, order.getStart_date());
             statement.setString(4, order.getEnd_date());
             statement.setDouble(5, order.getTotal_amount());
@@ -145,7 +169,7 @@ public class Orders {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("UPDATE orders SET user_id = ?, server_id = ?, start_date = ?, end_date = ?, total_amount = ?, status = ?, created_at = ? WHERE order_id = ?");
             statement.setInt(1, order.getUser_id());
-            statement.setString(2, order.getServer_id());
+            statement.setInt(2, order.getServer_id());
             statement.setString(3, order.getStart_date());
             statement.setString(4, order.getEnd_date());
             statement.setDouble(5, order.getTotal_amount());

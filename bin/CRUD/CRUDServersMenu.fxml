@@ -50,6 +50,11 @@
                   <Image url="@../Logo-removebg-preview.png" />
                </image>
             </ImageView>
+            <Button layoutX="10.0" layoutY="826.0" mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="350.0" text="Logout">
+               <font>
+                  <Font name="HP Simplified" size="30.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </left>

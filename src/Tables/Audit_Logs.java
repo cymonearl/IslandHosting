@@ -1,7 +1,10 @@
 package Tables;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -11,6 +14,7 @@ public class Audit_Logs {
     private SimpleStringProperty action_type;
     private SimpleStringProperty description;
     private SimpleStringProperty ip_address;
+    private SimpleStringProperty timestamp;
 
     public Audit_Logs() {}
 
@@ -21,6 +25,7 @@ public class Audit_Logs {
         this.action_type = new SimpleStringProperty(action_type);
         this.description = new SimpleStringProperty(description);
         this.ip_address = new SimpleStringProperty(ip_address);
+        this.timestamp = new SimpleStringProperty(getCurrentTime());
         newLog_id();
     }
 
@@ -29,13 +34,20 @@ public class Audit_Logs {
     public String getAction_type() { return action_type.get(); }
     public String getDescription() { return description.get(); }
     public String getIp_address() { return ip_address.get(); }
+    public String getTimestamp() { return timestamp.get(); }
 
-    public void newLog_id() { this.log_id.set(GET_LOG_ID_MAX() + 1); }
+    public void newLog_id() { this.log_id = new SimpleIntegerProperty(GET_LOG_ID_MAX() + 1); }
     public void setLog_id(int log_id) { this.log_id = new SimpleIntegerProperty(log_id); }
     public void setUser_id(int user_id) { this.user_id = new SimpleIntegerProperty(user_id); }
     public void setAction_type(String action_type) { this.action_type = new SimpleStringProperty(action_type); }
     public void setDescription(String description) { this.description = new SimpleStringProperty(description); }
     public void setIp_address(String ip_address) { this.ip_address = new SimpleStringProperty(ip_address); }
+    public void setCreated_at(String timestamp) { this.timestamp = new SimpleStringProperty(timestamp); }
+    private String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   
+        String currentTime = dateFormat.format(new Date().getTime());
+        return currentTime;
+    }
 
     @Override
     public String toString() {
@@ -45,6 +57,7 @@ public class Audit_Logs {
                 ", action_type='" + action_type + '\'' +
                 ", description='" + description + '\'' +
                 ", ip_address='" + ip_address + '\'' +
+                ", timestamp='" + timestamp + '\'' +
                 '}';
     }
 
@@ -65,9 +78,10 @@ public class Audit_Logs {
                 audit_log.setAction_type(result.getString("action_type"));
                 audit_log.setDescription(result.getString("description"));
                 audit_log.setIp_address(result.getString("ip_address"));
+                audit_log.setCreated_at(result.getString("timestamp"));
                 audit_logs.add(audit_log);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e) {  
             e.printStackTrace();
         }
         return audit_logs;
@@ -85,6 +99,7 @@ public class Audit_Logs {
                 audit_log.setAction_type(result.getString("action_type"));
                 audit_log.setDescription(result.getString("description"));
                 audit_log.setIp_address(result.getString("ip_address"));
+                audit_log.setCreated_at(result.getString("timestamp"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,6 +112,7 @@ public class Audit_Logs {
             PreparedStatement statement = connect.prepareStatement("SELECT MAX(log_id) FROM audit_logs");
             ResultSet result = statement.executeQuery();
             while (result.next()) {
+                System.out.println(result.getInt(1) + 1);
                 return result.getInt(1);
             }
         } catch (SQLException e) {
@@ -106,12 +122,15 @@ public class Audit_Logs {
     }
     public void INSERT_AUDIT_LOG(Audit_Logs audit_log) {
         try {
+            System.out.println(audit_log);
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO audit_logs (user_id, action_type, description, ip_address) VALUES (?, ?, ?, ?)");
-            statement.setInt(1, audit_log.getUser_id());
-            statement.setString(2, audit_log.getAction_type());
-            statement.setString(3, audit_log.getDescription());
-            statement.setString(4, audit_log.getIp_address());
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO audit_logs (log_id, user_id, action_type, description, ip_address, timestamp) VALUES (?, ?, ?, ?, ?, ?)");
+            statement.setInt(1, audit_log.getLog_id());
+            statement.setInt(2, audit_log.getUser_id());
+            statement.setString(3, audit_log.getAction_type());
+            statement.setString(4, audit_log.getDescription());
+            statement.setString(5, audit_log.getIp_address());
+            statement.setString(6, audit_log.getTimestamp());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,12 +139,13 @@ public class Audit_Logs {
     public void UPDATE_AUDIT_LOG(Audit_Logs audit_log) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("UPDATE audit_logs SET user_id = ?, action_type = ?, description = ?, ip_address = ? WHERE log_id = ?");
+            PreparedStatement statement = connect.prepareStatement("UPDATE audit_logs SET user_id = ?, action_type = ?, description = ?, ip_address = ?, timestamp = ? WHERE log_id = ?");
             statement.setInt(1, audit_log.getUser_id());
             statement.setString(2, audit_log.getAction_type());
             statement.setString(3, audit_log.getDescription());
             statement.setString(4, audit_log.getIp_address());
-            statement.setInt(5, audit_log.getLog_id());
+            statement.setString(5, audit_log.getTimestamp());
+            statement.setInt(6, audit_log.getLog_id());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

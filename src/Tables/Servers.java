@@ -61,7 +61,7 @@ public class Servers {
         return currentDate;
     }
 
-    public void newServer_id() {this.server_id.set(GET_SERVER_ID_MAX() + 1);}
+    public void newServer_id() {this.server_id = new SimpleIntegerProperty(GET_SERVER_ID_MAX() + 1);}
     public void setServer_id(int server_id) {this.server_id = new SimpleIntegerProperty(server_id);}
     public void setName(String name) {this.name = new SimpleStringProperty(name);}
     public void setHardware_type(String hardware_type) {this.hardware_type = new SimpleStringProperty(hardware_type);}

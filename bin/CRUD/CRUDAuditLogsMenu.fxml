@@ -50,6 +50,11 @@
                   <Image url="@../Logo-removebg-preview.png" />
                </image>
             </ImageView>
+            <Button layoutX="10.0" layoutY="826.0" mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="350.0" text="Logout">
+               <font>
+                  <Font name="HP Simplified" size="30.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </left>
@@ -65,7 +70,7 @@
                      </font>
                   </Label>
                   <Pane prefHeight="75.0" prefWidth="50.0" HBox.hgrow="SOMETIMES" />
-                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="180.0" text="Create">
+                  <Button mnemonicParsing="false" onAction="#createAudit_logs" prefHeight="60.0" prefWidth="180.0" text="Create">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -73,7 +78,7 @@
                         <Font name="HP Simplified" size="30.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="180.0" text="Update">
+                  <Button mnemonicParsing="false" onAction="#updateAudit_logs" prefHeight="60.0" prefWidth="180.0" text="Update">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -81,7 +86,7 @@
                         <Font name="HP Simplified" size="30.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="180.0" text="Delete">
+                  <Button mnemonicParsing="false" onAction="#deleteAudit_logs" prefHeight="60.0" prefWidth="180.0" text="Delete">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
