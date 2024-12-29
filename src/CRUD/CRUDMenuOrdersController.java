@@ -68,7 +68,7 @@ public class CRUDMenuOrdersController {
         navigateToScene(event, "CRUDAuditLogsMenu.fxml");
     }
 
-    public void navigateToScene(ActionEvent event, String fxmlFile) {
+    private void navigateToScene(ActionEvent event, String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -76,11 +76,12 @@ public class CRUDMenuOrdersController {
             Double height = stage.getHeight();
             scene = new Scene(loader.load());
             stage.setScene(scene);
-            if (!fxmlFile.equals("../LoginMenu.fxml")) {
-                stage.setWidth(width);
-                stage.setHeight(height);
-            } else {
-                stage.centerOnScreen();
+            stage.setWidth(width);
+            stage.setHeight(height);
+            stage.centerOnScreen();
+            if (fxmlFile.equals("../LoginMenu.fxml")) {
+                stage.setWidth(650);
+                stage.setHeight(300);
             }
             stage.show();
         } catch (Exception e) {

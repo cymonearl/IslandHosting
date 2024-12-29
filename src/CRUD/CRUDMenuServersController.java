@@ -81,11 +81,12 @@ public class CRUDMenuServersController {
             Double height = stage.getHeight();
             scene = new Scene(loader.load());
             stage.setScene(scene);
-            if (!fxmlFile.equals("../LoginMenu.fxml")) {
-                stage.setWidth(width);
-                stage.setHeight(height);
-            } else {
-                stage.centerOnScreen();
+            stage.setWidth(width);
+            stage.setHeight(height);
+            stage.centerOnScreen();
+            if (fxmlFile.equals("../LoginMenu.fxml")) {
+                stage.setWidth(650);
+                stage.setHeight(300);
             }
             stage.show();
         } catch (Exception e) {

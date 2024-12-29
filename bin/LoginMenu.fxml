@@ -33,14 +33,14 @@
                         <Font name="Arial" size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="passwordTextField" prefHeight="25.0" prefWidth="360.0" promptText="email" styleClass="textfield-design" stylesheets="@style.css" />
+                  <TextField fx:id="passwordTextField" prefHeight="25.0" prefWidth="360.0" promptText="password" styleClass="textfield-design" stylesheets="@style.css" />
                   <Label styleClass="font-white" stylesheets="@style.css" text="password" textAlignment="CENTER">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="confirmPasswordTextField" prefHeight="25.0" prefWidth="360.0" promptText="confirm password" visible="false" />
-                  <Label fx:id="confirmPasswordLabel" text="confirm password" textAlignment="CENTER" visible="false">
+                  <TextField fx:id="confirmPasswordTextField" prefHeight="25.0" prefWidth="360.0" promptText="confirm password" styleClass="textfield-design" stylesheets="@style.css" visible="false" />
+                  <Label fx:id="confirmPasswordLabel" styleClass="font-white" stylesheets="@style.css" text="confirm password" textAlignment="CENTER" visible="false">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>

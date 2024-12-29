@@ -60,19 +60,20 @@ public class CRUDMenuAuditLogsController {
         navigateToScene(event, "CRUDOrdersMenu.fxml");
     }
     
-    public void navigateToScene(ActionEvent event, String fxmlFile) {
+    private void navigateToScene(ActionEvent event, String fxmlFile) {
         try {
-            FXMLLoader root = new FXMLLoader(getClass().getResource(fxmlFile));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Double width = stage.getWidth();
             Double height = stage.getHeight();
-            scene = new Scene(root.load());
+            scene = new Scene(loader.load());
             stage.setScene(scene);
-            if (!fxmlFile.equals("../LoginMenu.fxml")) {
-                stage.setWidth(width);
-                stage.setHeight(height);
-            } else {
-                stage.centerOnScreen();
+            stage.setWidth(width);
+            stage.setHeight(height);
+            stage.centerOnScreen();
+            if (fxmlFile.equals("../LoginMenu.fxml")) {
+                stage.setWidth(650);
+                stage.setHeight(300);
             }
             stage.show();
         } catch (Exception e) {
