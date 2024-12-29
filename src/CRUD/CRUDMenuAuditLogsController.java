@@ -19,6 +19,7 @@ public class CRUDMenuAuditLogsController {
     @FXML private TableColumn<Audit_Logs, String> action_type;
     @FXML private TableColumn<Audit_Logs, String> description;
     @FXML private TableColumn<Audit_Logs, String> ip_address;
+    @FXML private TableColumn<Audit_Logs, String> timestamp;
 
     private ObservableList<Audit_Logs> auditLogsList = FXCollections.observableArrayList();
     private ArrayList<Audit_Logs> auditLogs_ar = new ArrayList<>();
@@ -36,6 +37,7 @@ public class CRUDMenuAuditLogsController {
         action_type.setCellValueFactory(new PropertyValueFactory<>("action_type"));
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
         ip_address.setCellValueFactory(new PropertyValueFactory<>("ip_address"));
+        timestamp.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
         auditLogsTable.setItems(auditLogsList);
     }
 

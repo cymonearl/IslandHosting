@@ -10,27 +10,27 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="279.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.OrdersDialogController">
+<VBox prefHeight="279.0" prefWidth="600.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.OrdersDialogController">
    <children>
-      <Label fx:id="CreateOrderLabel" text="Create Order">
+      <Label fx:id="CreateOrderLabel" styleClass="font-white" stylesheets="@../style.css" text="Create Order">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label text="user_id" />
-      <TextField fx:id="user_idTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="server_id" />
-      <TextField fx:id="server_idTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="total_amount" />
-      <TextField fx:id="total_amountTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="status" />
-      <ComboBox fx:id="statusComboBox" prefWidth="150.0" />
+      <TextField fx:id="user_idTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="user_id" />
+      <TextField fx:id="server_idTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="server_id" />
+      <TextField fx:id="total_amountTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="total_amount" />
+      <ComboBox fx:id="statusComboBox" prefWidth="150.0" styleClass="button-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="status" />
       <Pane maxHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" />
       <HBox>
          <children>
-            <Button mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="110.0" text="Save" />
+            <Button mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="110.0" styleClass="button-design" stylesheets="@../style.css" text="Save" />
             <Pane prefHeight="20.0" prefWidth="200.0" HBox.hgrow="SOMETIMES" />
-            <Button mnemonicParsing="false" onAction="#closeDialog" prefHeight="25.0" prefWidth="110.0" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#closeDialog" prefHeight="25.0" prefWidth="110.0" styleClass="button-design" stylesheets="@../style.css" text="Cancel" />
          </children>
          <padding>
             <Insets left="20.0" right="20.0" />

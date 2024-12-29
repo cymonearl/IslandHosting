@@ -10,34 +10,33 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.UserDialogController">
+<VBox prefHeight="400.0" prefWidth="600.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.UserDialogController">
    <children>
-      <Label fx:id="CreateUserLabel" text="Create User">
+      <Label fx:id="CreateUserLabel" styleClass="font-white" stylesheets="@../style.css" text="Create User">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label text="username" />
-      <TextField fx:id="usernameTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="email" />
-      <TextField fx:id="emailTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="password" />
-      <TextField fx:id="passwordTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="full_name" />
-      <TextField fx:id="full_nameTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="contact_number" />
-      <TextField fx:id="contact_numberTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="address" />
-      <TextField fx:id="addressTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="status" />
-      <ComboBox fx:id="statusComboBox" prefWidth="150.0" />
-      <Pane maxHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" />
-      <HBox>
+      <TextField fx:id="usernameTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="username" />
+      <TextField fx:id="emailTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="email" />
+      <TextField fx:id="passwordTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="password" />
+      <TextField fx:id="full_nameTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="full_name" />
+      <TextField fx:id="contact_numberTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="contact_number" />
+      <TextField fx:id="addressTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="address" />
+      <ComboBox fx:id="statusComboBox" prefWidth="150.0" styleClass="button-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="status" />
+      <Pane maxHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" stylesheets="@../style.css" />
+      <HBox stylesheets="@../style.css">
          <children>
-            <Button mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="110.0" text="Save" />
-            <Pane prefHeight="20.0" prefWidth="200.0" HBox.hgrow="SOMETIMES" />
-            <Button mnemonicParsing="false" onAction="#closeDialog" prefHeight="25.0" prefWidth="110.0" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="110.0" styleClass="button-design" stylesheets="@../style.css" text="Save" />
+            <Pane stylesheets="@../style.css" HBox.hgrow="SOMETIMES" />
+            <Button mnemonicParsing="false" onAction="#closeDialog" prefHeight="25.0" prefWidth="110.0" styleClass="button-design" stylesheets="@../style.css" text="Cancel" />
          </children>
          <padding>
             <Insets left="20.0" right="20.0" />

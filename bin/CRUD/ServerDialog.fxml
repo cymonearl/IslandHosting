@@ -10,35 +10,35 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.ServerDialogController">
+<VBox prefHeight="450.0" prefWidth="600.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.ServerDialogController">
    <children>
-      <Label fx:id="CreateServerLabel" text="Create Server">
+      <Label fx:id="CreateServerLabel" styleClass="font-white" stylesheets="@../style.css" text="Create Server">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label text="server_name" />
-      <TextField fx:id="server_nameTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="hardware_type" />
-      <TextField fx:id="hardware_typeTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="ram_gb" />
-      <TextField fx:id="ram_gbTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="storage_gb" />
-      <TextField fx:id="storage_gbTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="price_per_month" />
-      <TextField fx:id="price_per_monthTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="server_location" />
-      <TextField fx:id="server_locationTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label layoutX="20.0" layoutY="265.0" text="additional_specs" />
-      <TextField fx:id="additional_specsTextField" layoutX="20.0" layoutY="282.0" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="status" />
-      <ComboBox fx:id="statusComboBox" prefWidth="150.0" />
-      <Pane maxHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" />
-      <HBox>
+      <TextField fx:id="server_nameTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="server_name" />
+      <TextField fx:id="hardware_typeTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="hardware_type" />
+      <TextField fx:id="ram_gbTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="ram_gb" />
+      <TextField fx:id="storage_gbTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="storage_gb" />
+      <TextField fx:id="price_per_monthTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="price_per_month" />
+      <TextField fx:id="server_locationTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="server_location" />
+      <TextField fx:id="additional_specsTextField" layoutX="20.0" layoutY="282.0" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label layoutX="20.0" layoutY="265.0" styleClass="font-white" stylesheets="@../style.css" text="additional_specs" />
+      <ComboBox fx:id="statusComboBox" prefWidth="150.0" styleClass="button-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="status" />
+      <Pane maxHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" stylesheets="@../style.css" />
+      <HBox stylesheets="@../style.css">
          <children>
-            <Button mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="110.0" text="Save" />
+            <Button mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="110.0" styleClass="button-design" stylesheets="@../style.css" text="Save" />
             <Pane prefHeight="20.0" prefWidth="200.0" HBox.hgrow="SOMETIMES" />
-            <Button mnemonicParsing="false" onAction="#closeDialog" prefHeight="25.0" prefWidth="110.0" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#closeDialog" prefHeight="25.0" prefWidth="110.0" styleClass="button-design" stylesheets="@../style.css" text="Cancel" />
          </children>
          <padding>
             <Insets left="20.0" right="20.0" />

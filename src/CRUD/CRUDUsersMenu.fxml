@@ -13,64 +13,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.CRUDMenuUsersController">
-   <left>
-      <Pane prefHeight="900.0" prefWidth="370.0" style="-fx-background-color: lightblue;" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="402.0" fitWidth="350.0" layoutX="10.0" layoutY="-67.0">
-               <image>
-                  <Image url="@../Logo-removebg-preview.png" />
-               </image>
-            </ImageView>
-            <Button layoutX="10.0" layoutY="350.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" text="Users">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <font>
-                  <Font name="HP Simplified" size="30.0" />
-               </font>
-            </Button>
-            <Button layoutX="10.0" layoutY="420.0" mnemonicParsing="false" onAction="#navigateToServers" prefHeight="60.0" prefWidth="350.0" text="Servers">
-               <font>
-                  <Font name="HP Simplified" size="30.0" />
-               </font>
-            </Button>
-            <Button layoutX="10.0" layoutY="560.0" mnemonicParsing="false" onAction="#navigateToAuditLogs" prefHeight="60.0" prefWidth="350.0" text="Audit Logs">
-               <font>
-                  <Font name="HP Simplified" size="30.0" />
-               </font>
-            </Button>
-            <Button layoutX="10.0" layoutY="490.0" mnemonicParsing="false" onAction="#navigateToOrders" prefHeight="60.0" prefWidth="350.0" text="Orders">
-               <font>
-                  <Font name="HP Simplified" size="30.0" />
-               </font>
-            </Button>
-            <Label layoutX="144.0" layoutY="292.0" text="CRUD">
-               <font>
-                  <Font name="HP Simplified Bold" size="36.0" />
-               </font>
-            </Label>
-            <Button layoutX="10.0" layoutY="826.0" mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="350.0" text="Logout">
-               <font>
-                  <Font name="HP Simplified" size="30.0" />
-               </font>
-            </Button>
-         </children>
-      </Pane>
-   </left>
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.CRUDMenuUsersController">
    <center>
       <VBox prefHeight="200.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" spacing="10.0">
                <children>
                   <Pane layoutX="176.0" layoutY="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="75.0" prefWidth="50.0" />
-                  <Label prefHeight="56.0" prefWidth="122.0" text="Users">
+                  <Label maxWidth="-Infinity" prefHeight="56.0" prefWidth="122.0" styleClass="font-white" stylesheets="@../style.css" text="Users">
                      <font>
                         <Font name="HP Simplified Bold" size="48.0" />
                      </font>
                   </Label>
-                  <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="75.0" prefWidth="50.0" HBox.hgrow="SOMETIMES" />
-                  <Button mnemonicParsing="false" onAction="#createUser" prefHeight="60.0" prefWidth="180.0" text="Create">
+                  <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="75.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#createUser" prefHeight="60.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Create">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -78,7 +34,7 @@
                         <Font name="HP Simplified" size="30.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#updateUser" prefHeight="60.0" prefWidth="180.0" text="Update">
+                  <Button mnemonicParsing="false" onAction="#updateUser" prefHeight="60.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Update">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -86,7 +42,7 @@
                         <Font name="HP Simplified" size="30.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#deleteUser" prefHeight="60.0" prefWidth="180.0" text="Delete">
+                  <Button mnemonicParsing="false" onAction="#deleteUser" prefHeight="60.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Delete">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -99,7 +55,7 @@
                   <Insets bottom="20.0" right="20.0" top="20.0" />
                </padding>
             </HBox>
-            <TableView fx:id="usersTableView" editable="true" fixedCellSize="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+            <TableView fx:id="usersTableView" editable="true" fixedCellSize="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="865.0" styleClass="textfield-design" stylesheets="@../style.css" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="user_id" minWidth="80.0" resizable="false" text="user_id" />
                 <TableColumn fx:id="username" minWidth="100.0" prefWidth="100.0" text="username" />
@@ -117,4 +73,62 @@
          </children>
       </VBox>
    </center>
+   <left>
+      <VBox alignment="CENTER" spacing="10.0" styleClass="background-marooon" stylesheets="@../style.css">
+         <children>
+            <ImageView fitHeight="200.0" fitWidth="161.0">
+               <image>
+                  <Image url="@../logo.png" />
+               </image>
+            </ImageView>
+            <Label styleClass="font-white" stylesheets="@../style.css" text="CRUD">
+               <font>
+                  <Font name="HP Simplified Bold" size="36.0" />
+               </font>
+            </Label>
+            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" styleClass="button-design" stylesheets="@../style.css" text="Users">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="HP Simplified" size="30.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#navigateToServers" prefHeight="60.0" prefWidth="350.0" styleClass="button-design" stylesheets="@../style.css" text="Servers">
+               <font>
+                  <Font name="HP Simplified" size="30.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#navigateToOrders" prefHeight="60.0" prefWidth="350.0" styleClass="button-design" stylesheets="@../style.css" text="Orders">
+               <font>
+                  <Font name="HP Simplified" size="30.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#navigateToAuditLogs" prefHeight="60.0" prefWidth="350.0" styleClass="button-design" stylesheets="@../style.css" text="Audit Logs">
+               <font>
+                  <Font name="HP Simplified" size="30.0" />
+               </font>
+            </Button>
+            <Pane VBox.vgrow="SOMETIMES">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Pane>
+            <Button mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="350.0" styleClass="button-design" stylesheets="@../style.css" text="Logout">
+               <font>
+                  <Font name="HP Simplified" size="30.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </left>
 </BorderPane>

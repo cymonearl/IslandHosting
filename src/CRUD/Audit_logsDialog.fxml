@@ -9,27 +9,27 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="270.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.Audit_logsDialogController">
+<VBox prefHeight="270.0" prefWidth="600.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.Audit_logsDialogController">
    <children>
-      <Label fx:id="Audit_logsOrderLabel" text="Create Audit_logs">
+      <Label fx:id="Audit_logsOrderLabel" styleClass="font-white" stylesheets="@../style.css" text="Create Audit_logs">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label text="user_id" />
-      <TextField fx:id="user_idTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="action_type" />
-      <TextField fx:id="action_typeTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="description" />
-      <TextField fx:id="descriptionTextField" prefHeight="25.0" prefWidth="575.0" />
-      <Label text="ip_address" />
-      <TextField fx:id="ip_addressTextField" prefHeight="25.0" prefWidth="575.0" />
+      <TextField fx:id="user_idTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label prefWidth="38.0" styleClass="font-white" stylesheets="@../style.css" text="user_id" />
+      <TextField fx:id="action_typeTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="action_type" />
+      <TextField fx:id="descriptionTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="description" />
+      <TextField fx:id="ip_addressTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="ip_address" />
       <Pane maxHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" />
       <HBox>
          <children>
-            <Button mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="110.0" text="Save" />
+            <Button mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="110.0" styleClass="button-design" stylesheets="@../style.css" text="Save" />
             <Pane prefHeight="20.0" prefWidth="200.0" HBox.hgrow="SOMETIMES" />
-            <Button mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="110.0" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="110.0" styleClass="button-design" stylesheets="@../style.css" text="Cancel" />
          </children>
          <padding>
             <Insets left="20.0" right="20.0" />

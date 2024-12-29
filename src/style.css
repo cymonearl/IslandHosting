@@ -1,0 +1,56 @@
+.background-black {
+    -fx-background-color: black;
+}
+.background-marooon {
+    -fx-background-color: maroon;
+}
+
+.set-insets {
+    -fx-background-insets: 10 10 10 10;
+}
+
+.font-white {
+    -fx-text-fill: white;
+}
+
+.textfield-design {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-radius: 0;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
+
+.button-design {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
+.button-design:hover {
+    -fx-background-color: white;
+    -fx-border-color: white;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: black;
+}
+.button-design:pressed {
+    -fx-background-color: gray;
+    -fx-border-color: white;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: black;
+}
+
+.font-white {
+    -fx-text-fill: white;
+}
