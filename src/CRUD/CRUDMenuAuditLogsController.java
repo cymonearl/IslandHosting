@@ -14,12 +14,12 @@ import Tables.Audit_Logs;
 public class CRUDMenuAuditLogsController {
 
     @FXML private TableView<Audit_Logs> auditLogsTable;
-    @FXML private TableColumn<Audit_Logs, Integer> log_id;
-    @FXML private TableColumn<Audit_Logs, Integer> user_id;
-    @FXML private TableColumn<Audit_Logs, String> action_type;
-    @FXML private TableColumn<Audit_Logs, String> description;
-    @FXML private TableColumn<Audit_Logs, String> ip_address;
-    @FXML private TableColumn<Audit_Logs, String> timestamp;
+    @FXML private Label CRUD;
+    @FXML private Button createButton;
+    @FXML private Button updateButton;
+    @FXML private Button deleteButton;
+    @FXML private Button viewButton;
+    boolean userViewMode = false;
 
     private ObservableList<Audit_Logs> auditLogsList = FXCollections.observableArrayList();
     private ArrayList<Audit_Logs> auditLogs_ar = new ArrayList<>();
@@ -27,25 +27,87 @@ public class CRUDMenuAuditLogsController {
     private Stage stage;
 
     public void initialize() {
+        CRUD.setText("CRUD");
         initializeTableColumns();
-        populateTable();    
+        populateTable();
+        createButton.setVisible(true);
+        updateButton.setVisible(true);
+        deleteButton.setVisible(true);
+        viewButton.setText("User View");
+
+    }
+
+    public void changeView(ActionEvent event) {
+        auditLogsTable.getColumns().clear();
+
+        if (userViewMode) {
+            userViewMode = false;
+            auditLogsList.clear();
+            initialize();
+        } else {
+            auditLogsList.clear();
+            userViewMode = true;
+            initializeTableColumnsUV();
+            CRUD.setText("User View");
+            populateTable();
+            createButton.setVisible(false);
+            updateButton.setVisible(false);
+            deleteButton.setVisible(false);
+            viewButton.setText("CRUD");
+        }       
     }
     
+    @SuppressWarnings("unchecked")
     public void initializeTableColumns() {
+        // Map Users class fields to TableView columns
+        TableColumn<Audit_Logs, Integer> log_id = new TableColumn<>("Log ID");
         log_id.setCellValueFactory(new PropertyValueFactory<>("log_id"));
+
+        TableColumn<Audit_Logs, Integer> user_id = new TableColumn<>("User ID");
         user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+
+        TableColumn<Audit_Logs, String> action_type = new TableColumn<>("Action Type");
         action_type.setCellValueFactory(new PropertyValueFactory<>("action_type"));
+
+        TableColumn<Audit_Logs, String> description = new TableColumn<>("Description");
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        TableColumn<Audit_Logs, String> ip_address = new TableColumn<>("IP Address");
         ip_address.setCellValueFactory(new PropertyValueFactory<>("ip_address"));
+
+        TableColumn<Audit_Logs, String> timestamp = new TableColumn<>("Timestamp");
         timestamp.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+
+        auditLogsTable.getColumns().addAll(log_id, user_id, action_type, description, ip_address, timestamp);
         auditLogsTable.setItems(auditLogsList);
     }
 
+    @SuppressWarnings("unchecked")
+    public void initializeTableColumnsUV() {
+        // Map Users class fields to TableView columns
+        TableColumn<Audit_Logs, Integer> log_id = new TableColumn<>("Log ID");
+        log_id.setCellValueFactory(new PropertyValueFactory<>("log_id"));
+
+        TableColumn<Audit_Logs, String> action_type = new TableColumn<>("Action Type");
+        action_type.setCellValueFactory(new PropertyValueFactory<>("action_type"));
+
+        TableColumn<Audit_Logs, String> description = new TableColumn<>("Description");
+        description.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        TableColumn<Audit_Logs, String> ip_address = new TableColumn<>("IP Address");
+        ip_address.setCellValueFactory(new PropertyValueFactory<>("ip_address"));
+
+        TableColumn<Audit_Logs, String> timestamp = new TableColumn<>("Timestamp");
+        timestamp.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+
+        auditLogsTable.getColumns().addAll(log_id, action_type, description, ip_address, timestamp);
+        auditLogsTable.setItems(auditLogsList);
+    }
+
+
     public void populateTable() {
         auditLogs_ar = new Audit_Logs().SELECT_ALL_AUDIT_LOGS();
-        for (Audit_Logs audit_log : auditLogs_ar) {
-            auditLogsList.add(audit_log);
-        }
+        auditLogsList.addAll(auditLogs_ar);
     }
 
     public void navigateToUsers(ActionEvent event) {
@@ -74,6 +136,7 @@ public class CRUDMenuAuditLogsController {
             if (fxmlFile.equals("../LoginMenu.fxml")) {
                 stage.setWidth(650);
                 stage.setHeight(300);
+                stage.centerOnScreen();
             }
             stage.show();
         } catch (Exception e) {
@@ -100,6 +163,14 @@ public class CRUDMenuAuditLogsController {
         if (selectedAudit_logs == null) {
             showAlert(Alert.AlertType.WARNING, "No Audit Logs Selected", "Please select an Audit Logs to delete.");
             return;
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Audit Logs");
+            alert.setHeaderText("Are you sure you want to delete this Audit Logs?");
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                auditLogsList.remove(selectedAudit_logs); // Remove from TableView
+                new Audit_Logs().DELETE_AUDIT_LOG(selectedAudit_logs); // Remove from database
+            }
         }
     }
 

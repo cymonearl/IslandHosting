@@ -44,6 +44,7 @@ public class LoginMenuController {
         } else if (validateUser(email, password)) {
             try {
                 // TODO: Implement Client Menu navigation
+                loadScene(event, "Client/LandingPage.fxml", "Client Menu");
                 System.out.println();
             } catch (Exception e) {
                 handleError(e);
@@ -174,6 +175,11 @@ public class LoginMenuController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle(title);
+        if ("CRUD/CRUDUsersMenu.fxml".equals(fxmlFile)) {
+            stage.setWidth(1600);
+            stage.setHeight(1000);
+            stage.centerOnScreen();
+        }
         stage.show();
         stage.centerOnScreen();
     }

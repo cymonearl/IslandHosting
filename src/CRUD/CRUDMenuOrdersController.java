@@ -5,10 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -18,14 +15,12 @@ import java.util.ArrayList;
 import Tables.Orders;
 public class CRUDMenuOrdersController {
     @FXML private TableView<Orders> ordersTableView;
-    @FXML private TableColumn<Orders, Integer> order_id;
-    @FXML private TableColumn<Orders, Integer> user_id;
-    @FXML private TableColumn<Orders, String> server_id;
-    @FXML private TableColumn<Orders, String> start_date;
-    @FXML private TableColumn<Orders, String> end_date;
-    @FXML private TableColumn<Orders, Double> total_amount;
-    @FXML private TableColumn<Orders, String> status;
-    @FXML private TableColumn<Orders, String> created_at;
+    @FXML private Label CRUD;
+    @FXML private Button viewButton;
+    @FXML private Button createButton;
+    @FXML private Button updateButton;
+    @FXML private Button deleteButton;
+    boolean userViewMode = false;
 
     private ObservableList<Orders> orderList = FXCollections.observableArrayList();
     private ArrayList<Orders> orders_ar = new ArrayList<>();
@@ -33,27 +28,106 @@ public class CRUDMenuOrdersController {
     private Stage stage;
 
     public void initialize() {
+        CRUD.setText("CRUD");
         initializeTableColumns();
         populateTable();
+        createButton.setVisible(true);
+        updateButton.setVisible(true);
+        deleteButton.setVisible(true);
+        viewButton.setText("User View");
+
     }
 
+    public void changeView(ActionEvent event) {
+        ordersTableView.getColumns().clear();
+
+        if (userViewMode) {
+            userViewMode = false;
+            orderList.clear();
+            initialize();
+        } else {
+            orderList.clear();
+            userViewMode = true;
+            initializeTableColumnsUV();
+            CRUD.setText("User View");
+            populateUserOrders();
+            createButton.setVisible(false);
+            updateButton.setVisible(false);
+            deleteButton.setVisible(false);
+            viewButton.setText("CRUD");
+        }       
+    }
+
+    @SuppressWarnings("unchecked")
     public void initializeTableColumns() {
+        // Map Users class fields to TableView columns
+        TableColumn<Orders, Integer> order_id = new TableColumn<>("Order ID");
         order_id.setCellValueFactory(new PropertyValueFactory<>("order_id"));
+
+        TableColumn<Orders, Integer> user_id = new TableColumn<>("User ID");
         user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+
+        TableColumn<Orders, Integer> server_id = new TableColumn<>("Server ID");
         server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
+
+        TableColumn<Orders, String> start_date = new TableColumn<>("Start Date");
         start_date.setCellValueFactory(new PropertyValueFactory<>("start_date"));
+
+        TableColumn<Orders, String> end_date = new TableColumn<>("End Date");
         end_date.setCellValueFactory(new PropertyValueFactory<>("end_date"));
+
+        TableColumn<Orders, Double> total_amount = new TableColumn<>("Total Amount");
         total_amount.setCellValueFactory(new PropertyValueFactory<>("total_amount"));
+
+        TableColumn<Orders, String> status = new TableColumn<>("Status");
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        TableColumn<Orders, String> created_at = new TableColumn<>("Created At");
         created_at.setCellValueFactory(new PropertyValueFactory<>("created_at"));
+
+        ordersTableView.getColumns().addAll(order_id, user_id, server_id, start_date, end_date, total_amount, status, created_at);
+        ordersTableView.setItems(orderList); // Set ObservableList to TableView
+    }
+
+    @SuppressWarnings("unchecked")
+    public void initializeTableColumnsUV() {
+        // Map Users class fields to TableView columns
+        TableColumn<Orders, Integer> order_id = new TableColumn<>("Order ID");
+        order_id.setCellValueFactory(new PropertyValueFactory<>("order_id"));
+
+        TableColumn<Orders, Integer> user_id = new TableColumn<>("User ID");
+        user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+
+        TableColumn<Orders, Integer> server_id = new TableColumn<>("Server ID");
+        server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
+
+        TableColumn<Orders, String> start_date = new TableColumn<>("Start Date");
+        start_date.setCellValueFactory(new PropertyValueFactory<>("start_date"));
+
+        TableColumn<Orders, String> end_date = new TableColumn<>("End Date");
+        end_date.setCellValueFactory(new PropertyValueFactory<>("end_date"));
+
+        TableColumn<Orders, Double> total_amount = new TableColumn<>("Total Amount");
+        total_amount.setCellValueFactory(new PropertyValueFactory<>("total_amount"));    
+
+        TableColumn<Orders, String> status = new TableColumn<>("Status");
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        TableColumn<Orders, String> created_at = new TableColumn<>("Created At");
+        created_at.setCellValueFactory(new PropertyValueFactory<>("created_at"));
+
+        ordersTableView.getColumns().addAll(order_id, user_id, server_id, start_date, end_date, total_amount, status, created_at);
         ordersTableView.setItems(orderList); // Set ObservableList to TableView
     }
     
     public void populateTable() {
         orders_ar = new Orders().SELECT_ALL_ORDERS();
-        for (Orders order : orders_ar) {
-            orderList.add(order);
-        }
+        orderList.addAll(orders_ar);
+    }
+
+    public void populateUserOrders() {
+        orders_ar = new Orders().USER_ORDERS();
+        orderList.addAll(orders_ar);
     }
 
     public void navigateToUsers(ActionEvent event) {
@@ -82,6 +156,7 @@ public class CRUDMenuOrdersController {
             if (fxmlFile.equals("../LoginMenu.fxml")) {
                 stage.setWidth(650);
                 stage.setHeight(300);
+                stage.centerOnScreen();
             }
             stage.show();
         } catch (Exception e) {

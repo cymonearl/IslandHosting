@@ -106,7 +106,6 @@ public class Servers {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 Servers server = new Servers();
-                System.out.println(server);
                     server.setServer_id(result.getInt("server_id"));
                     server.setName(result.getString("name"));
                     server.setHardware_type(result.getString("hardware_type"));
@@ -117,7 +116,6 @@ public class Servers {
                     server.setServer_location(result.getString("location"));
                     server.setStatus(result.getString("status"));
                     server.setCreated_at(result.getDate("created_at"));
-                    System.out.println(server);
                 serverList.add(server);
             }
         } catch (SQLException e) {
@@ -195,9 +193,10 @@ public class Servers {
         String specs = server.getSpecs();
         String server_location = server.getServer_location();
         String status = server.getStatus();
+        String created_at = server.getCreated_at().toString();
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO servers (server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, specs, location, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO servers (server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, specs, location, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setInt(1, GET_SERVER_ID_MAX() + 1);
             statement.setString(2, name);
             statement.setString(3, hardware_type);
@@ -207,6 +206,7 @@ public class Servers {
             statement.setString(7, specs);
             statement.setString(8, server_location);
             statement.setString(9, status);
+            statement.setString(10, created_at);
             statement.executeUpdate();
             System.out.println("Server " + name + " has been added.");
         } catch (SQLException e) {
@@ -254,5 +254,32 @@ public class Servers {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<Servers> AVAILABLE_SERVERS() {
+        ArrayList<Servers> serverList = new ArrayList<>();
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM AvailableServers;");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                Servers server = new Servers();
+                
+                server.setServer_id(result.getInt("server_id"));
+                server.setName(result.getString("name"));
+                server.setHardware_type(result.getString("hardware_type"));
+                server.setRam_gb(result.getInt("ram_gb"));
+                server.setStorage_gb(result.getInt("storage_gb"));
+                server.setPrice_per_month(result.getDouble("price_per_month"));
+                server.setServer_location(result.getString("location"));
+                server.setSpecs(result.getString("specs"));
+                server.setStatus("Available");
+
+                serverList.add(server);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return serverList;
     }
 }

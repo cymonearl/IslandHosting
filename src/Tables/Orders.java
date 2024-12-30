@@ -190,5 +190,30 @@ public class Orders {
         } catch (SQLException e) {
             e.printStackTrace();
         }            
+    }   
+
+    public ArrayList<Orders> USER_ORDERS() {
+        ArrayList<Orders> orders = new ArrayList<>();
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM UserOrders");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                Orders order = new Orders();
+
+                order.setOrder_id(result.getInt("order_id"));
+                order.setUser_id(result.getInt("user_id"));
+                order.setServer_id(result.getInt("server_id"));
+                order.setStart_date(result.getString("start_date"));
+                order.setEnd_date(result.getString("end_date"));
+                order.setTotal_amount(result.getDouble("total_amount"));
+                order.setStatus(result.getString("status"));
+                order.setCreated_at(result.getString("created_at"));
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
     }
 }

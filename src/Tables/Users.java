@@ -297,4 +297,29 @@ public class Users {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<Users> SELECT_ACTIVE_USERS() {
+        ArrayList<Users> userList = new ArrayList<>();
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM ActiveUsers");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                Users user = new Users();
+                
+                user.setUser_id(result.getInt("user_id"));
+                user.setUsername(result.getString("username"));
+                user.setEmail(result.getString("email"));
+                user.setFull_name(result.getString("full_name"));
+                user.setContact_number(result.getString("contact_number"));
+                user.setAddress(result.getString("address"));
+                user.setStatus("Active");
+                
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
 }

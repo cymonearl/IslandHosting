@@ -1,9 +1,12 @@
 package Client;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -100,85 +103,60 @@ public class ServiceInterfaceController {
     }
 
     @FXML
-    private void onIslandHostClick(){
+    private void navigateToLandingPage(MouseEvent event) {
         try {
-            // Load the Manila pop-up FXML
+            // Load the landing page FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("LandingPage.fxml"));
             Scene scene = new Scene(loader.load());
 
-            // Create a new stage for the pop-up
-            Stage popupStage = new Stage();
-            popupStage.setScene(scene);
-            popupStage.setTitle("Manila Pop-Up");
-            popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog
-            popupStage.show();
+            // Create a new stage for the landing page
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("Landing Page");
+            stage.centerOnScreen();
+            stage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error loading Manila pop-up.");
+                System.out.println("Error landingPage");
         }
     }
 
     @FXML
     private void onManilaClick() {
         System.out.println("Manila clicked!");
-        try {
-            // Load the Manila pop-up FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("manilaPopUp.fxml"));
-            Scene scene = new Scene(loader.load());
-
-            // Create a new stage for the pop-up
-            Stage popupStage = new Stage();
-            popupStage.setScene(scene);
-            popupStage.setTitle("Manila Pop-Up");
-            popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog
-            popupStage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error loading Manila pop-up.");
-        }
+        openPopUp("manilaPopUp.fxml", "Manila");
     }
 
     @FXML
     private void onCebuClick() {
         System.out.println("Cebu clicked!");
-        try {
-            // Load the Manila pop-up FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("cebuPopUp.fxml"));
-            Scene scene = new Scene(loader.load());
-
-            // Create a new stage for the pop-up
-            Stage popupStage = new Stage();
-            popupStage.setScene(scene);
-            popupStage.setTitle("Cebu Pop-Up");
-            popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog
-            popupStage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error loading Cebu pop-up.");
-        }
+        openPopUp("cebuPopUp.fxml", "Cebu");
     }
 
     @FXML
     private void onDavaoClick() {
         System.out.println("Davao clicked!");
+        openPopUp("davaoPopUp.fxml", "Davao");
+    }
+
+    private void openPopUp(String fxml, String title) {
         try {
-            // Load the Manila pop-up FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("davaoPopUp.fxml"));
+            // Load the pop-up FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Scene scene = new Scene(loader.load());
 
             // Create a new stage for the pop-up
             Stage popupStage = new Stage();
             popupStage.setScene(scene);
-            popupStage.setTitle("Davao Pop-Up");
+            popupStage.setTitle(title);
             popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog
+            popupStage.centerOnScreen();
             popupStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error loading Davao pop-up.");
+            System.out.println("Error loading pop-up." + fxml + " " + title);
         }
     }
 }

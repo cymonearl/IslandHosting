@@ -87,3 +87,58 @@ CREATE TABLE Audit_Logs (
     timestamp TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+
+### UserView ###
+CREATE VIEW ActiveUsers AS
+SELECT user_id, username, email, full_name, contact_number, address
+FROM Users
+WHERE status = 'active';
+
+CREATE VIEW AvailableServers AS 
+SELECT server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, location, specs 
+FROM Servers 
+WHERE status = 'available'; 
+
+CREATE VIEW UserOrders AS
+SELECT 
+    o.order_id, 
+    o.user_id, 
+    u.username, 
+    s.name AS server_name, 
+    o.start_date, 
+    o.end_date, 
+    o.total_amount, 
+    o.status AS order_status 
+FROM Orders o 
+JOIN Users u ON o.user_id = u.user_id 
+JOIN Servers s ON o.server_id = s.server_id; 
+
+CREATE VIEW UnresolvedTickets AS 
+SELECT  
+    t.ticket_id, 
+    t.user_id, 
+    u.username, 
+    t.server_id, 
+    s.name AS server_name, 
+    t.subject, 
+    t.description, 
+    t.priority, 
+    t.status, 
+    t.created_at 
+FROM Support_Tickets t 
+JOIN Users u ON t.user_id = u.user_id 
+JOIN Servers s ON t.server_id = s.server_id 
+WHERE t.status IN ('open', 'in_progress'); 
+
+### Triggers ###
+
+DELIMITER //
+CREATE TRIGGER update_last_login
+AFTER UPDATE ON Users
+FOR EACH ROW
+BEGIN
+    UPDATE Users
+    SET last_login = CURRENT_TIMESTAMP
+    WHERE user_id = NEW.user_id;
+END;
+//

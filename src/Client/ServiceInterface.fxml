@@ -19,13 +19,13 @@
 
         <!-- Island Host -->
         <VBox alignment="CENTER" spacing="5.0">
-            <ImageView fx:id="islandHostIcon" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#onIslandHostClick" preserveRatio="true">
+            <ImageView fx:id="islandHostIcon" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#navigateToLandingPage" preserveRatio="true">
                 <image>
                     <!-- Replace with your Island Host icon path -->
                     <Image url="@user_1077012.png" />
                 </image>
             </ImageView>
-            <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="Island Host">
+            <Label onMouseClicked="#navigateToLandingPage" style="-fx-text-fill: white; -fx-font-weight: bold;" text="Island Host">
                 <font>
                     <Font size="24" />
                 </font>
@@ -96,13 +96,13 @@
 
         <!-- User -->
         <VBox alignment="CENTER" spacing="5.0">
-            <ImageView fx:id="userIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
+            <ImageView fx:id="userIcon" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#navigateToLandingPage" preserveRatio="true">
                 <image>
                     <!-- Replace with your User icon path -->
                     <Image url="@user_1077012.png" />
                 </image>
             </ImageView>
-            <Label fx:id="userLabel" style="-fx-text-fill: white;" text="User">
+            <Label fx:id="userLabel" onMouseClicked="#navigateToLandingPage" style="-fx-text-fill: white;" text="User">
                 <font>
                     <Font size="18" />
                 </font>

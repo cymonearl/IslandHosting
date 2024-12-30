@@ -17,15 +17,12 @@ public class CRUDMenuServersController {
 
     // UI Components
     @FXML private TableView<Servers> serversTableView;
-    @FXML private TableColumn<Servers, Integer> server_id;
-    @FXML private TableColumn<Servers, String> name;
-    @FXML private TableColumn<Servers, String> hardware_type;
-    @FXML private TableColumn<Servers, Integer> ram_gb;
-    @FXML private TableColumn<Servers, Integer> storage_gb;
-    @FXML private TableColumn<Servers, Double> price_per_month;
-    @FXML private TableColumn<Servers, String> specs;
-    @FXML private TableColumn<Servers, String> status;
-    @FXML private TableColumn<Servers, String> created_at;
+    @FXML private Label CRUD;
+    @FXML private Button viewButton;
+    @FXML private Button createButton;
+    @FXML private Button updateButton;
+    @FXML private Button deleteButton;
+    boolean userViewMode = false;
 
     // Data and Stage Properties
     private ObservableList<Servers> serverList = FXCollections.observableArrayList();
@@ -35,29 +32,109 @@ public class CRUDMenuServersController {
 
     // ========= Initialization =========
     public void initialize() {
+        CRUD.setText("CRUD");
         initializeTableColumns();
         populateTable();
+        createButton.setVisible(true);
+        updateButton.setVisible(true);
+        deleteButton.setVisible(true);
+        viewButton.setText("User View");
+
     }
 
+    public void changeView(ActionEvent event) {
+        serversTableView.getColumns().clear();
+
+        if (userViewMode) {
+            userViewMode = false;
+            serverList.clear();
+            initialize();
+        } else {
+            serverList.clear();
+            userViewMode = true;
+            initializeTableColumnsUV();
+            CRUD.setText("User View");
+            populateAvailableServers();
+            createButton.setVisible(false);
+            updateButton.setVisible(false);
+            deleteButton.setVisible(false);
+            viewButton.setText("CRUD");
+        }       
+    }
+
+    @SuppressWarnings("unchecked")
     private void initializeTableColumns() {
         // Map Users class fields to TableView columns
+        TableColumn<Servers, Integer> server_id = new TableColumn<>("Server ID");
         server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
+
+        TableColumn<Servers, String> name = new TableColumn<>("Name");
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<Servers, String> hardware_type = new TableColumn<>("Hardware Type");
         hardware_type.setCellValueFactory(new PropertyValueFactory<>("hardware_type"));
+
+        TableColumn<Servers, Integer> ram_gb = new TableColumn<>("RAM (GB)");
         ram_gb.setCellValueFactory(new PropertyValueFactory<>("ram_gb"));
+
+        TableColumn<Servers, Integer> storage_gb = new TableColumn<>("Storage (GB)");
         storage_gb.setCellValueFactory(new PropertyValueFactory<>("storage_gb"));
+
+        TableColumn<Servers, Double> price_per_month = new TableColumn<>("Price Per Month");
         price_per_month.setCellValueFactory(new PropertyValueFactory<>("price_per_month"));
+
+        TableColumn<Servers, String> specs = new TableColumn<>("Specs");
         specs.setCellValueFactory(new PropertyValueFactory<>("specs"));
+
+        TableColumn<Servers, String> status = new TableColumn<>("Status");
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        TableColumn<Servers, String> created_at = new TableColumn<>("Created At");
         created_at.setCellValueFactory(new PropertyValueFactory<>("created_at"));
+
+        serversTableView.getColumns().addAll(server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, specs, status, created_at);
+        serversTableView.setItems(serverList); // Set ObservableList to TableView
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initializeTableColumnsUV() {
+        // Map Users class fields to TableView columns
+        TableColumn<Servers, Integer> server_id = new TableColumn<>("Server ID");
+        server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
+        
+        TableColumn<Servers, String> name = new TableColumn<>("Name");
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        
+        TableColumn<Servers, String> hardware_type = new TableColumn<>("Hardware Type");
+        hardware_type.setCellValueFactory(new PropertyValueFactory<>("hardware_type"));
+        
+        TableColumn<Servers, Integer> ram_gb = new TableColumn<>("RAM (GB)");
+        ram_gb.setCellValueFactory(new PropertyValueFactory<>("ram_gb"));
+        
+        TableColumn<Servers, Integer> storage_gb = new TableColumn<>("Storage (GB)");
+        storage_gb.setCellValueFactory(new PropertyValueFactory<>("storage_gb"));
+        
+        TableColumn<Servers, Double> price_per_month = new TableColumn<>("Price Per Month");
+        price_per_month.setCellValueFactory(new PropertyValueFactory<>("price_per_month"));
+        
+        TableColumn<Servers, String> specs = new TableColumn<>("Specs");
+        specs.setCellValueFactory(new PropertyValueFactory<>("specs"));
+        
+        TableColumn<Servers, String> status = new TableColumn<>("Status");
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        serversTableView.getColumns().addAll(server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, specs, status);
         serversTableView.setItems(serverList); // Set ObservableList to TableView
     }
 
     private void populateTable() {
-            servers_ar = new Servers().SELECT_ALL_SERVERS();
-        for (Servers server : servers_ar) {
-            serverList.add(server);
-        }
+        servers_ar = new Servers().SELECT_ALL_SERVERS();
+        serverList.addAll(servers_ar);
+    }
+
+    private void populateAvailableServers() {
+        servers_ar = new Servers().AVAILABLE_SERVERS();
+        serverList.addAll(servers_ar);
     }
 
     // ========= Navigation Methods =========
@@ -87,6 +164,7 @@ public class CRUDMenuServersController {
             if (fxmlFile.equals("../LoginMenu.fxml")) {
                 stage.setWidth(650);
                 stage.setHeight(300);
+                stage.centerOnScreen();
             }
             stage.show();
         } catch (Exception e) {

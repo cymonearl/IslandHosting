@@ -20,6 +20,7 @@ public class LandingPage extends Application {
             // Set the Stage properties
             primaryStage.setTitle("Landing Page");
             primaryStage.setScene(scene);
+            primaryStage.centerOnScreen();
             primaryStage.show();
 
         } catch (IOException e) {

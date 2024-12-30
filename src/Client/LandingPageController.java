@@ -2,6 +2,7 @@ package Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -61,14 +62,16 @@ public class LandingPageController {
         System.out.println("Orders button clicked!");
         try {
             // Load the userInterface.fxml
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ServiceInterface.fxml"));
             Scene scene = new Scene(loader.load());
 
             // Get the current stage
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             // Set the new scene
             stage.setScene(scene);
+            stage.centerOnScreen();
 
             System.out.println("Navigated to User Interface!");
 
