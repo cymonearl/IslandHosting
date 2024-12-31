@@ -56,22 +56,7 @@ public class UserProfileController {
     }
 
     public void ticketsClicked(MouseEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ServiceInterface.fxml"));
-            Parent root = loader.load();
-    
-            ServiceInterfaceController controller = loader.getController();
-            controller.setUser(user);
-    
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-
-            stage.setScene(scene);
-            stage.centerOnScreen();
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        
     }
     
     public void helpClicked(MouseEvent event) {

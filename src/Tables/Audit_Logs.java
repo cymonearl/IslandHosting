@@ -36,7 +36,7 @@ public class Audit_Logs {
     public String getIp_address() { return ip_address.get(); }
     public String getTimestamp() { return timestamp.get(); }
 
-    public void newLog_id() { this.log_id = new SimpleIntegerProperty(GET_LOG_ID_MAX() + 1); }
+    public void newLog_id() { this.log_id = new SimpleIntegerProperty(getNextLogId()); }
     public void setLog_id(int log_id) { this.log_id = new SimpleIntegerProperty(log_id); }
     public void setUser_id(int user_id) { this.user_id = new SimpleIntegerProperty(user_id); }
     public void setAction_type(String action_type) { this.action_type = new SimpleStringProperty(action_type); }
@@ -106,19 +106,28 @@ public class Audit_Logs {
         }
         return audit_log;
     }
-    public int GET_LOG_ID_MAX() {
+    public int getNextLogId() {
+        int nextId = 1; // Default to 1 if the table is empty or no gaps exist
+    
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("SELECT MAX(log_id) FROM audit_logs");
+            PreparedStatement statement = connect.prepareStatement("SELECT log_id FROM audit_logs ORDER BY log_id ASC");
             ResultSet result = statement.executeQuery();
+
             while (result.next()) {
-                System.out.println(result.getInt(1) + 1);
-                return result.getInt(1);
+                int currentId = result.getInt("log_id");
+                if (currentId != nextId) {
+                    return nextId;
+                }
+                nextId++;
             }
+            result.close();
+            statement.close();
+            connect.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        return nextId;
     }
     public void INSERT_AUDIT_LOG(Audit_Logs audit_log) {
         try {

@@ -71,7 +71,7 @@ public class Orders {
     public String getStatus() { return status.get(); }
     public String getCreated_at() { return created_at.get(); }
 
-    public void newOrder_id() { this.order_id = new SimpleIntegerProperty(GET_ORDER_ID_MAX() + 1); }
+    public void newOrder_id() { this.order_id = new SimpleIntegerProperty(getNextOrderId()); }
     public void setOrder_id(int order_id) { this.order_id = new SimpleIntegerProperty(order_id); }
     public void setUser_id(int user_id) { this.user_id = new SimpleIntegerProperty(user_id); }
     public void setServer_id(int server_id) { this.server_id = new SimpleIntegerProperty(server_id); }
@@ -135,19 +135,30 @@ public class Orders {
         }
         return order;
     }
-    public int GET_ORDER_ID_MAX() {
+    public int getNextOrderId() {
+        int nextId = 1; // Default to 1 if the table is empty or no gaps exist
+    
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("SELECT MAX(order_id) AS max_id FROM orders");
+            PreparedStatement statement = connect.prepareStatement("SELECT order_id FROM orders ORDER BY order_id ASC");
             ResultSet result = statement.executeQuery();
+
             while (result.next()) {
-                return result.getInt(1);
+                int currentId = result.getInt("order_id");
+                if (currentId != nextId) {
+                    return nextId;
+                }
+                nextId++;
             }
+            result.close();
+            statement.close();
+            connect.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        return nextId;
     }
+
     public void INSERT_ORDER(Orders order) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);

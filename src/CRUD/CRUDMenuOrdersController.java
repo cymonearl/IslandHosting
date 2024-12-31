@@ -143,7 +143,7 @@ public class CRUDMenuOrdersController {
     }
 
     public void navigateToTickets(ActionEvent event) {
-        navigateToScene(event, "CRUDSupportTickets.fxml");    
+        navigateToScene(event, "CRUDSupportTicketsMenu.fxml");    
     }
 
     private void navigateToScene(ActionEvent event, String fxmlFile) {

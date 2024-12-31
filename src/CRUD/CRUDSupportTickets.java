@@ -18,11 +18,11 @@ public class CRUDSupportTickets {
     @FXML private Button createButton;
     @FXML private Button updateButton;
     @FXML private Button deleteButton;
-    boolean userViewMode = false;
+    boolean ticketViewMode = false;
 
     
     private ObservableList<SupportTicket> supportTicketList = FXCollections.observableArrayList();
-    private ArrayList<SupportTicket> supportTickets_ar = new ArrayList<>();
+    private ArrayList<SupportTicket> supportTickets_ar = new ArrayList<>(); // Initialize the list
     private Scene scene;
     private Stage stage;
 
@@ -39,13 +39,13 @@ public class CRUDSupportTickets {
     public void changeView(ActionEvent event) {
         supportTicketsTable.getColumns().clear();
 
-        if (userViewMode) {
-            userViewMode = false;
+        if (ticketViewMode) {
+            ticketViewMode = false;
             supportTicketList.clear();
             initialize();
         } else {
             supportTicketList.clear();
-            userViewMode = true;
+            ticketViewMode = true;
             initializeTableColumnsUV();
             CRUD.setText("User View");
             populateAllTickets();
@@ -58,14 +58,17 @@ public class CRUDSupportTickets {
         
     @SuppressWarnings("unchecked")
     public void initializeTableColumns() {
-        TableColumn<SupportTicket, Integer> user_id = new TableColumn<>("Ticket ID");
-        user_id.setCellValueFactory(new PropertyValueFactory<>("ticket_id"));
+        TableColumn<SupportTicket, Integer> ticket_id = new TableColumn<>("Ticket ID");
+        ticket_id.setCellValueFactory(new PropertyValueFactory<>("ticket_id"));
 
-        TableColumn<SupportTicket, String> username = new TableColumn<>("User ID");
-        username.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+        TableColumn<SupportTicket, Integer> user_id = new TableColumn<>("User ID");
+        user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
 
-        TableColumn<SupportTicket, String> title = new TableColumn<>("Title");
-        title.setCellValueFactory(new PropertyValueFactory<>("title"));
+        TableColumn<SupportTicket, Integer> server_id = new TableColumn<>("Server ID");
+        server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
+
+        TableColumn<SupportTicket, String> title = new TableColumn<>("Subject");
+        title.setCellValueFactory(new PropertyValueFactory<>("subject"));
 
         TableColumn<SupportTicket, String> description = new TableColumn<>("Description");
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -76,11 +79,11 @@ public class CRUDSupportTickets {
         TableColumn<SupportTicket, String> created_at = new TableColumn<>("Created At");
         created_at.setCellValueFactory(new PropertyValueFactory<>("created_at"));
 
-        TableColumn<SupportTicket, String> updated_at = new TableColumn<>("Updated At");
-        updated_at.setCellValueFactory(new PropertyValueFactory<>("updated_at"));
+        TableColumn<SupportTicket, String> resolved_at = new TableColumn<>("Resolved At");
+        resolved_at.setCellValueFactory(new PropertyValueFactory<>("resolved_at"));
 
         // Add the columns to the TableView
-        supportTicketsTable.getColumns().addAll(user_id, username, title, description, status, created_at, updated_at);
+        supportTicketsTable.getColumns().addAll(ticket_id, user_id, server_id, title, description, status, created_at, resolved_at);
 
         supportTicketsTable.setItems(supportTicketList); // Set ObservableList to TableView
     }
@@ -91,20 +94,29 @@ public class CRUDSupportTickets {
         TableColumn<SupportTicket, Integer> ticket_id = new TableColumn<>("Ticket ID");
         ticket_id.setCellValueFactory(new PropertyValueFactory<>("ticket_id"));
 
-        TableColumn<SupportTicket, String> subject = new TableColumn<>("Subject");
-        subject.setCellValueFactory(new PropertyValueFactory<>("subject"));
+        TableColumn<SupportTicket, String> user_id = new TableColumn<>("User ID");
+        user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+
+        TableColumn<SupportTicket, String> server_id = new TableColumn<>("Server ID");
+        server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
+
+        TableColumn<SupportTicket, String> subject = new TableColumn<>("Subject"); // Use "subject" here
+        subject.setCellValueFactory(new PropertyValueFactory<>("subject")); // Map to "title" property
 
         TableColumn<SupportTicket, String> status = new TableColumn<>("Status");
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        supportTicketsTable.getColumns().addAll(ticket_id, subject, status);
+        supportTicketsTable.getColumns().addAll(ticket_id, user_id, server_id, subject, status);
 
         supportTicketsTable.setItems(supportTicketList); // Set ObservableList to TableView
     }
 
     private void populateAllTickets() {
         supportTicketList.clear();
-        supportTicketList.addAll(new SupportTicket().SELECT_ALL_SUPPORT_TICKETS());
+        supportTickets_ar.clear(); // Clear the ArrayList as well
+        supportTickets_ar.addAll(new SupportTicket().SELECT_ALL_SUPPORT_TICKETS()); // Populate the ArrayList
+        supportTicketList.addAll(supportTickets_ar); // Populate the ObservableList
+        System.out.println("Tickets: " + supportTicketList);
     }
 
     public void navigateToUsers(ActionEvent event) {
@@ -145,6 +157,89 @@ public class CRUDSupportTickets {
         }
     }
 
+    public void createTicket() {
+        showUserDialog(null); // Passing null for a new ticket creation
+    }
+
+    public void updateTicket() {
+        SupportTicket selectedTicket = supportTicketsTable.getSelectionModel().getSelectedItem();
+        if (selectedTicket == null) {
+            showAlert(Alert.AlertType.WARNING, "No Ticket Selected", "Please select a Ticket to update.");
+            return;
+        }
+
+        // Find the original `SupportTicket` object in the `supportTickets_ar` list
+        SupportTicket selectedTicket_original = supportTickets_ar.stream()
+            .filter(ticket -> ticket.getTicket_id() == selectedTicket.getTicket_id())
+            .findFirst()
+            .orElse(null);
+    
+        if (selectedTicket_original != null) {
+            showUserDialog(selectedTicket_original); // Pass the selected ticket for editing
+        } else {
+            // Handle the case where the selected ticket is not found in the original list (shouldn't happen normally)
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not find the selected ticket in the original list.");
+        }
+    }
+
+    public void deleteTicket() {
+        SupportTicket selectedTicket = supportTicketsTable.getSelectionModel().getSelectedItem();
+        if (selectedTicket != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Ticket");
+            alert.setHeaderText("Are you sure you want to delete this ticket?");
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                
+                if (new SupportTicket().DELETE_SUPPORT_TICKET(selectedTicket)) { //Remove from database first
+                     // Remove from TableView and supportTickets_ar
+                     supportTicketList.remove(selectedTicket);
+                     supportTickets_ar.removeIf(ticket -> ticket.getTicket_id() == selectedTicket.getTicket_id());
+                }
+                else {
+                    showAlert(Alert.AlertType.ERROR, "Error", "Could not delete ticket from database.");
+                }
+            }
+        } else {
+            showAlert(Alert.AlertType.INFORMATION, "Delete Ticket", "Please select a ticket to delete.");
+        }
+    }
+
+    private void showUserDialog(SupportTicket ticket) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketDialog.fxml"));
+            Parent root = loader.load();
+
+            // Pass data to UserDialogController
+            SupportTicketDialogController controller = loader.getController();
+            controller.setTicketList(supportTicketList);
+             
+            if (ticket != null) {
+                controller.setTicket(ticket); // Existing ticket for editing
+                 
+            } else {
+                controller.setTicket(new SupportTicket()); // Initialize a new SupportTicket if creating
+            }
+
+            // Show the dialog
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(ticket == null ? "Create Support Ticket" : "Update Support Ticket");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(supportTicketsTable.getScene().getWindow());
+            dialogStage.setScene(new Scene(root));
+            dialogStage.setAlwaysOnTop(true);
+            dialogStage.setResizable(false);
+            dialogStage.centerOnScreen();
+            dialogStage.showAndWait();
+
+
+            // Refresh data in the table after closing the dialog
+            populateAllTickets();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);

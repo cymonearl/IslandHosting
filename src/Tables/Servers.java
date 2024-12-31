@@ -61,7 +61,7 @@ public class Servers {
         return currentDate;
     }
 
-    public void newServer_id() {this.server_id = new SimpleIntegerProperty(GET_SERVER_ID_MAX() + 1);}
+    public void newServer_id() {this.server_id = new SimpleIntegerProperty(getNextServerId());}
     public void setServer_id(int server_id) {this.server_id = new SimpleIntegerProperty(server_id);}
     public void setName(String name) {this.name = new SimpleStringProperty(name);}
     public void setHardware_type(String hardware_type) {this.hardware_type = new SimpleStringProperty(hardware_type);}
@@ -171,19 +171,29 @@ public class Servers {
         }
         return server;
     }
-    public int GET_SERVER_ID_MAX() {
+    public int getNextServerId() {
+        int nextId = 1; // Default to 1 if the table is empty or no gaps exist
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("SELECT MAX(server_id) AS max_id FROM servers");
+            PreparedStatement statement = connect.prepareStatement("SELECT server_id FROM servers ORDER BY server_id ASC");
             ResultSet result = statement.executeQuery();
+
             while (result.next()) {
-                return result.getInt(1);
+                int currentId = result.getInt("server_id");
+                if (currentId != nextId) {
+                    return nextId;
+                }
+                nextId++;
             }
+            result.close();
+            statement.close();
+            connect.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        return nextId;
     }
+
     public void INSERT_SERVER(Servers server) {
         String name = server.getName();
         String hardware_type = server.getHardware_type();
@@ -197,7 +207,7 @@ public class Servers {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("INSERT INTO servers (server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, specs, location, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            statement.setInt(1, GET_SERVER_ID_MAX() + 1);
+            statement.setInt(1, getNextServerId());
             statement.setString(2, name);
             statement.setString(3, hardware_type);
             statement.setInt(4, ram_gb);

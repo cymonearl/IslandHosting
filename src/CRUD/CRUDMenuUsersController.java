@@ -148,7 +148,7 @@ public class CRUDMenuUsersController {
     }
 
     public void navigateToTickets(ActionEvent event) {
-        navigateToScene(event, "CRUDSupportTickets.fxml");    
+        navigateToScene(event, "CRUDSupportTicketsMenu.fxml");    
     }
 
     private void navigateToScene(ActionEvent event, String fxmlFile) {
@@ -181,7 +181,7 @@ public class CRUDMenuUsersController {
     public void updateUser() {
         Users selectedUser = usersTableView.getSelectionModel().getSelectedItem();
         if (selectedUser == null) {
-            showAlert(Alert.AlertType.INFORMATION, "Update User", "Please select a user to update.");
+            showAlert(Alert.AlertType.WARNING, "No User Selected", "Please select a user to update.");
             return;
         }
 

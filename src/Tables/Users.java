@@ -70,7 +70,7 @@ public class Users {
     public String getLast_login() { return last_login.get(); }
 
     // ======= SETTERS =======
-    public void newUser_id() {this.user_id = new SimpleIntegerProperty(GET_USER_ID_MAX() + 1);}
+    public void newUser_id() {this.user_id = new SimpleIntegerProperty(getNextUserId());}
     public void setUser_id(int user_id) {this.user_id = (new SimpleIntegerProperty(user_id));}
     public void setUsername(String username) {this.username = new SimpleStringProperty(username);}
     public void setFull_name(String full_name) {this.full_name = new SimpleStringProperty(full_name);}
@@ -203,20 +203,27 @@ public class Users {
         return user;
     }
 
-    private int GET_USER_ID_MAX() {
+    private int getNextUserId() {
+        int nextId = 1; // Default to 1 if the table is empty or no gaps exist
+    
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("SELECT MAX(user_id) AS max_id FROM users");
-
+            PreparedStatement statement = connect.prepareStatement("SELECT user_id FROM users ORDER BY user_id ASC");
             ResultSet result = statement.executeQuery();
-
-            while(result.next()) {
-                return result.getInt(1);
+            while (result.next()) {
+                int currentId = result.getInt("user_id");
+                if (currentId != nextId) {
+                    return nextId;
+                }
+                nextId++;
             }
+            result.close();
+            statement.close();
+            connect.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        return nextId;
     }
 
     public void INSERT_USER(Users user) {
@@ -234,7 +241,7 @@ public class Users {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("INSERT INTO users (user_id, username, email, password_hash, full_name, contact_number, address, last_login, created_at, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-            statement.setInt(1, GET_USER_ID_MAX() + 1);
+            statement.setInt(1, getNextUserId());
             statement.setString(2, username);
             statement.setString(3, email);
             statement.setString(4, password);

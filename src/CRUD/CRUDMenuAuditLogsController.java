@@ -123,7 +123,7 @@ public class CRUDMenuAuditLogsController {
     }
 
     public void navigateToTickets(ActionEvent event) {
-        navigateToScene(event, "CRUDSupportTickets.fxml");    
+        navigateToScene(event, "CRUDSupportTicketsMenu.fxml");    
     }
     
     private void navigateToScene(ActionEvent event, String fxmlFile) {
@@ -159,7 +159,6 @@ public class CRUDMenuAuditLogsController {
             showAlert(Alert.AlertType.WARNING, "No Audit Logs Selected", "Please select an Audit Logs to update.");
             return;
         }
-    
     }
 
     public void deleteAudit_logs() {

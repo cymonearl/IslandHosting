@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.CRUDMenuAuditLogsController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.CRUDSupportTickets">
    <center>
       <VBox prefHeight="200.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
@@ -25,7 +25,7 @@
                      </font>
                   </Label>
                   <Pane prefHeight="75.0" prefWidth="50.0" stylesheets="@../style.css" HBox.hgrow="SOMETIMES" />
-                  <Button fx:id="createButton" mnemonicParsing="false" onAction="#createAudit_logs" prefHeight="60.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Create">
+                  <Button fx:id="createButton" mnemonicParsing="false" onAction="#createTicket" prefHeight="60.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Create">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -33,7 +33,7 @@
                         <Font name="HP Simplified" size="30.0" />
                      </font>
                   </Button>
-                  <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateAudit_logs" prefHeight="60.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Update">
+                  <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateTicket" prefHeight="60.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Update">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -41,7 +41,7 @@
                         <Font name="HP Simplified" size="30.0" />
                      </font>
                   </Button>
-                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteAudit_logs" prefHeight="60.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Delete">
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteTicket" prefHeight="60.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Delete">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -54,7 +54,7 @@
                   <Insets bottom="20.0" right="20.0" top="20.0" />
                </padding>
             </HBox>
-            <TableView fx:id="auditLogsTable" editable="true" fixedCellSize="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textfield-design" stylesheets="@../style.css" VBox.vgrow="ALWAYS">
+            <TableView fx:id="supportTicketsTable" editable="true" fixedCellSize="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textfield-design" stylesheets="@../style.css" VBox.vgrow="ALWAYS">
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
@@ -93,7 +93,7 @@
                   <Font name="HP Simplified" size="30.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#navigateToAudit_Logs" prefHeight="60.0" prefWidth="350.0" styleClass="button-design" stylesheets="@../style.css" text="Audit Logs">
+            <Button mnemonicParsing="false" onAction="#navigateToAuditLogs" prefHeight="60.0" prefWidth="350.0" styleClass="button-design" stylesheets="@../style.css" text="Audit Logs">
                <font>
                   <Font name="HP Simplified" size="30.0" />
                </font>

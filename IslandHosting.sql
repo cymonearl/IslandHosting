@@ -131,14 +131,3 @@ JOIN Servers s ON t.server_id = s.server_id
 WHERE t.status IN ('open', 'in_progress'); 
 
 ### Triggers ###
-
-DELIMITER //
-CREATE TRIGGER update_last_login
-AFTER UPDATE ON Users
-FOR EACH ROW
-BEGIN
-    UPDATE Users
-    SET last_login = CURRENT_TIMESTAMP
-    WHERE user_id = NEW.user_id;
-END;
-//
