@@ -147,6 +147,10 @@ public class CRUDMenuUsersController {
         navigateToScene(event, "CRUDAuditLogsMenu.fxml");
     }
 
+    public void navigateToTickets(ActionEvent event) {
+        navigateToScene(event, "CRUDSupportTickets.fxml");    
+    }
+
     private void navigateToScene(ActionEvent event, String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));

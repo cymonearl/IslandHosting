@@ -12,29 +12,20 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="800" prefWidth="1200" spacing="20.0" style="-fx-background-color: #18181f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CLIENT.UserProfileController">
+<VBox prefHeight="800" prefWidth="1200" spacing="20.0" style="-fx-background-color: #18181f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.HelpInterfaceController">
    <children>
       <HBox alignment="CENTER" spacing="50.0" style="-fx-background-color: #1c1c26;">
          <padding>
             <Insets bottom="20" left="20" right="20" top="20" />
          </padding>
          <children>
-            <VBox alignment="CENTER" spacing="5.0">
-               <children>
-                  <ImageView fx:id="islandHostIcon" fitHeight="30.0" fitWidth="131.0" onMouseClicked="#onIslandHostClick" preserveRatio="true">
-                     <image>
-                        <Image url="@user_1077012.png" />
-                     </image>
-                  </ImageView>
-                  <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="Island Host">
-                     <font>
-                        <Font size="24" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-            <Pane prefHeight="90.0" prefWidth="60.0" />
-            <VBox alignment="CENTER" spacing="5.0">
+            <ImageView fitHeight="100.0" fitWidth="100.0" onMouseClicked="#navigateToLandingPage" preserveRatio="true">
+               <image>
+                  <Image url="@User_Interface_edited.png" />
+               </image>
+            </ImageView>
+            <Pane prefWidth="100.0" HBox.hgrow="SOMETIMES" />
+            <VBox alignment="CENTER" onMouseClicked="#servicesClicked" spacing="5.0">
                <children>
                   <ImageView fx:id="servicesIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                      <image>
@@ -48,7 +39,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" spacing="5.0">
+            <VBox alignment="CENTER" onMouseClicked="#invoiceClicked" spacing="5.0">
                <children>
                   <ImageView fx:id="invoiceIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                      <image>
@@ -62,7 +53,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" spacing="5.0">
+            <VBox alignment="CENTER" onMouseClicked="#ticketsClicked" spacing="5.0">
                <children>
                   <ImageView fx:id="ticketsIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                      <image>
@@ -76,7 +67,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" spacing="5.0">
+            <VBox alignment="CENTER" onMouseClicked="#helpClicked" spacing="5.0">
                <children>
                   <ImageView fx:id="helpIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                      <image>
@@ -90,7 +81,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" spacing="5.0">
+            <VBox alignment="CENTER" onMouseClicked="#UserClicked" spacing="5.0">
                <children>
                   <ImageView fx:id="userIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                      <image>
@@ -104,7 +95,6 @@
                   </Label>
                </children>
             </VBox>
-            <Pane prefHeight="90.0" prefWidth="60.0" />
          </children>
       </HBox>
       <VBox alignment="CENTER" spacing="50.0">
@@ -124,7 +114,7 @@
                            <children>
                               <TextField fx:id="searchField" prefHeight="37.0" prefWidth="179.0" promptText="Search Help Topics" style="-fx-background-color: #1e1e1e; -fx-text-fill: white; -fx-border-color: green;" />
                               <Pane prefHeight="100.0" prefWidth="12.0" />
-                              <Button onAction="#handleSearch" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: green; -fx-text-fill: white;" text="🔍" />
+                              <Button prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: green; -fx-text-fill: white;" text="🔍" />
                            </children>
                         </HBox>
                         <Text fill="WHITE" layoutX="265.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Frequently Asked Questions" wrappingWidth="447.13671875">

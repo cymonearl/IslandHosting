@@ -92,14 +92,12 @@ public class ServiceInterfaceController {
     private void onInvoiceClick() {
         System.out.println("Invoice clicked!");
         // Add logic for navigating to the Invoice page
-        navigateToPage("InvoiceInterface.fxml", "Invoice Interface");
     }
 
     @FXML
     private void onTicketsClick() {
         System.out.println("Tickets clicked!");
         // Add logic for navigating to the Tickets page
-        navigateToPage("TicketInterface.fxml", "Ticket Interface");
     }
 
     @FXML
@@ -136,7 +134,6 @@ public class ServiceInterfaceController {
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
-
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.show();
@@ -148,17 +145,19 @@ public class ServiceInterfaceController {
     @FXML
     private void navigateToLandingPage(MouseEvent event) {
         try {
-            // Load the landing page FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("LandingPage.fxml"));
-            Scene scene = new Scene(loader.load());
+            Parent root = loader.load();
 
-            // Create a new stage for the landing page
+            LandingPageController controller = loader.getController();
+            controller.setUser(user);
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+
             stage.setScene(scene);
             stage.setTitle("Landing Page");
             stage.centerOnScreen();
             stage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
                 System.out.println("Error landingPage");
@@ -200,25 +199,6 @@ public class ServiceInterfaceController {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error loading pop-up." + fxml + " " + title);
-        }
-    }
-
-    private void navigateToPage(String fxml, String title) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-            Parent root = loader.load();
-            
-            Stage stage = new Stage();
-            Scene scene = new Scene(root);
-
-            stage.setScene(scene);
-            stage.setTitle(title);
-
-            stage.centerOnScreen();
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-                System.out.println("Error landingPage");
         }
     }
 }

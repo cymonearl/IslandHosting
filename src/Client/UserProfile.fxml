@@ -19,12 +19,12 @@
             <Insets bottom="20" left="20" right="20" top="20" />
          </padding>
          <children>
-            <ImageView fitHeight="100.0" fitWidth="100.0" onMouseClicked="#navigateToLandingPage">
+            <ImageView fitHeight="100.0" fitWidth="100.0" onMouseClicked="#navigateToLandingPage" preserveRatio="true">
                <image>
-                  <Image url="@Interfaces%20Icons/Island%20Logo.png" />
+                  <Image url="@User_Interface_edited.png" />
                </image>
             </ImageView>
-            <Pane prefHeight="90.0" prefWidth="60.0" />
+            <Pane prefHeight="90.0" prefWidth="60.0" HBox.hgrow="SOMETIMES" />
             <VBox alignment="CENTER" onMouseClicked="#servicesClicked" spacing="5.0">
                <children>
                   <ImageView fx:id="servicesIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">

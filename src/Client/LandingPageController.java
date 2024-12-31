@@ -84,6 +84,22 @@ public class LandingPageController {
     @FXML
     private void onUserClick(ActionEvent event) {
         System.out.println("User button clicked!");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("UserProfile.fxml"));
+            Parent root = loader.load();
+    
+            UserProfileController controller = loader.getController();
+            controller.setUser(user);
+    
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

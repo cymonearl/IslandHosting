@@ -58,6 +58,9 @@ public class LoginMenuController {
                 stage.setScene(new Scene(root));
                 stage.centerOnScreen();
                 stage.show();
+
+                
+
                 System.out.println();
             } catch (Exception e) {
                 handleError(e);

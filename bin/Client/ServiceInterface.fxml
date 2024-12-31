@@ -18,7 +18,7 @@
         </padding>
 
         <!-- Island Host -->
-        <VBox alignment="CENTER" spacing="5.0">
+        <VBox alignment="CENTER" onMouseClicked="#navigateToLandingPage" spacing="5.0">
             <ImageView fx:id="islandHostIcon" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#navigateToLandingPage" preserveRatio="true">
                 <image>
                     <!-- Replace with your Island Host icon path -->
@@ -27,7 +27,7 @@
             </ImageView>
         </VBox>
 
-        <Pane prefHeight="90.0" prefWidth="60.0" />
+        <Pane prefWidth="100.0" HBox.hgrow="SOMETIMES" />
 
         <!-- Services -->
         <VBox alignment="CENTER" onMouseClicked="#onServicesClick" spacing="5.0">
@@ -39,7 +39,7 @@
             </ImageView>
             <Label fx:id="servicesLabel" style="-fx-text-fill: #00ff00; -fx-font-weight: bold;" text="Services">
                 <font>
-                    <Font size="18" />
+                    <Font size="18.0" />
                 </font>
             </Label>
         </VBox>
