@@ -3,14 +3,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import Tables.Servers;
+import Tables.Users;
 
 public class LandingPageController {
 
@@ -25,7 +30,7 @@ public class LandingPageController {
     private Button Server;
 
     @FXML
-    private Label BalanceLabelHere;
+    private Text name;
 
     @FXML
     private ListView<String> Table_Here;
@@ -33,18 +38,44 @@ public class LandingPageController {
     @FXML
     private ImageView UserIcon;
 
+    private Users user;
+
     /**
      * Initializes the controller class.
      * This method is called after the FXML file has been loaded.
      */
+    public void setUser(Users user) {
+        this.user = user;
+        updateUI(); 
+    }
+    public Users getUser() {
+        return user;
+    }
+    private void updateUI() {
+        if (name != null) {
+            name.setText(user.getUsername());
+        }
+    }
     @FXML
     public void initialize() {
         // Initialization logic here
         System.out.println("LandingPage initialized!");
-
+        
         // Example: Set default values for some UI elements
-        BalanceLabelHere.setText("₱0.00");
         Table_Here.getItems().addAll("Service 1", "Service 2", "Service 3");
+        populateTable();        
+    }
+    
+    public void populateTable() {
+        Table_Here.getItems().clear();
+
+        ArrayList<Servers> servers = new Servers().AVAILABLE_SERVERS();
+        String[] serverNames = new String[servers.size()];
+        for (int i = 0; i < servers.size(); i++) {
+            serverNames[i] = servers.get(i).getName();
+        }
+
+        Table_Here.getItems().addAll(serverNames);
     }
 
     /**
@@ -52,6 +83,7 @@ public class LandingPageController {
      */
     @FXML
     private void onUserClick(ActionEvent event) {
+        System.out.println("User button clicked!");
     }
 
     /**
@@ -64,15 +96,18 @@ public class LandingPageController {
             // Load the userInterface.fxml
             
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ServiceInterface.fxml"));
-            Scene scene = new Scene(loader.load());
+            Parent root = loader.load();
 
+            ServiceInterfaceController controller = loader.getController();
+            controller.setUser(user);
+            
             // Get the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
 
             // Set the new scene
             stage.setScene(scene);
             stage.centerOnScreen();
-
             System.out.println("Navigated to User Interface!");
 
         } catch (IOException e) {

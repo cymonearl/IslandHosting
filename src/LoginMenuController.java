@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.EmptyStackException;
+
+import Client.LandingPageController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
@@ -44,7 +47,17 @@ public class LoginMenuController {
         } else if (validateUser(email, password)) {
             try {
                 // TODO: Implement Client Menu navigation
-                loadScene(event, "Client/LandingPage.fxml", "Client Menu");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Client/LandingPage.fxml"));
+                Parent root = loader.load();
+
+                LandingPageController LPC = loader.getController();
+                Users user = validateUser(email);
+                LPC.setUser(user);
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.centerOnScreen();
+                stage.show();
                 System.out.println();
             } catch (Exception e) {
                 handleError(e);
@@ -119,6 +132,15 @@ public class LoginMenuController {
             }
         }
         return false;
+    }
+
+    private Users validateUser(String email) {
+        for (Users user : users_ar) {
+            if (user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+        return null;
     }
 
     // Validate user for duplicate information

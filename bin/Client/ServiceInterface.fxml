@@ -19,27 +19,22 @@
 
         <!-- Island Host -->
         <VBox alignment="CENTER" spacing="5.0">
-            <ImageView fx:id="islandHostIcon" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#navigateToLandingPage" preserveRatio="true">
+            <ImageView fx:id="islandHostIcon" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#navigateToLandingPage" preserveRatio="true">
                 <image>
                     <!-- Replace with your Island Host icon path -->
-                    <Image url="@user_1077012.png" />
+                    <Image url="@User_Interface_edited.png" />
                 </image>
             </ImageView>
-            <Label onMouseClicked="#navigateToLandingPage" style="-fx-text-fill: white; -fx-font-weight: bold;" text="Island Host">
-                <font>
-                    <Font size="24" />
-                </font>
-            </Label>
         </VBox>
 
         <Pane prefHeight="90.0" prefWidth="60.0" />
 
         <!-- Services -->
-        <VBox alignment="CENTER" spacing="5.0">
+        <VBox alignment="CENTER" onMouseClicked="#onServicesClick" spacing="5.0">
             <ImageView fx:id="servicesIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your Services icon path -->
-                    <Image url="@user_1077012.png" />
+                    <Image url="@Interfaces%20Icons/Service.png" />
                 </image>
             </ImageView>
             <Label fx:id="servicesLabel" style="-fx-text-fill: #00ff00; -fx-font-weight: bold;" text="Services">
@@ -50,11 +45,11 @@
         </VBox>
 
         <!-- Invoice -->
-        <VBox alignment="CENTER" spacing="5.0">
+        <VBox alignment="CENTER" onMouseClicked="#onInvoiceClick" spacing="5.0">
             <ImageView fx:id="invoiceIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your Invoice icon path -->
-                    <Image url="@user_1077012.png" />
+                    <Image url="@Interfaces%20Icons/Invoice.png" />
                 </image>
             </ImageView>
             <Label fx:id="invoiceLabel" style="-fx-text-fill: white;" text="Invoice">
@@ -65,11 +60,11 @@
         </VBox>
 
         <!-- Tickets -->
-        <VBox alignment="CENTER" spacing="5.0">
+        <VBox alignment="CENTER" onMouseClicked="#onTicketsClick" spacing="5.0">
             <ImageView fx:id="ticketsIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your Tickets icon path -->
-                    <Image url="@user_1077012.png" />
+                    <Image url="@Interfaces%20Icons/Tickets.png" />
                 </image>
             </ImageView>
             <Label fx:id="ticketsLabel" style="-fx-text-fill: white;" text="Tickets">
@@ -80,11 +75,11 @@
         </VBox>
 
         <!-- Help -->
-        <VBox alignment="CENTER" spacing="5.0">
+        <VBox alignment="CENTER" onMouseClicked="#onHelpClick" spacing="5.0">
             <ImageView fx:id="helpIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your Help icon path -->
-                    <Image url="@user_1077012.png" />
+                    <Image url="@Interfaces%20Icons/Help.png" />
                 </image>
             </ImageView>
             <Label fx:id="helpLabel" style="-fx-text-fill: white;" text="Help">
@@ -95,14 +90,14 @@
         </VBox>
 
         <!-- User -->
-        <VBox alignment="CENTER" spacing="5.0">
-            <ImageView fx:id="userIcon" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#navigateToLandingPage" preserveRatio="true">
+        <VBox alignment="CENTER" onMouseClicked="#onUserClick" spacing="5.0">
+            <ImageView fx:id="userIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your User icon path -->
-                    <Image url="@user_1077012.png" />
+                    <Image url="@Interfaces%20Icons/User.png" />
                 </image>
             </ImageView>
-            <Label fx:id="userLabel" onMouseClicked="#navigateToLandingPage" style="-fx-text-fill: white;" text="User">
+            <Label fx:id="userLabel" style="-fx-text-fill: white;" text="User">
                 <font>
                     <Font size="18" />
                 </font>
@@ -120,9 +115,12 @@
             <Pane prefHeight="375.0" prefWidth="300" style="-fx-background-color: #2c2c34; -fx-background-radius: 20; -fx-border-color: gray; -fx-border-width: 1; -fx-border-radius: 20;">
                 <VBox fx:id="Manila" alignment="CENTER" onMouseClicked="#onManilaClick" spacing="10.0">
                     <padding>
-                        <Insets bottom="20" left="20" right="20" top="20" />
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="46.0" />
                     </padding>
-               <ImageView fitHeight="113.0" fitWidth="183.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fitHeight="117.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@Pop%20Ups/Manila%20Icon.png" />
+                  </image></ImageView>
                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="235.0" style="-fx-background-color: red;">
                   <children>
                           <Label fx:id="manilaLabel" style="-fx-text-fill: white; -fx-font-weight: bold;" text="Manila">
@@ -147,7 +145,10 @@
                     <padding>
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
-               <ImageView fitHeight="117.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fitHeight="117.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@Pop%20Ups/Davao%20Icon.png" />
+                  </image></ImageView>
                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="235.0" style="-fx-background-color: #e7b416;">
                   <children>
                           <Label fx:id="davaoLabel" style="-fx-text-fill: white; -fx-font-weight: bold;" text="Davao">
@@ -172,7 +173,10 @@
                     <padding>
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
-               <ImageView fitHeight="116.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fitHeight="116.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@Pop%20Ups/Cebu%20Icon.png" />
+                  </image></ImageView>
                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="235.0" style="-fx-background-color: green;">
                   <children>
                           <Label fx:id="cebuLabel" style="-fx-text-fill: White; -fx-font-weight: bold;" text="Cebu">

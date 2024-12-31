@@ -12,33 +12,24 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="800" prefWidth="1200" spacing="20.0" style="-fx-background-color: #18181f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finalalright.ServiceInterfaceController">
+<VBox prefHeight="800" prefWidth="1200" spacing="20.0" style="-fx-background-color: #18181f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.UserProfileController">
    <children>
       <HBox alignment="CENTER" spacing="50.0" style="-fx-background-color: #1c1c26;">
          <padding>
             <Insets bottom="20" left="20" right="20" top="20" />
          </padding>
          <children>
-            <VBox alignment="CENTER" spacing="5.0">
-               <children>
-                  <ImageView fx:id="islandHostIcon" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#onIslandHostClick" preserveRatio="true">
-                     <image>
-                        <Image url="@user_1077012.png" />
-                     </image>
-                  </ImageView>
-                  <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="Island Host">
-                     <font>
-                        <Font size="24" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
+            <ImageView fitHeight="100.0" fitWidth="100.0" onMouseClicked="#navigateToLandingPage">
+               <image>
+                  <Image url="@Interfaces%20Icons/Island%20Logo.png" />
+               </image>
+            </ImageView>
             <Pane prefHeight="90.0" prefWidth="60.0" />
-            <VBox alignment="CENTER" spacing="5.0">
+            <VBox alignment="CENTER" onMouseClicked="#servicesClicked" spacing="5.0">
                <children>
                   <ImageView fx:id="servicesIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                      <image>
-                        <Image url="@user_1077012.png" />
+                        <Image url="@Interfaces%20Icons/Service.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="servicesLabel" style="-fx-text-fill: white;" text="Services">
@@ -48,11 +39,11 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" spacing="5.0">
+            <VBox alignment="CENTER" onMouseClicked="#invoiceClicked" spacing="5.0">
                <children>
                   <ImageView fx:id="invoiceIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                      <image>
-                        <Image url="@user_1077012.png" />
+                        <Image url="@Interfaces%20Icons/Invoice.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="invoiceLabel" style="-fx-text-fill: white;" text="Invoice">
@@ -62,11 +53,11 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" spacing="5.0">
+            <VBox alignment="CENTER" onMouseClicked="#ticketsClicked" spacing="5.0">
                <children>
                   <ImageView fx:id="ticketsIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                      <image>
-                        <Image url="@user_1077012.png" />
+                        <Image url="@Interfaces%20Icons/Tickets.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="ticketsLabel" style="-fx-text-fill: white;" text="Tickets">
@@ -76,11 +67,11 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" spacing="5.0">
+            <VBox alignment="CENTER" onMouseClicked="#helpClicked" spacing="5.0">
                <children>
                   <ImageView fx:id="helpIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                      <image>
-                        <Image url="@user_1077012.png" />
+                        <Image url="@Interfaces%20Icons/Help.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="helpLabel" style="-fx-text-fill: white;" text="Help">
@@ -90,11 +81,11 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" spacing="5.0">
+            <VBox alignment="CENTER" onMouseClicked="#UserClicked" spacing="5.0">
                <children>
                   <ImageView fx:id="userIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                      <image>
-                        <Image url="@user_1077012.png" />
+                        <Image url="@Interfaces%20Icons/User.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="userLabel" style="-fx-text-fill: #00ff00; -fx-font-weight: bold;" text="User">
@@ -115,25 +106,25 @@
             </ImageView>
             <VBox alignment="CENTER" prefHeight="534.0" prefWidth="571.0" HBox.hgrow="NEVER">
                <children>
-                  <TextField prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css" />
+                  <TextField fx:id="name" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: White;" text="Name:" textAlignment="CENTER" wrappingWidth="152.13671875">
                      <font>
                         <Font size="32.0" />
                      </font>
                   </Text>
-                  <TextField prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css" />
+                  <TextField fx:id="password" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: White;" text="Password:" textAlignment="CENTER" wrappingWidth="152.13671875">
                      <font>
                         <Font size="32.0" />
                      </font>
                   </Text>
-                  <TextField prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css" />
+                  <TextField fx:id="address" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: white;" text="Address:" textAlignment="CENTER" wrappingWidth="152.13671875">
                      <font>
                         <Font size="32.0" />
                      </font>
                   </Text>
-                  <TextField prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css" />
+                  <TextField fx:id="contact_number" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: white;" text="Contact Number:" textAlignment="CENTER" wrappingWidth="286.13671875">
                      <font>
                         <Font size="32.0" />
@@ -142,13 +133,13 @@
                   <Pane VBox.vgrow="SOMETIMES" />
                   <HBox>
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Done">
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Update">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Button>
                         <Pane HBox.hgrow="SOMETIMES" />
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Edit">
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="180.0" styleClass="button-design" stylesheets="@../style.css" text="Cancel">
                            <font>
                               <Font size="24.0" />
                            </font>
