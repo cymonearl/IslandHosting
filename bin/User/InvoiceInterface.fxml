@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="800" prefWidth="1200" spacing="20.0" style="-fx-background-color: #18181f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="800" prefWidth="1200" spacing="20.0" style="-fx-background-color: #18181f;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finalalright.ServiceInterfaceController">
    <children>
       <HBox alignment="CENTER" spacing="50.0" style="-fx-background-color: #1c1c26;">
          <padding>
@@ -56,7 +57,7 @@
                         <Image url="@Logos/user_1077012.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="invoiceLabel" style="-fx-text-fill: white;" text="Invoice">
+                  <Label fx:id="invoiceLabel" style="-fx-text-fill: #00ff00; -fx-font-weight: bold;" text="Invoice">
                      <font>
                         <Font size="18" />
                      </font>
@@ -70,7 +71,7 @@
                         <Image url="@Logos/user_1077012.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="ticketsLabel" style="-fx-text-fill: #00ff00; -fx-font-weight: bold;" text="Tickets">
+                  <Label fx:id="ticketsLabel" style="-fx-text-fill: white;" text="Tickets">
                      <font>
                         <Font size="18" />
                      </font>
@@ -120,7 +121,7 @@
                <children>
                   <Pane prefHeight="572.0" prefWidth="1079.0">
                      <children>
-                        <Text fill="WHITE" layoutX="76.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your tickets are shown here">
+                        <Text fill="WHITE" layoutX="76.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your invoices are shown here">
                            <font>
                               <Font size="25.0" />
                            </font>
@@ -137,10 +138,17 @@
                         </Pane>
                         <Pane layoutX="76.0" layoutY="180.0" prefHeight="296.0" prefWidth="921.0">
                            <children>
-                              <TableView fx:id="ticketsTable" layoutX="1.0" prefHeight="295.0" prefWidth="921.0" style="-fx-background-color: #1e1e1e; -fx-text-fill: white; -fx-background-radius: 20; -fx-border-radius: 20;" />
+                              <TableView fx:id="ticketsTable" layoutX="1.0" prefHeight="295.0" prefWidth="921.0" style="-fx-background-color: #1e1e1e; -fx-text-fill: white; -fx-background-radius: 20; -fx-border-radius: 20;">
+                                 <columns>
+                                    <TableColumn fx:id="durationColumn" prefWidth="200.0" text="Total Due" />
+                                    <TableColumn fx:id="offerColumn" prefWidth="350.0" text="Plan" />
+                                    <TableColumn fx:id="statusColumn" prefWidth="200.0" text="Status" />
+                                    <TableColumn fx:id="lastUpdatedColumn" prefWidth="180.0" text="Last Updated" />
+                                 </columns>
+                              </TableView>
                            </children>
                         </Pane>
-                        <Label layoutX="76.0" layoutY="140.0" style="-fx-text-fill: gray;" text="You have no subscriptions... yet">
+                        <Label layoutX="76.0" layoutY="140.0" style="-fx-text-fill: gray;" text="You have no servers yet...">
                            <font>
                               <Font size="21.0" />
                            </font>

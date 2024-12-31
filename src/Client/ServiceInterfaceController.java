@@ -82,18 +82,21 @@ public class ServiceInterfaceController {
     private void onInvoiceClick() {
         System.out.println("Invoice clicked!");
         // Add logic for navigating to the Invoice page
+        navigateToPage("InvoiceInterface.fxml", "Invoice Interface");
     }
 
     @FXML
     private void onTicketsClick() {
         System.out.println("Tickets clicked!");
         // Add logic for navigating to the Tickets page
+        navigateToPage("TicketInterface.fxml", "Ticket Interface");
     }
 
     @FXML
     private void onHelpClick() {
         System.out.println("Help clicked!");
         // Add logic for navigating to the Help page
+        navigateToPage("HelpInterface.fxml", "Help Interface");
     }
 
     @FXML
@@ -158,5 +161,21 @@ public class ServiceInterfaceController {
             e.printStackTrace();
             System.out.println("Error loading pop-up." + fxml + " " + title);
         }
+    }
+
+    private void navigateToPage(String fxml, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle(title);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+                System.out.println("Error landingPage");
+        }
+
     }
 }
