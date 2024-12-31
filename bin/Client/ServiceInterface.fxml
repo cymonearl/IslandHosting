@@ -108,8 +108,6 @@
                 </font>
             </Label>
         </VBox>
-
-        <Pane prefHeight="90.0" prefWidth="60.0" />
     </HBox>
 
     <!-- Services Section -->
