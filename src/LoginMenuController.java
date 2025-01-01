@@ -40,6 +40,12 @@ public class LoginMenuController {
     }
 
     public void registerButton(ActionEvent event) {
+        if (!passwordTextField.getText().trim().isEmpty() && confirmPasswordTextField.getText().trim().isEmpty()) {
+            confirmPasswordLabel.setVisible(true);
+            confirmPasswordTextField.setVisible(true);
+            return;
+        }
+
         String email = loginTextField.getText().trim();
         String password = passwordTextField.getText().trim();
         String confirmPassword = confirmPasswordTextField.getText().trim();
