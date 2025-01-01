@@ -55,9 +55,9 @@ public class SupportTicket {
     private static final String USER = "root";
     private static final String PASS = "";
 
-    private static String getCurrentDate() {
+    public static String getCurrentDate() {
         java.util.Date date = new java.util.Date();
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd:HH");
         return sdf.format(date);
     }
 
@@ -110,10 +110,36 @@ public class SupportTicket {
         return supportTickets;
     }
 
+    public ArrayList<SupportTicket> SELECT_USER_SUPPORT_TICKETS(int user_id) {
+        ArrayList<SupportTicket> supportTickets = new ArrayList<>();
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM support_tickets WHERE user_id = ?");
+            statement.setInt(1, user_id);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                SupportTicket supportTicket = new SupportTicket();
+                supportTicket.setTicket_id(result.getInt("ticket_id"));
+                supportTicket.setUser_id(result.getInt("user_id"));
+                supportTicket.setServer_id(result.getInt("server_id"));
+                supportTicket.setSubject(result.getString("subject"));
+                supportTicket.setDescription(result.getString("description"));
+                supportTicket.setStatus(result.getString("status"));
+                supportTicket.setPriority(result.getString("priority"));
+                supportTicket.setCreated_at(result.getString("created_at"));
+                supportTicket.setResolved_at(result.getString("resolved_at"));
+                supportTickets.add(supportTicket);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return supportTickets;
+    }
+
     public boolean INSERT_SUPPORT_TICKET(SupportTicket supportTicket) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO support_tickets (ticket_id, user_id, server_id, subject, description, status, priority) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO support_tickets (ticket_id, user_id, server_id, subject, description, status, priority, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setInt(1, supportTicket.getTicket_id());
             statement.setInt(2, supportTicket.getUser_id());
             statement.setInt(3, supportTicket.getServer_id());
@@ -121,7 +147,8 @@ public class SupportTicket {
             statement.setString(5, supportTicket.getDescription());
             statement.setString(6, supportTicket.getStatus());
             statement.setString(7, supportTicket.getPriority());
-
+            statement.setString(8, supportTicket.getCreated_at());
+            
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

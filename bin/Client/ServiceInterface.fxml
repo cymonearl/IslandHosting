@@ -30,7 +30,7 @@
         <Pane prefWidth="100.0" HBox.hgrow="SOMETIMES" />
 
         <!-- Services -->
-        <VBox alignment="CENTER" onMouseClicked="#onServicesClick" spacing="5.0">
+        <VBox alignment="CENTER" spacing="5.0">
             <ImageView fx:id="servicesIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your Services icon path -->
@@ -45,7 +45,7 @@
         </VBox>
 
         <!-- Invoice -->
-        <VBox alignment="CENTER" onMouseClicked="#onInvoiceClick" spacing="5.0">
+        <VBox alignment="CENTER" onMouseClicked="#invoiceClicked" spacing="5.0">
             <ImageView fx:id="invoiceIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your Invoice icon path -->

@@ -12,23 +12,21 @@
 
 <VBox prefWidth="600.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.SupportTicketDialogController">
    <children>
-      <Label fx:id="CreateSupportTicketLabel" styleClass="font-white" stylesheets="@../style.css" text="Create Ticket">
+      <Label fx:id="CreateOrderLabel" styleClass="font-white" stylesheets="@../style.css" text="Create Ticket">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="user_idTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
-      <Label styleClass="font-white" stylesheets="@../style.css" text="user_id" />
       <TextField fx:id="server_idTextField" layoutX="20.0" layoutY="55.0" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
-      <Label layoutX="20.0" layoutY="81.0" styleClass="font-white" stylesheets="@../style.css" text="server_id" />
+      <Label layoutX="20.0" layoutY="81.0" styleClass="font-white" stylesheets="@../style.css" text="Server ID | Leave the text field empty, if the a server is not the issue." />
       <TextField fx:id="subjectTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
-      <Label styleClass="font-white" stylesheets="@../style.css" text="subject" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="Subject" />
       <TextField fx:id="descriptionTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
-      <Label styleClass="font-white" stylesheets="@../style.css" text="description" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="Description" />
       <ComboBox fx:id="statusComboBox" prefWidth="150.0" styleClass="button-design" stylesheets="@../style.css" />
-      <Label styleClass="font-white" stylesheets="@../style.css" text="status" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="Status" />
       <ComboBox fx:id="priorityComboBox" layoutX="20.0" layoutY="184.0" prefWidth="150.0" styleClass="button-design" stylesheets="@../style.css" />
-      <Label styleClass="font-white" stylesheets="@../style.css" text="priotity" />
+      <Label styleClass="font-white" stylesheets="@../style.css" text="Priotity" />
       <Pane maxHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" />
       <HBox>
          <children>

@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import Tables.SupportTicket;
 import Tables.Users;
 public class ServiceInterfaceController {
 
@@ -77,14 +78,6 @@ public class ServiceInterfaceController {
         cebuLabel.setText("Cebu");
     }
 
-    // Example Methods for Navigation or Event Handling
-
-    @FXML
-    private void onServicesClick() {
-        System.out.println("Services clicked!");
-        // Add logic for navigating to the Services page
-    }
-
     @FXML
     private void onInvoiceClick() {
         System.out.println("Invoice clicked!");
@@ -92,9 +85,25 @@ public class ServiceInterfaceController {
     }
 
     @FXML
-    private void onTicketsClick() {
+    private void onTicketsClick(MouseEvent event) {
         System.out.println("Tickets clicked!");
         // Add logic for navigating to the Tickets page
+        try {
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsInterface.fxml"));
+            Parent root = loader.load();
+    
+            TicketsInterfaceController controller = loader.getController();
+            controller.setUser(user);
+            controller.populateTickets(new SupportTicket().SELECT_USER_SUPPORT_TICKETS(user.getUser_id()));
+    
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -116,6 +125,23 @@ public class ServiceInterfaceController {
             e.printStackTrace();
         }
 
+    }
+
+    public void invoiceClicked(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("InvoiceInterface.fxml"));
+            Parent root = loader.load();
+    
+            InvoiceInterfaceController controller = loader.getController();
+            controller.setUser(user);
+    
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

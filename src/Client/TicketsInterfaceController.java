@@ -1,17 +1,56 @@
 package Client;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import Tables.Users;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.input.MouseEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import javafx.scene.layout.VBox;
+import javafx.stage.*;
 
 import Tables.SupportTicket;
-import Tables.Users;
-public class HelpInterfaceController {
+
+public class TicketsInterfaceController {
 
     Users user;
+
+    @FXML private VBox ticketsVBOX;
+
+    public void initialize() {
+        // populateTickets(new SupportTicket().SELECT_USER_SUPPORT_TICKETS(user.getUser_id()));
+        SupportTicket ticket = new SupportTicket();
+        ticket.setServer_id(-1);
+        ticket.setSubject("Subject:");
+        ticket.setStatus("Status:");
+        ticket.setDescription("Description:");
+        ticket.setPriority("Priority:");
+        ticket.setCreated_at("Created At:");
+        ticket.setResolved_at(null);
+        populateTickets(new ArrayList<SupportTicket>() {{ add(ticket); }});
+    }
+
+    public void populateTickets(ArrayList<SupportTicket> tickets) {
+        if (tickets.isEmpty()) {
+            return;
+        }
+        try {
+            for (SupportTicket ticket : tickets) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Ticket.fxml"));
+                VBox card = loader.load();
+                
+                ticketController controller = loader.getController();
+                controller.setTicket(ticket);
+                card.setUserData(controller);
+                
+                ticketsVBOX.getChildren().add(card);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void setUser(Users user) {
         this.user = user;
@@ -51,24 +90,6 @@ public class HelpInterfaceController {
         }
     }
 
-    public void ticketsClicked(MouseEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketsInterface.fxml"));
-            Parent root = loader.load();
-    
-            TicketsInterfaceController controller = loader.getController();
-            controller.setUser(user);
-            controller.populateTickets(new SupportTicket().SELECT_USER_SUPPORT_TICKETS(user.getUser_id()));
-    
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.centerOnScreen();
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
     public void helpClicked(MouseEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("HelpInterface.fxml"));
@@ -122,5 +143,9 @@ public class HelpInterfaceController {
             e.printStackTrace();
                 System.out.println("Error landingPage");
         }
+    }
+
+    public void createIssue() {
+        System.out.println("Create issue clicked!");
     }
 }

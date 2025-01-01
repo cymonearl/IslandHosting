@@ -131,7 +131,7 @@ public class Users {
                 user.setAddress(result.getString("address"));
                 user.setStatus(result.getString("status"));
                 user.setCreated_at(result.getDate("created_at"));
-                user.setLast_login(result.getDate("last_login"));
+                user.setLast_login(result.getTimestamp("last_login"));
                 
                 userList.add(user);
             }
@@ -163,7 +163,7 @@ public class Users {
                 user.setAddress(result.getString("address"));
                 user.setStatus(result.getString("status"));
                 user.setCreated_at(result.getDate("created_at"));
-                user.setLast_login(result.getDate("last_login"));
+                user.setLast_login(result.getTimestamp("last_login"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -328,5 +328,16 @@ public class Users {
             e.printStackTrace();
         }
         return userList;
+    }
+
+    public void LOGIN(Users user) {
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("UPDATE users SET last_login = NOW() WHERE user_id = ?");
+            statement.setInt(1, user.getUser_id());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

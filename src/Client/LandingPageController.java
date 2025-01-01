@@ -132,13 +132,16 @@ public class LandingPageController {
         // Add your logic for navigating to the Orders page or performing an action
     }
 
-    /**
-     * Handles the action when the "Server" button is clicked.
-     */
-    @FXML
-    private void onServerClick(ActionEvent event) {
-        System.out.println("Server button clicked!");
-        // Add your logic for navigating to the Server page or performing an action
+    public void logout(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../LoginMenu.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }            
     }
-
 }

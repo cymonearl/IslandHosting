@@ -1,17 +1,16 @@
 package Client;
 
-import javafx.scene.*;
-import javafx.scene.input.MouseEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.*;
+import javafx.stage.*;
+import javafx.scene.input.MouseEvent;
 import Tables.SupportTicket;
 import Tables.Users;
-public class HelpInterfaceController {
+public class InvoiceInterfaceController {
 
-    Users user;
+    private Users user;
 
     public void setUser(Users user) {
         this.user = user;
@@ -34,22 +33,6 @@ public class HelpInterfaceController {
         }
     }
 
-    public void invoiceClicked(MouseEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("InvoiceInterface.fxml"));
-            Parent root = loader.load();
-    
-            InvoiceInterfaceController controller = loader.getController();
-            controller.setUser(user);
-    
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.centerOnScreen();
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void ticketsClicked(MouseEvent event) {
         try {
@@ -78,7 +61,9 @@ public class HelpInterfaceController {
             controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
             stage.centerOnScreen();
             stage.show();
         } catch (IOException e) {

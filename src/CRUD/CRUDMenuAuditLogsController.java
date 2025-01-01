@@ -148,7 +148,6 @@ public class CRUDMenuAuditLogsController {
         }
     }
 
-    // TODO: Implement CRUD for Audit Logs
     public void createAudit_logs() {
         showAudit_logsDialog(null);
     }

@@ -35,7 +35,6 @@ public class SupportTicketDialogController {
 
     public void setTicket(SupportTicket supportTicket) {
         this.supportTicket = supportTicket;
-        this.isNewSupportTicket = (supportTicket.getTicket_id() == 0); // Crucial: Determine if it's new based on ticket_id
 
         if (!isNewSupportTicket) {
             // Existing ticket - populate fields
@@ -63,8 +62,10 @@ public class SupportTicketDialogController {
             return;
         }
 
+        int server_id = 0;
         int user_id = Integer.parseInt(user_idTextField.getText());
-        int server_id = Integer.parseInt(server_idTextField.getText());
+        if (!server_idTextField.getText().isEmpty()) 
+            server_id = Integer.parseInt(server_idTextField.getText());
         String title = subjectTextField.getText();
         String description = descriptionTextField.getText();
         String status = statusComboBox.getValue();

@@ -79,7 +79,7 @@ CREATE TABLE Support_Tickets (
 );
 
 CREATE TABLE Audit_Logs (
-    log_id INT PRIMARY KEY,
+    log_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     action_type VARCHAR(50),
     description TEXT,
@@ -131,3 +131,4 @@ JOIN Servers s ON t.server_id = s.server_id
 WHERE t.status IN ('open', 'in_progress'); 
 
 ### Triggers ###
+

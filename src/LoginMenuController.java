@@ -153,6 +153,7 @@ public class LoginMenuController {
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle(title);
+            stage.centerOnScreen();
             stage.show();
         } catch (Exception e) {
             handleException(e);
@@ -165,6 +166,7 @@ public class LoginMenuController {
             Parent root = loader.load();
             LandingPageController lpc = loader.getController();
             lpc.setUser(user);
+            user.LOGIN(user);
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.centerOnScreen();
