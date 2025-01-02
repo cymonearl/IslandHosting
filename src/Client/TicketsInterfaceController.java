@@ -147,5 +147,16 @@ public class TicketsInterfaceController {
 
     public void createIssue() {
         System.out.println("Create issue clicked!");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketDialog.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

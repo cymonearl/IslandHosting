@@ -79,7 +79,7 @@ CREATE TABLE Support_Tickets (
 );
 
 CREATE TABLE Audit_Logs (
-    log_id INT PRIMARY KEY AUTO_INCREMENT,
+    log_id INT PRIMARY,
     user_id INT,
     action_type VARCHAR(50),
     description TEXT,
@@ -89,6 +89,7 @@ CREATE TABLE Audit_Logs (
 );
 
 ### UserView ###
+
 CREATE VIEW ActiveUsers AS
 SELECT user_id, username, email, full_name, contact_number, address
 FROM Users

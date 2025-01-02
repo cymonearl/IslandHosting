@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefWidth="600.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.SupportTicketDialogController">
+<VBox prefWidth="600.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.TicketDialogController">
    <children>
       <Label fx:id="CreateOrderLabel" styleClass="font-white" stylesheets="@../style.css" text="Create Ticket">
          <font>
