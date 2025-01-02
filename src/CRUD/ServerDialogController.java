@@ -55,8 +55,6 @@ public class ServerDialogController {
         String status = statusComboBox.getValue();
 
         if (isNewServer) {
-            if (!validateServer())
-                return;
             new Servers().INSERT_SERVER(new Servers(name, hardware_type, ram_gb, storage_gb, price_per_month, specs, server_location,status));
             serverList.add(new Servers(name, hardware_type, ram_gb, storage_gb, price_per_month, specs, server_location,status));
         } else {
@@ -76,16 +74,6 @@ public class ServerDialogController {
     }
     public void handleCancel() {
         closeDialog();
-    }
-    public boolean validateServer() {
-        for (Servers server : serverList) {
-            if (server.getName().equals(server_nameTextField.getText())) {
-                System.out.println("Server name already exists.");
-                alert("Duplicate Server Name", "Server name already exists.");
-                return false;
-            }
-        }
-        return true;
     }
     public boolean validateInput() {
         String errorMessage = "";

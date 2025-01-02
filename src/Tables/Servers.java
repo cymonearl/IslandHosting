@@ -292,4 +292,33 @@ public class Servers {
         }
         return serverList;
     }
+
+    public ArrayList<Servers> AVAILABLE_SERVERS(int ram_gb, int storage_gb) {
+        ArrayList<Servers> serverList = new ArrayList<>();
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM AvailableServers WHERE ram_gb = ? ANDEMai storage_gb = ?;");
+            statement.setInt(1, ram_gb);
+            statement.setInt(2, storage_gb);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                Servers server = new Servers();
+                
+                server.setServer_id(result.getInt("server_id"));
+                server.setName(result.getString("name"));
+                server.setHardware_type(result.getString("hardware_type"));
+                server.setRam_gb(result.getInt("ram_gb"));
+                server.setStorage_gb(result.getInt("storage_gb"));
+                server.setPrice_per_month(result.getDouble("price_per_month"));
+                server.setServer_location(result.getString("location"));
+                server.setSpecs(result.getString("specs"));
+                server.setStatus("Available");
+
+                serverList.add(server);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return serverList;
+    }
 }

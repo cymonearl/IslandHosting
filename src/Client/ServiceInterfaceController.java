@@ -12,7 +12,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import Tables.Orders;
 import Tables.SupportTicket;
 import Tables.Users;
 public class ServiceInterfaceController {
@@ -56,9 +58,16 @@ public class ServiceInterfaceController {
     private Label cebuLabel;
 
     private Users user;
+    private ArrayList<Orders> orders;
 
-    public void setUser(Users user) {
+    public void setUser(Users user, ArrayList<Orders> orders) {
         this.user = user;
+        this.orders = orders;
+    }
+
+    public void setUser(Users user, Tables.Orders order) {
+        this.user = user;
+        this.orders.add(order);
     }
 
     @FXML
@@ -87,7 +96,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
     
             InvoiceInterfaceController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -108,7 +117,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
     
             TicketsInterfaceController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
             controller.populateTickets(new SupportTicket().SELECT_USER_SUPPORT_TICKETS(user.getUser_id()));
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -129,7 +138,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
     
             HelpInterfaceController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -147,7 +156,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
     
             InvoiceInterfaceController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -167,7 +176,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
     
             UserProfileController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
@@ -186,7 +195,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
 
             LandingPageController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
@@ -203,20 +212,69 @@ public class ServiceInterfaceController {
 
     @FXML
     private void onManilaClick() {
-        System.out.println("Manila clicked!");
-        openPopUp("manilaPopUp.fxml", "Manila");
+        try {
+            System.out.println("Manila clicked!");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("manilaPopUp.fxml"));
+            Scene scene = new Scene(loader.load());
+    
+            // Create a new stage for the pop-up
+            ManilaPopUpController controller = loader.getController();
+            controller.setUser(user);
+    
+            Stage popupStage = new Stage();
+            popupStage.setScene(scene);
+            popupStage.setTitle("Manila");
+            popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog
+            popupStage.centerOnScreen();
+            popupStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void onCebuClick() {
         System.out.println("Cebu clicked!");
-        openPopUp("cebuPopUp.fxml", "Cebu");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("cebuPopUp.fxml"));
+            Scene scene = new Scene(loader.load());
+    
+            // Create a new stage for the pop-up
+            CebuPopUpController controller = loader.getController();
+            controller.setUser(user);
+    
+            Stage popupStage = new Stage();
+            popupStage.setScene(scene);
+            popupStage.setTitle("Cebu");
+            popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog
+            popupStage.centerOnScreen();
+            popupStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void onDavaoClick() {
         System.out.println("Davao clicked!");
-        openPopUp("davaoPopUp.fxml", "Davao");
+        try {
+            System.out.println("Manila clicked!");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("davaoPopUp.fxml"));
+            Scene scene = new Scene(loader.load());
+    
+            // Create a new stage for the pop-up
+            DavaoPopUpController controller = loader.getController();
+            controller.setUser(user);
+    
+            Stage popupStage = new Stage();
+            popupStage.setScene(scene);
+            popupStage.setTitle("Davao");
+            popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog
+            popupStage.centerOnScreen();
+            popupStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void openPopUp(String fxml, String title) {
@@ -226,6 +284,9 @@ public class ServiceInterfaceController {
             Scene scene = new Scene(loader.load());
 
             // Create a new stage for the pop-up
+            ManilaPopUpController controller = loader.getController();
+            controller.setUser(user);
+
             Stage popupStage = new Stage();
             popupStage.setScene(scene);
             popupStage.setTitle(title);

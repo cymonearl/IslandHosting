@@ -1,19 +1,24 @@
 package Client;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.input.MouseEvent;
+import Tables.Orders;
 import Tables.SupportTicket;
 import Tables.Users;
 public class InvoiceInterfaceController {
 
     private Users user;
+    private ArrayList<Orders> orders;
 
-    public void setUser(Users user) {
+
+    public void setUser(Users user, ArrayList<Orders> orders) {
         this.user = user;
+        this.orders = orders;
     }
 
     public void servicesClicked(MouseEvent event) {
@@ -22,7 +27,7 @@ public class InvoiceInterfaceController {
             Parent root = loader.load();
     
             ServiceInterfaceController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -40,7 +45,7 @@ public class InvoiceInterfaceController {
             Parent root = loader.load();
     
             TicketsInterfaceController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
             controller.populateTickets(new SupportTicket().SELECT_USER_SUPPORT_TICKETS(user.getUser_id()));
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -58,7 +63,7 @@ public class InvoiceInterfaceController {
             Parent root = loader.load();
     
             HelpInterfaceController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
@@ -77,7 +82,7 @@ public class InvoiceInterfaceController {
             Parent root = loader.load();
     
             UserProfileController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -94,7 +99,7 @@ public class InvoiceInterfaceController {
             Parent root = loader.load();
 
             LandingPageController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);

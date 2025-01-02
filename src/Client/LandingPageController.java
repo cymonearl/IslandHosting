@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import Tables.Servers;
 import Tables.Users;
+import Tables.Orders;
 
 public class LandingPageController {
 
@@ -39,15 +40,23 @@ public class LandingPageController {
     private ImageView UserIcon;
 
     private Users user;
+    private ArrayList<Orders> orders;
 
     /**
      * Initializes the controller class.
      * This method is called after the FXML file has been loaded.
      */
-    public void setUser(Users user) {
+    public void setUser(Users user, ArrayList<Orders> orders) {
         this.user = user;
+        this.orders = orders;
         updateUI(); 
     }
+
+    public void setUser(Users user) {
+        this.user = user;
+        updateUI();
+    }
+
     public Users getUser() {
         return user;
     }
@@ -66,6 +75,10 @@ public class LandingPageController {
         populateTable();        
     }
     
+    public void getOrders() {
+        orders = new Orders().USER_ORDERS(user.getUser_id());
+    }
+
     public void populateTable() {
         Table_Here.getItems().clear();
 
@@ -89,7 +102,7 @@ public class LandingPageController {
             Parent root = loader.load();
     
             UserProfileController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
@@ -115,7 +128,7 @@ public class LandingPageController {
             Parent root = loader.load();
 
             ServiceInterfaceController controller = loader.getController();
-            controller.setUser(user);
+            controller.setUser(user, orders);
             
             // Get the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

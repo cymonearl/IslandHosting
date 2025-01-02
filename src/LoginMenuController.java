@@ -15,40 +15,48 @@ public class LoginMenuController {
     public Label confirmPasswordLabel;
     public TextField confirmPasswordTextField;
     public TextField usernameTextField;
-    public TextField fullNameTextField;
-    public TextField contactNumberTextField;
+    public TextField full_nameTextField;
+    public TextField contact_numberTextField;
     public TextField addressTextField;
 
     private Parent root;
     private Stage stage;
     private ArrayList<Users> usersList = new Users().SELECT_ALL_USERS();
+        private String email;
+        private String password;
+    
+        public void setEP(String email, String password) {
+            this.email = email;
+            this.password = password;
+        }
 
-    public void loginButton(ActionEvent event) {
-        String email = loginTextField.getText().trim();
-        String password = passwordTextField.getText().trim();
-
-        if (email.equals("admin") && password.equals("admin")) {
-            navigateToScene(event, "CRUD/CRUDUsersMenu.fxml", "CRUD Menu");
-        } else {
-            Users user = findUserByEmailAndPassword(email, password);
-            if (user != null) {
-                navigateToClientLandingPage(event, user);
+        public void loginButton(ActionEvent event) {
+            email = loginTextField.getText().trim();
+            password = passwordTextField.getText().trim();
+    
+            if (email.equals("admin") && password.equals("admin")) {
+                navigateToScene(event, "CRUD/CRUDUsersMenu.fxml", "CRUD Menu");
             } else {
-                showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid email or password.");
+                Users user = findUserByEmailAndPassword(email, password);
+                if (user != null) {
+                    navigateToClientLandingPage(event, user);
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid email or password.");
+                }
             }
         }
-    }
-
-    public void registerButton(ActionEvent event) {
-        if (!passwordTextField.getText().trim().isEmpty() && confirmPasswordTextField.getText().trim().isEmpty()) {
-            confirmPasswordLabel.setVisible(true);
-            confirmPasswordTextField.setVisible(true);
-            return;
-        }
-
-        String email = loginTextField.getText().trim();
-        String password = passwordTextField.getText().trim();
+    
+        public void registerButton(ActionEvent event) {
+            if (!passwordTextField.getText().trim().isEmpty() && confirmPasswordTextField.getText().trim().isEmpty()) {
+                confirmPasswordLabel.setVisible(true);
+                confirmPasswordTextField.setVisible(true);
+                return;
+            }
+    
+        email = loginTextField.getText().trim();
+        password = passwordTextField.getText().trim();
         String confirmPassword = confirmPasswordTextField.getText().trim();
+        System.out.println(email + " " + password + " " + confirmPassword);
 
         if (!isValidEmail(email)) {
             showAlert(Alert.AlertType.ERROR, "Email Error", "Invalid email address.");
@@ -65,23 +73,36 @@ public class LoginMenuController {
             return;
         }
 
-        navigateToScene(event, "RegisterMenu.fxml", "Register Menu");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("RegisterMenu.fxml"));
+            root = loader.load();
+
+            LoginMenuController controller = loader.getController();
+            controller.setEP(email, password);
+
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Register Menu");
+
+            stage.centerOnScreen();
+            stage.show();
+        } catch (Exception e) {
+            handleException(e);
+        }
     }
 
     public void createUserButton(ActionEvent event) {
         String username = usernameTextField.getText().trim();
-        String fullName = fullNameTextField.getText().trim();
-        String contactNumber = contactNumberTextField.getText().trim();
+        String fullName = full_nameTextField.getText().trim();
+        String contactNumber = contact_numberTextField.getText().trim();
         String address = addressTextField.getText().trim();
-        String email = loginTextField.getText().trim();
-        String password = passwordTextField.getText().trim();
-
+        
         if (!validateCreateUserInput(username, fullName, contactNumber, address)) {
             return;
         }
-
+        
         Users newUser = new Users(username, email, password, fullName, contactNumber, address, "active");
-
+        System.out.println(newUser);
         if (isDuplicateUser(newUser)) {
             return;
         }
@@ -151,8 +172,15 @@ public class LoginMenuController {
         try {
             root = FXMLLoader.load(getClass().getResource(fxmlFile));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
             stage.setScene(new Scene(root));
             stage.setTitle(title);
+
+            if (fxmlFile.equals("CRUD/CRUDUsersMenu.fxml")) {
+                stage.setWidth(1400);
+                stage.setHeight(1000);
+            }
+
             stage.centerOnScreen();
             stage.show();
         } catch (Exception e) {
@@ -167,8 +195,10 @@ public class LoginMenuController {
             LandingPageController lpc = loader.getController();
             lpc.setUser(user);
             user.LOGIN(user);
+            lpc.getOrders();
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
             stage.centerOnScreen();
             stage.show();
         } catch (Exception e) {

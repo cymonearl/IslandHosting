@@ -7,7 +7,13 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 import javax.swing.*;
+
+import Tables.Orders;
+import Tables.Servers;
+import Tables.Users;
 
 public class DavaoPopUpController {
 
@@ -27,6 +33,12 @@ public class DavaoPopUpController {
     private Label billingCycleLabel;
 
     private ToggleGroup billingCycleGroup;
+
+    private Users user;
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
 
     @FXML
     private void initialize() {
@@ -98,6 +110,23 @@ public class DavaoPopUpController {
             );
 
             // Close the pop-up window
+                        ArrayList<Servers> servers = new Servers().AVAILABLE_SERVERS(4, 50);
+
+            if (servers.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "No available servers at the moment.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+            
+            // Orders order = new Orders(String.valueOf(user.getUser_id()), String.valueOf(servers.getFirst()),  totalDue, "Pending");
+            // // new Orders().INSERT_ORDER(order);
+            // System.out.println(order);
+            // ServiceInterfaceController controller = new ServiceInterfaceController();
+            // controller.setUser(user, order);
             Stage stage = (Stage) checkoutButton.getScene().getWindow();
             stage.close();
         } else {

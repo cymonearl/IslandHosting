@@ -7,9 +7,15 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 import javax.swing.text.html.ImageView;
+
+import Tables.Orders;
+import Tables.Servers;
+import Tables.Users;
 
 public class ManilaPopUpController {
 
@@ -35,6 +41,7 @@ public class ManilaPopUpController {
     private Text orderSummaryText;
 
     private ToggleGroup billingToggleGroup;
+    private Users user;
 
     // Initialize the pop-up's default values
     @FXML
@@ -52,6 +59,10 @@ public class ManilaPopUpController {
 
         // Add a listener to update labels when selection changes
         billingToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> updateBillingDetails());
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     // Update the billing details (order summary and total due)
@@ -108,6 +119,24 @@ public class ManilaPopUpController {
             );
 
             // Close the pop-up window
+            ArrayList<Servers> servers = new Servers().AVAILABLE_SERVERS(4, 50);
+
+            if (servers.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "No available servers at the moment.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+            
+            // System.out.println(totalDue);
+            // Orders order = new Orders(String.valueOf(user.getUser_id()), String.valueOf(servers.getFirst()),  totalDue, "Pending");
+            // // new Orders().INSERT_ORDER(order);
+            // System.out.println(order);
+            // ServiceInterfaceController controller = new ServiceInterfaceController();
+            // controller.setUser(user, order);
             Stage stage = (Stage) checkoutButton.getScene().getWindow();
             stage.close();
         } else {
