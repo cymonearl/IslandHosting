@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane prefHeight="534.0" prefWidth="889.0" style="-fx-background-color: #2c2c34; -fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.CebuPopUpController">
+<StackPane prefHeight="534.0" prefWidth="889.0" style="-fx-background-color: #2c2c34; -fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 10;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.CebuPopUpController">
     <VBox alignment="CENTER" prefHeight="540.0" prefWidth="796.0" spacing="20.0">
         <Pane prefHeight="95.0" prefWidth="885.0">
             <children>
@@ -24,10 +24,22 @@
                 <Pane prefHeight="342.0" prefWidth="6.0" />
                 <VBox alignment="CENTER" prefHeight="342.0" prefWidth="465.0">
                     <children>
+<<<<<<< HEAD
                         <ImageView fitHeight="116.0" fitWidth="466.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Pop%20Ups/Cebu%20Icon.png" />
                      </image></ImageView>
+=======
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                              <ImageView fitHeight="148.0" fitWidth="196.0" layoutX="159.0" layoutY="-14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Pop_Ups/Cebu_Icon.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+>>>>>>> 26ff898fc35f5621e4dc780c35624d661ed9b9ef
                         <Pane prefHeight="46.0" prefWidth="466.0" />
                         <VBox prefHeight="317.0" prefWidth="466.0">
                             <children>

@@ -22,7 +22,7 @@
             <ImageView fx:id="islandHostIcon" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#navigateToLandingPage" preserveRatio="true">
                 <image>
                     <!-- Replace with your Island Host icon path -->
-                    <Image url="@User_Interface_edited.png" />
+                    <Image url="@Interfaces_Icons/Island_Logo.png" />
                 </image>
             </ImageView>
         </VBox>
@@ -34,7 +34,7 @@
             <ImageView fx:id="servicesIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your Services icon path -->
-                    <Image url="@Interfaces%20Icons/Service.png" />
+                    <Image url="@Interfaces_Icons/Service.png" />
                 </image>
             </ImageView>
             <Label fx:id="servicesLabel" style="-fx-text-fill: #00ff00; -fx-font-weight: bold;" text="Services">
@@ -49,7 +49,7 @@
             <ImageView fx:id="invoiceIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your Invoice icon path -->
-                    <Image url="@Interfaces%20Icons/Invoice.png" />
+                    <Image url="@Interfaces_Icons/Invoice.png" />
                 </image>
             </ImageView>
             <Label fx:id="invoiceLabel" style="-fx-text-fill: white;" text="Invoice">
@@ -64,7 +64,7 @@
             <ImageView fx:id="ticketsIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your Tickets icon path -->
-                    <Image url="@Interfaces%20Icons/Tickets.png" />
+                    <Image url="@Interfaces_Icons/Tickets.png" />
                 </image>
             </ImageView>
             <Label fx:id="ticketsLabel" style="-fx-text-fill: white;" text="Tickets">
@@ -79,7 +79,7 @@
             <ImageView fx:id="helpIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your Help icon path -->
-                    <Image url="@Interfaces%20Icons/Help.png" />
+                    <Image url="@Interfaces_Icons/Help.png" />
                 </image>
             </ImageView>
             <Label fx:id="helpLabel" style="-fx-text-fill: white;" text="Help">
@@ -94,7 +94,7 @@
             <ImageView fx:id="userIcon" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                 <image>
                     <!-- Replace with your User icon path -->
-                    <Image url="@Interfaces%20Icons/User.png" />
+                    <Image url="@Interfaces_Icons/User.png" />
                 </image>
             </ImageView>
             <Label fx:id="userLabel" style="-fx-text-fill: white;" text="User">
@@ -119,7 +119,7 @@
                     </padding>
                <ImageView fitHeight="117.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@Pop%20Ups/Manila%20Icon.png" />
+                     <Image url="@Pop_Ups/Manila_Icon.png" />
                   </image></ImageView>
                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="235.0" style="-fx-background-color: red;">
                   <children>
@@ -147,7 +147,7 @@
                     </padding>
                <ImageView fitHeight="117.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@Pop%20Ups/Davao%20Icon.png" />
+                     <Image url="@Pop_Ups/Davao_Icon.png" />
                   </image></ImageView>
                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="235.0" style="-fx-background-color: #e7b416;">
                   <children>
@@ -175,7 +175,7 @@
                     </padding>
                <ImageView fitHeight="116.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@Pop%20Ups/Cebu%20Icon.png" />
+                     <Image url="@Pop_Ups/Cebu_Icon.png" />
                   </image></ImageView>
                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="235.0" style="-fx-background-color: green;">
                   <children>
