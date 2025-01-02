@@ -2,6 +2,7 @@ package CRUD;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.*;
@@ -23,8 +24,11 @@ public class CRUDMenuAuditLogsController {
 
     private ObservableList<Audit_Logs> auditLogsList = FXCollections.observableArrayList();
     private ArrayList<Audit_Logs> auditLogs_ar = new ArrayList<>();
+
+    private FilteredList<Audit_Logs> filteredData;
     private Scene scene;
     private Stage stage;
+    @FXML private TextField searchTextField;
 
     public void initialize() {
         CRUD.setText("CRUD");
@@ -34,8 +38,12 @@ public class CRUDMenuAuditLogsController {
         updateButton.setVisible(true);
         deleteButton.setVisible(true);
         viewButton.setText("User View");
-
-    }
+        filteredData = new FilteredList<>(auditLogsList, b -> true);
+        auditLogsTable.setItems(filteredData);
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterTable(newValue);
+            });
+        }       
 
     public void changeView(ActionEvent event) {
         auditLogsTable.getColumns().clear();
@@ -54,7 +62,36 @@ public class CRUDMenuAuditLogsController {
             updateButton.setVisible(false);
             deleteButton.setVisible(false);
             viewButton.setText("CRUD");
+            filteredData = new FilteredList<>(auditLogsList, b -> true);
+            auditLogsTable.setItems(filteredData);
+            searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filterTable(newValue);
+            });
         }       
+    }
+
+    public void filterTable(String newValue) {
+        filteredData.setPredicate(auditLogs -> {
+            if (newValue == null || newValue.isEmpty()) {
+                return true;
+            }
+
+            String lowerCaseFilter = newValue.toLowerCase();
+            if (String.valueOf(auditLogs.getLog_id()).toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (auditLogs.getAction_type().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (auditLogs.getDescription().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (auditLogs.getIp_address().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (auditLogs.getTimestamp().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (String.valueOf(auditLogs.getUser_id()).toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            }
+            return false;
+        });
     }
     
     @SuppressWarnings("unchecked")

@@ -2,6 +2,7 @@ package CRUD;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,8 +30,10 @@ public class CRUDMenuUsersController {
     // Data and Stage Properties
     private ObservableList<Users> userList = FXCollections.observableArrayList();
     private ArrayList<Users> users_ar = new ArrayList<>();
+    private FilteredList<Users> filteredData;
     private Scene scene;
     private Stage stage;
+    @FXML private TextField searchTextField;
 
     // ========= Initialization =========
     public void initialize() {
@@ -41,6 +44,11 @@ public class CRUDMenuUsersController {
             updateButton.setVisible(true);
             deleteButton.setVisible(true);
             viewButton.setText("User View");
+            filteredData = new FilteredList<>(userList, b -> true);
+            usersTableView.setItems(filteredData);
+            searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filterTable(newValue);
+            });    
         }
         
         public void changeView(ActionEvent event) {
@@ -60,9 +68,46 @@ public class CRUDMenuUsersController {
                 updateButton.setVisible(false);
                 deleteButton.setVisible(false);
                 viewButton.setText("CRUD");
+                filteredData = new FilteredList<>(userList, b -> true);
+                usersTableView.setItems(filteredData);
+                searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                    filterTable(newValue);
+                });    
             }       
         }
         
+        public void filterTable(String searchText) {
+            filteredData.setPredicate(user -> {
+                // If search text is empty, show all users
+                if (searchText == null || searchText.isEmpty()) {
+                    return true;
+                }
+    
+                // Convert search text to lowercase for case-insensitive search
+                String lowerCaseSearchText = searchText.toLowerCase();
+    
+                // Check if any of the user's properties contain the search text
+                if (String.valueOf(user.getUser_id()).toLowerCase().contains(lowerCaseSearchText)) {
+                    return true;
+                } else if (user.getUsername().toLowerCase().contains(lowerCaseSearchText)) {
+                    return true;
+                } else if (user.getEmail().toLowerCase().contains(lowerCaseSearchText)) {
+                    return true;
+                } else if (user.getFull_name().toLowerCase().contains(lowerCaseSearchText)) {
+                    return true;
+                } else if (user.getContact_number().toLowerCase().contains(lowerCaseSearchText)) {
+                    return true;
+                } else if (user.getStatus().toLowerCase().contains(lowerCaseSearchText)) {
+                    return true;
+                } else if (user.getCreated_at().toString().toLowerCase().contains(lowerCaseSearchText)) {
+                    return true;
+                } else if (user.getLast_login().toString().toLowerCase().contains(lowerCaseSearchText)) {
+                    return true;
+                }
+                return false; // Does not match
+            });
+        }
+
         @SuppressWarnings("unchecked")
         private void initializeTableColumns() {
             // Define CRUD columns

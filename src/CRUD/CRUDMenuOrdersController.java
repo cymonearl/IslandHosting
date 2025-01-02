@@ -1,6 +1,7 @@
 package CRUD;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,8 +25,10 @@ public class CRUDMenuOrdersController {
 
     private ObservableList<Orders> orderList = FXCollections.observableArrayList();
     private ArrayList<Orders> orders_ar = new ArrayList<>();
+    private FilteredList<Orders> filteredData;
     private Scene scene;
     private Stage stage;
+    @FXML private TextField searchTextField;
 
     public void initialize() {
         CRUD.setText("CRUD");
@@ -35,7 +38,36 @@ public class CRUDMenuOrdersController {
         updateButton.setVisible(true);
         deleteButton.setVisible(true);
         viewButton.setText("User View");
+        filteredData = new FilteredList<>(orderList, b -> true);
+        ordersTableView.setItems(filteredData);
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterTable(newValue);
+        });
+    }
 
+    public void filterTable(String searchText) {
+        filteredData.setPredicate(order -> {
+            if (searchText == null || searchText.isEmpty()) {
+                return true;
+            }
+            String lowerCaseFilter = searchText.toLowerCase();
+            if (String.valueOf(order.getOrder_id()).toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (String.valueOf(order.getUser_id()).toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (String.valueOf(order.getServer_id()).toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (order.getStart_date().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (order.getEnd_date().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (String.valueOf(order.getTotal_amount()).toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (order.getStatus().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            }
+            return false;
+        });
     }
 
     public void changeView(ActionEvent event) {
@@ -55,6 +87,11 @@ public class CRUDMenuOrdersController {
             updateButton.setVisible(false);
             deleteButton.setVisible(false);
             viewButton.setText("CRUD");
+            filteredData = new FilteredList<>(orderList, b -> true);
+            ordersTableView.setItems(filteredData);
+            searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filterTable(newValue);
+            });    
         }       
     }
 

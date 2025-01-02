@@ -27,7 +27,7 @@
                   </ImageView>
                         <Button fx:id="User" mnemonicParsing="false" onAction="#onUserClick" prefHeight="35.0" prefWidth="135.0" style="-fx-background-radius: 40; -fx-background-color: f9c784;" text="User" />
                         <Button fx:id="Orders" mnemonicParsing="false" onAction="#onOrdersClick" prefHeight="35.0" prefWidth="135.0" style="-fx-background-radius: 40; -fx-background-color: f9c784;" text="Orders" />
-                  <Pane prefHeight="30.0" />
+                  <Button layoutX="43.0" layoutY="285.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="135.0" style="-fx-background-radius: 40; -fx-background-color: f9c784;" text="Servers" />
                         <Button fx:id="Server" mnemonicParsing="false" onAction="#logout" prefHeight="35.0" prefWidth="135.0" style="-fx-background-radius: 40; -fx-background-color: #f9c784;" text="Logout" />
                </children>
             </VBox>

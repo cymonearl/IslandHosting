@@ -22,7 +22,7 @@ public class SupportTicketDialogController {
     @FXML private Label CreateSupportTicketLabel;
 
     public void initialize() {
-        statusComboBox.getItems().addAll("Open", "Closed", "In_Progress");
+        statusComboBox.getItems().addAll("Open", "Closed", "In_Progress", "Resolved");
         statusComboBox.setValue("Open");
 
         priorityComboBox.getItems().addAll("Low", "Medium", "High");
@@ -35,6 +35,9 @@ public class SupportTicketDialogController {
 
     public void setTicket(SupportTicket supportTicket) {
         this.supportTicket = supportTicket;
+        if (supportTicket != null) {
+            isNewSupportTicket = false;
+        }
 
         if (!isNewSupportTicket) {
             // Existing ticket - populate fields
@@ -58,7 +61,7 @@ public class SupportTicketDialogController {
     }
 
     public void handleSave() {
-          if (validateInput()) {
+        if (validateInput()) {
             return;
         }
 

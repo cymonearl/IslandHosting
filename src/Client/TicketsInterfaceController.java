@@ -155,6 +155,9 @@ public class TicketsInterfaceController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketDialog.fxml"));
             Parent root = loader.load();
 
+            TicketDialogController controller = loader.getController();
+            controller.setUser(user);
+
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.initOwner(((Node) event.getSource()).getScene().getWindow());

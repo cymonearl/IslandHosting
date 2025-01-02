@@ -1,6 +1,7 @@
 package CRUD;
 
 import javafx.collections.*;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
@@ -23,8 +24,11 @@ public class CRUDSupportTickets {
     
     private ObservableList<SupportTicket> supportTicketList = FXCollections.observableArrayList();
     private ArrayList<SupportTicket> supportTickets_ar = new ArrayList<>(); // Initialize the list
+    private FilteredList<SupportTicket> filteredData;    
     private Scene scene;
     private Stage stage;
+
+    @FXML private TextField searchTextField;
 
     public void initialize() {
         CRUD.setText("CRUD");
@@ -34,6 +38,41 @@ public class CRUDSupportTickets {
         updateButton.setVisible(true);
         deleteButton.setVisible(true);
         viewButton.setText("User View");
+        filteredData = new FilteredList<>(supportTicketList, b -> true);
+        supportTicketsTable.setItems(filteredData);
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterTable(newValue);
+        });
+    }
+
+    private void filterTable(String searchText) {
+        filteredData.setPredicate(ticket -> {
+            // If search text is empty, show all tickets
+            if (searchText == null || searchText.isEmpty()) {
+                return true;
+            }
+
+            // Convert search text to lowercase for case-insensitive search
+            String lowerCaseSearchText = searchText.toLowerCase();
+
+            // Check if any of the ticket's properties contain the search text
+            if (String.valueOf(ticket.getTicket_id()).toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (String.valueOf(ticket.getUser_id()).toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (String.valueOf(ticket.getServer_id()).toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (ticket.getSubject().toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (ticket.getDescription().toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (ticket.getStatus().toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (ticket.getPriority().toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            }
+            return false; // Does not match
+        });
     }
         
     public void changeView(ActionEvent event) {
@@ -53,6 +92,11 @@ public class CRUDSupportTickets {
             updateButton.setVisible(false);
             deleteButton.setVisible(false);
             viewButton.setText("CRUD");
+            filteredData = new FilteredList<>(supportTicketList, b -> true);
+            supportTicketsTable.setItems(filteredData);
+            searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filterTable(newValue);
+            });    
         }       
     }
         
@@ -116,7 +160,7 @@ public class CRUDSupportTickets {
         supportTickets_ar.clear(); // Clear the ArrayList as well
         supportTickets_ar.addAll(new SupportTicket().SELECT_ALL_SUPPORT_TICKETS()); // Populate the ArrayList
         supportTicketList.addAll(supportTickets_ar); // Populate the ObservableList
-        System.out.println("Tickets: " + supportTicketList);
+
     }
 
     public void navigateToUsers(ActionEvent event) {

@@ -40,6 +40,7 @@ public class Orders {
         this.total_amount = new SimpleDoubleProperty(Double.parseDouble(total_amount));
         this.status = new SimpleStringProperty(status);
         this.created_at = new SimpleStringProperty(getCurrentDate());
+        this.order_id = new SimpleIntegerProperty(getNextOrderId());
         newOrder_id();
     }
 
@@ -162,15 +163,17 @@ public class Orders {
     public void INSERT_ORDER(Orders order) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO orders (user_id, server_id, start_date, end_date, total_amount, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            statement.setInt(1, order.getUser_id());
-            statement.setInt(2, order.getServer_id());
-            statement.setString(3, order.getStart_date());
-            statement.setString(4, order.getEnd_date());
-            statement.setDouble(5, order.getTotal_amount());
-            statement.setString(6, order.getStatus());
-            statement.setString(7, order.getCreated_at());
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO orders (order_id ,user_id, server_id, start_date, end_date, total_amount, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            statement.setInt(1, order.getOrder_id());
+            statement.setInt(2, order.getUser_id());
+            statement.setInt(3, order.getServer_id());
+            statement.setString(4, order.getStart_date());
+            statement.setString(5, order.getEnd_date());
+            statement.setDouble(6, order.getTotal_amount());
+            statement.setString(7, order.getStatus());
+            statement.setString(8, order.getCreated_at());
             statement.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

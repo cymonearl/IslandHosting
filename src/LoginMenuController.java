@@ -177,7 +177,7 @@ public class LoginMenuController {
             stage.setTitle(title);
 
             if (fxmlFile.equals("CRUD/CRUDUsersMenu.fxml")) {
-                stage.setWidth(1400);
+                stage.setWidth(1800);
                 stage.setHeight(1000);
             }
 

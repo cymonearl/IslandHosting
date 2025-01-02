@@ -51,6 +51,16 @@
     -fx-text-fill: black;
 }
 
+.search-bar {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
+
 .font-white {
     -fx-text-fill: white;
 }

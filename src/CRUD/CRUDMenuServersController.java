@@ -2,6 +2,7 @@ package CRUD;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,8 +28,11 @@ public class CRUDMenuServersController {
     // Data and Stage Properties
     private ObservableList<Servers> serverList = FXCollections.observableArrayList();
     private ArrayList<Servers> servers_ar = new ArrayList<>();
+    private FilteredList<Servers> filteredData;
     private Scene scene;
     private Stage stage;
+
+    @FXML private TextField searchTextField;
 
     // ========= Initialization =========
     public void initialize() {
@@ -39,7 +43,44 @@ public class CRUDMenuServersController {
         updateButton.setVisible(true);
         deleteButton.setVisible(true);
         viewButton.setText("User View");
+        filteredData = new FilteredList<>(serverList, b -> true);
+        serversTableView.setItems(filteredData);
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterTable(newValue);
+        });
+    }
 
+    public void filterTable(String searchText) {
+        filteredData.setPredicate(server -> {
+            if (searchText == null || searchText.isEmpty()) {
+                return true;
+            }
+            String lowerCaseSearchText = searchText.toLowerCase();
+            if (String.valueOf(server.getServer_id()).toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (server.getName().toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (server.getHardware_type().toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (String.valueOf(server.getRam_gb()).toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (String.valueOf(server.getStorage_gb()).toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (String.valueOf(server.getPrice_per_month()).toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (String.valueOf(server.getStatus()).toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (server.getServer_location().toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (server.getSpecs().toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            } else if (server.getStatus().toLowerCase().contains(lowerCaseSearchText)) {
+                return true;
+            }
+            return false;
+            
+        });
+        serversTableView.setItems(filteredData);
     }
 
     public void changeView(ActionEvent event) {
@@ -59,6 +100,11 @@ public class CRUDMenuServersController {
             updateButton.setVisible(false);
             deleteButton.setVisible(false);
             viewButton.setText("CRUD");
+            filteredData = new FilteredList<>(serverList, b -> true);
+            serversTableView.setItems(filteredData);
+            searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filterTable(newValue);
+            });    
         }       
     }
 

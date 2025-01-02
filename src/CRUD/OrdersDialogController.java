@@ -35,7 +35,7 @@ public class OrdersDialogController {
     }
 
     public void handleSave() {
-        if (validateInput()) {
+        if (!validateInput()) {
             return;
         }
         

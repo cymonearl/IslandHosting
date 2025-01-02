@@ -131,7 +131,6 @@ public class Audit_Logs {
     }
     public void INSERT_AUDIT_LOG(Audit_Logs audit_log) {
         try {
-            System.out.println(audit_log);
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("INSERT INTO audit_logs (log_id, user_id, action_type, description, ip_address, timestamp) VALUES (?, ?, ?, ?, ?, ?)");
             statement.setInt(1, audit_log.getLog_id());

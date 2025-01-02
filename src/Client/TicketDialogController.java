@@ -1,6 +1,7 @@
 package Client;
 
 import Tables.SupportTicket;
+import Tables.Users;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,13 +12,14 @@ public class TicketDialogController {
     @FXML private TextField server_idTextField;
     @FXML private TextField subjectTextField;
     @FXML private TextField descriptionTextField;
-    @FXML private ComboBox<String> statusComboBox;
     @FXML private ComboBox<String> priorityComboBox;
+    private Users user;
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
 
     public void initialize() {
-        statusComboBox.getItems().addAll("Open", "Closed", "In_Progress");
-        statusComboBox.setValue("Open");
-
         priorityComboBox.getItems().addAll("Low", "Medium", "High");
         priorityComboBox.setValue("Low");
     }
@@ -32,10 +34,10 @@ public class TicketDialogController {
             server_id = Integer.parseInt(server_idTextField.getText().trim());
         String title = subjectTextField.getText().trim();
         String description = descriptionTextField.getText().trim();
-        String status = statusComboBox.getValue();
         String priority = priorityComboBox.getValue();
   
-        SupportTicket newTicket = new SupportTicket(server_id, title, description, status, priority);
+        System.out.println(server_id);
+        SupportTicket newTicket = new SupportTicket(user.getUser_id() ,server_id, title, description, "Open", priority);
 
         if (new SupportTicket().INSERT_SUPPORT_TICKET(newTicket)) {
             closeDialog();
@@ -49,10 +51,12 @@ public class TicketDialogController {
         String errorMessage = "";
     
         // Validate server_id
-        try {
-            Integer.parseInt(server_idTextField.getText());
-        } catch (NumberFormatException e) {
-            errorMessage += "No valid server ID (must be an integer)!\n";
+        if (!server_idTextField.getText().isEmpty()) {
+            try {
+                Integer.parseInt(server_idTextField.getText());
+            } catch (NumberFormatException e) {
+                errorMessage += "No valid server ID (must be an integer)!\n";
+            }
         }
 
         // Validate title
@@ -63,11 +67,6 @@ public class TicketDialogController {
         // Validate description
         if (descriptionTextField.getText() == null || descriptionTextField.getText().trim().isEmpty()) {
             errorMessage += "No valid description!\n";
-        }
-
-        // Validate status
-        if (statusComboBox.getValue() == null) {
-            errorMessage += "No valid status selected!\n";
         }
 
         // Validate priority
