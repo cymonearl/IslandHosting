@@ -133,3 +133,39 @@ WHERE t.status IN ('open', 'in_progress');
 
 ### Triggers ###
 
+DELIMITER //
+CREATE TRIGGER update_server_status_occupied
+AFTER INSERT ON Orders
+FOR EACH ROW
+BEGIN
+    UPDATE Servers
+    SET status = 'occupied'
+    WHERE server_id = NEW.server_id;
+END
+//
+DELIMITER ;
+
+### Procedures ###
+
+DELIMITER //
+CREATE PROCEDURE logOrderMade (IN log_id INT, IN user_id INT, IN order_id INT, IN server_id INT, IN start_date DATE, IN end_date DATE, IN total_amount DECIMAL(10,2))
+BEGIN
+    INSERT INTO Audit_Logs (log_id, user_id, action_type, description, ip_address, timestamp)
+    VALUES (log_id, user_id, 'Order Made', 'Order made successfully', '127.0.0.1', NOW());
+
+    INSERT INTO Orders (order_id, user_id, server_id, start_date, end_date, total_amount, status, created_at)
+    VALUES (order_id, user_id, server_id, start_date, end_date, total_amount, 'pending', NOW());
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE deleteOtherData (IN id INT)
+BEGIN
+    DELETE FROM Orders WHERE user_id = id;
+    DELETE FROM Payments WHERE order_id IN (SELECT order_id FROM Orders WHERE user_id = id);
+    DELETE FROM Support_Tickets WHERE user_id = id;
+    DELETE FROM Audit_Logs WHERE user_id = id;
+END;
+//
+DELIMITER ;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -95,10 +96,39 @@
             </VBox>
          </children>
       </HBox>
-      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Your invoices are shown here">
-         <font>
-            <Font size="25.0" />
-         </font>
-      </Text>
+      <VBox VBox.vgrow="SOMETIMES">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Your invoices are shown here">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Text>
+                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="SOMETIMES" />
+                  <VBox prefHeight="200.0" prefWidth="400.0" spacing="5.0">
+                     <children>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Payment Method">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Text>
+                        <ComboBox fx:id="paymentComboBox" cacheShape="false" centerShape="false" prefHeight="40.0" prefWidth="300.0" promptText="Paypal" styleClass="combo-boxDesign" stylesheets="@../style.css">
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+         </padding>
+      </VBox>
    </children>
 </VBox>

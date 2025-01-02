@@ -25,9 +25,9 @@
       <Label styleClass="font-white" stylesheets="@../style.css" text="subject" />
       <TextField fx:id="descriptionTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
       <Label styleClass="font-white" stylesheets="@../style.css" text="description" />
-      <ComboBox fx:id="statusComboBox" prefWidth="150.0" styleClass="button-design" stylesheets="@../style.css" />
+      <ComboBox fx:id="statusComboBox" prefWidth="150.0" styleClass="combo-boxDesign" stylesheets="@../style.css" />
       <Label styleClass="font-white" stylesheets="@../style.css" text="status" />
-      <ComboBox fx:id="priorityComboBox" layoutX="20.0" layoutY="184.0" prefWidth="150.0" styleClass="button-design" stylesheets="@../style.css" />
+      <ComboBox fx:id="priorityComboBox" layoutX="20.0" layoutY="184.0" prefWidth="150.0" styleClass="combo-boxDesign" stylesheets="@../style.css" />
       <Label styleClass="font-white" stylesheets="@../style.css" text="priotity" />
       <Pane maxHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" />
       <HBox>

@@ -259,9 +259,6 @@ public class CRUDSupportTickets {
              
             if (ticket != null) {
                 controller.setTicket(ticket); // Existing ticket for editing
-                 
-            } else {
-                controller.setTicket(new SupportTicket()); // Initialize a new SupportTicket if creating
             }
 
             // Show the dialog

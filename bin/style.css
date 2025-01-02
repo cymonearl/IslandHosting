@@ -60,6 +60,62 @@
     -fx-background-insets: 0;
     -fx-text-fill: white;
 }
+.search-bar:hover {
+    -fx-background-color: white;
+    -fx-border-color: white;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: black;
+}
+.search-bar:pressed {
+    -fx-background-color: gray;
+    -fx-border-color: white;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: black;
+}
+
+.combo-boxDesign {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
+.combo-boxDesign .list-cell {
+    -fx-background-color: white;
+    -fx-border-color: white;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: black;
+}
+.combo-boxDesign .list-view {
+    -fx-background-color: white;
+    -fx-border-color: white;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: black;
+}
+.combo-boxDesign .list-cell:hover {
+    -fx-background-color: gray;
+    -fx-border-color: white;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: black;
+}
+
 
 .font-white {
     -fx-text-fill: white;

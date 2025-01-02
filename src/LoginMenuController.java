@@ -199,6 +199,8 @@ public class LoginMenuController {
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setWidth(908);
+            stage.setHeight(530);
             stage.centerOnScreen();
             stage.show();
         } catch (Exception e) {

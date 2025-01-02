@@ -58,9 +58,8 @@ public class Orders {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        calendar.add(Calendar.MONTH, 12);
-        String next12Months = dateFormat.format(calendar.getTime());
-        return next12Months;
+        calendar.add(Calendar.MONTH, 1);
+        return dateFormat.format(calendar.getTime());
     }
 
     public int getOrder_id() { return order_id.get(); }
@@ -255,5 +254,22 @@ public class Orders {
             e.printStackTrace();
         }
         return orders;
+    }
+
+    public void LOG_ORDER_MADE(Orders order) {
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            CallableStatement statement = connect.prepareCall("{call LOG_ORDER_MADE(?, ?, ?, ?, ?, ?, ?)}");
+            statement.setInt(1, new Audit_Logs().getNextLogId());
+            statement.setInt(2, order.getUser_id());
+            statement.setInt(3, order.getOrder_id());
+            statement.setInt(4, order.getServer_id());
+            statement.setString(5, order.getStart_date());
+            statement.setString(6, order.getEnd_date());
+            statement.setDouble(7, order.getTotal_amount());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

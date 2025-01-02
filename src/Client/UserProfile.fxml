@@ -106,7 +106,7 @@
             </ImageView>
             <VBox alignment="CENTER" prefHeight="534.0" prefWidth="571.0" HBox.hgrow="NEVER">
                <children>
-                  <TextField fx:id="name" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
+                  <TextField fx:id="name" focusTraversable="false" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
                      <font>
                         <Font size="18.0" />
                      </font></TextField>
@@ -115,7 +115,7 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="password" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
+                  <TextField fx:id="password" focusTraversable="false" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
                      <font>
                         <Font size="18.0" />
                      </font></TextField>
@@ -124,7 +124,7 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="address" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
+                  <TextField fx:id="address" focusTraversable="false" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
                      <font>
                         <Font size="18.0" />
                      </font></TextField>
@@ -133,7 +133,7 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="contact_number" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
+                  <TextField fx:id="contact_number" focusTraversable="false" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
                      <font>
                         <Font size="18.0" />
                      </font></TextField>

@@ -55,8 +55,9 @@ public class ServerDialogController {
         String status = statusComboBox.getValue();
 
         if (isNewServer) {
-            new Servers().INSERT_SERVER(new Servers(name, hardware_type, ram_gb, storage_gb, price_per_month, specs, server_location,status));
-            serverList.add(new Servers(name, hardware_type, ram_gb, storage_gb, price_per_month, specs, server_location,status));
+            Servers newServer = new Servers(name, hardware_type, ram_gb, storage_gb, price_per_month, specs, server_location,status);
+            new Servers().INSERT_SERVER(newServer);
+            serverList.add(newServer);
         } else {
             server.setName(name);
             server.setHardware_type(hardware_type);

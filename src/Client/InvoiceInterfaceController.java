@@ -3,8 +3,10 @@ package Client;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
+import javafx.scene.control.ComboBox;
 import javafx.stage.*;
 import javafx.scene.input.MouseEvent;
 import Tables.Orders;
@@ -14,7 +16,12 @@ public class InvoiceInterfaceController {
 
     private Users user;
     private ArrayList<Orders> orders;
+    @FXML private ComboBox<String> paymentComboBox;
 
+    public void initialize() {
+        paymentComboBox.getItems().addAll("Paypal", "Credit Card", "Debit Card", "GCash");
+        paymentComboBox.setValue("Paypal");
+    }
 
     public void setUser(Users user, ArrayList<Orders> orders) {
         this.user = user;

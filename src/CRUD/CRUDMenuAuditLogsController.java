@@ -85,8 +85,6 @@ public class CRUDMenuAuditLogsController {
                 return true;
             } else if (auditLogs.getIp_address().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (auditLogs.getTimestamp().toLowerCase().contains(lowerCaseFilter)) {
-                return true;
             } else if (String.valueOf(auditLogs.getUser_id()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             }
@@ -125,6 +123,9 @@ public class CRUDMenuAuditLogsController {
         TableColumn<Audit_Logs, Integer> log_id = new TableColumn<>("Log ID");
         log_id.setCellValueFactory(new PropertyValueFactory<>("log_id"));
 
+        TableColumn<Audit_Logs, Integer> user_id = new TableColumn<>("User ID");
+        user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+
         TableColumn<Audit_Logs, String> action_type = new TableColumn<>("Action Type");
         action_type.setCellValueFactory(new PropertyValueFactory<>("action_type"));
 
@@ -134,10 +135,7 @@ public class CRUDMenuAuditLogsController {
         TableColumn<Audit_Logs, String> ip_address = new TableColumn<>("IP Address");
         ip_address.setCellValueFactory(new PropertyValueFactory<>("ip_address"));
 
-        TableColumn<Audit_Logs, String> timestamp = new TableColumn<>("Timestamp");
-        timestamp.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
-
-        auditLogsTable.getColumns().addAll(log_id, action_type, description, ip_address, timestamp);
+        auditLogsTable.getColumns().addAll(log_id, user_id, action_type, description, ip_address);
         auditLogsTable.setItems(auditLogsList);
     }
 
