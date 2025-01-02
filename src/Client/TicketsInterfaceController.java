@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Tables.Users;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
@@ -36,6 +37,7 @@ public class TicketsInterfaceController {
         if (tickets.isEmpty()) {
             return;
         }
+        ticketsVBOX.getChildren().clear();
         try {
             for (SupportTicket ticket : tickets) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Ticket.fxml"));
@@ -145,7 +147,7 @@ public class TicketsInterfaceController {
         }
     }
 
-    public void createIssue() {
+    public void createIssue(ActionEvent event) {
         System.out.println("Create issue clicked!");
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TicketDialog.fxml"));
@@ -153,8 +155,12 @@ public class TicketsInterfaceController {
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.centerOnScreen();
-            stage.show();
+            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+                
+            stage.showAndWait();
+
+            populateTickets(new SupportTicket().SELECT_USER_SUPPORT_TICKETS(user.getUser_id()));
         } catch (IOException e) {
             e.printStackTrace();
         }

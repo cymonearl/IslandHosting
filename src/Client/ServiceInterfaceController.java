@@ -79,9 +79,23 @@ public class ServiceInterfaceController {
     }
 
     @FXML
-    private void onInvoiceClick() {
+    private void onInvoiceClick(MouseEvent event) {
         System.out.println("Invoice clicked!");
         // Add logic for navigating to the Invoice page
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("InvoiceInterface.fxml"));
+            Parent root = loader.load();
+    
+            InvoiceInterfaceController controller = loader.getController();
+            controller.setUser(user);
+    
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
