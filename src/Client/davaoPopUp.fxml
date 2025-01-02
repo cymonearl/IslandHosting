@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane prefHeight="534.0" prefWidth="889.0" style="-fx-background-color: #2c2c34; -fx-border-color: #e7b416; -fx-border-width: 2; -fx-border-radius: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.DavaoPopUpController">
+<StackPane prefHeight="534.0" prefWidth="889.0" style="-fx-background-color: #2c2c34; -fx-border-color: #e7b416; -fx-border-width: 2; -fx-border-radius: 10;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.DavaoPopUpController">
     <VBox alignment="CENTER" prefHeight="540.0" prefWidth="796.0" spacing="20.0">
         <Pane prefHeight="95.0" prefWidth="885.0">
             <children>
@@ -23,7 +24,15 @@
                 <Pane prefHeight="342.0" prefWidth="6.0" />
                 <VBox prefHeight="342.0" prefWidth="465.0">
                     <children>
-                        <ImageView fitHeight="116.0" fitWidth="466.0" pickOnBounds="true" preserveRatio="true" />
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                              <ImageView fitHeight="148.0" fitWidth="152.0" layoutX="150.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Pop_Ups/Davao_Icon.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
                         <Pane prefHeight="46.0" prefWidth="466.0" />
                         <VBox prefHeight="317.0" prefWidth="466.0">
                             <children>
