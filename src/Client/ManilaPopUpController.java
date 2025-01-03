@@ -42,6 +42,7 @@ public class ManilaPopUpController {
 
     private ToggleGroup billingToggleGroup;
     private Users user;
+    private ArrayList<Servers> servers = new Servers().AVAILABLE_SERVERS();
 
     // Initialize the pop-up's default values
     @FXML
@@ -67,30 +68,36 @@ public class ManilaPopUpController {
 
     // Update the billing details (order summary and total due)
     private void updateBillingDetails() {
+        Servers server = getInfo("manila");
         if (billingToggleGroup.getSelectedToggle() == bigasRadioButton) {
-            billingCycleLabel.setText("Monthly: Bigas (P 250)");
-            orderSummaryText.setText("- 4 GB RAM\n" +
-                    "- Budget Hardware\n" +
-                    "- Unlimited Slots\n" +
-                    "- 50GB SSD Storage\n" +
-                    "- Up to 120 Gbps DDoS Protection\n" +
-                    "- 5 MySQL Databases\n" +
-                    "- Intuitive Pterodactyl Panel\n" +
-                    "- Auto/Pre-Installed jars\n" +
-                    "- 99.99% Uptime SLA");
+            billingCycleLabel.setText("Monthly: " + server.getPrice_per_month());
+            orderSummaryText.setText(
+            String.format("- Hardware: %s\n- Ram: %s GB\n- Storage: %s GB\n- %s",
+                server.getHardware_type(),
+                server.getRam_gb(),
+                server.getStorage_gb(),
+                server.getSpecs())
+            );
         } else if (billingToggleGroup.getSelectedToggle() == kakaninRadioButton) {
-            billingCycleLabel.setText("Monthly: Kakanin (P 225)");
-            orderSummaryText.setText("- 4 GB RAM\n" +
-                    "- Budget Hardware\n" +
-                    "- Unlimited Slots\n" +
-                    "- 50GB SSD Storage\n" +
-                    "- Up to 120 Gbps DDoS Protection\n" +
-                    "- 5 MySQL Databases\n" +
-                    "- Intuitive Pterodactyl Panel\n" +
-                    "- Auto/Pre-Installed jars\n" +
-                    "- 99.99% Uptime SLA\n" +
-                    "- Save 10%");
+            billingCycleLabel.setText("Monthly: " + (server.getPrice_per_month() - server.getPrice_per_month() * 0.1));
+            orderSummaryText.setText(
+            String.format("- %s\n\n- Hardware: %s\n- Ram: %s GB\n- Storage: %s GB\n- %s",
+        "First Time User Discount, applied for first time server only",
+                server.getHardware_type(),
+                server.getRam_gb(),
+                server.getStorage_gb(),
+                server.getSpecs())
+            );
         }
+    }
+    
+    private Servers getInfo(String name) {
+        for (Servers server : servers) {
+            if (server.getName().toLowerCase().equals(name)) {
+                return server;
+            }
+        }
+        return null;
     }
 
     // Handle the "Check Out" button click

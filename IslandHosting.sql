@@ -162,8 +162,14 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE deleteOtherData (IN id INT)
 BEGIN
-    DELETE FROM Orders WHERE user_id = id;
+    -- Update the status of servers associated with the user's orders to 'available'
+    UPDATE Servers 
+    SET status = 'available' 
+    WHERE server_id IN (SELECT server_id FROM Orders WHERE user_id = id);
+
+    -- Delete records from related tables
     DELETE FROM Payments WHERE order_id IN (SELECT order_id FROM Orders WHERE user_id = id);
+    DELETE FROM Orders WHERE user_id = id;
     DELETE FROM Support_Tickets WHERE user_id = id;
     DELETE FROM Audit_Logs WHERE user_id = id;
 END;

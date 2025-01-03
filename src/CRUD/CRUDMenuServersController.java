@@ -213,7 +213,7 @@ public class CRUDMenuServersController {
             stage.centerOnScreen();
             if (fxmlFile.equals("../LoginMenu.fxml")) {
                 stage.setWidth(650);
-                stage.setHeight(300);
+                stage.setHeight(310);
                 stage.centerOnScreen();
             }
             stage.show();

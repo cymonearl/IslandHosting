@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -21,23 +22,15 @@ import Tables.Orders;
 public class LandingPageController {
 
     // FXML components from the UI
-    @FXML
-    private Button User;
-
-    @FXML
-    private Button Orders;
-
-    @FXML
-    private Button Server;
-
-    @FXML
-    private Text name;
-
-    @FXML
-    private ListView<String> Table_Here;
-
-    @FXML
-    private ImageView UserIcon;
+    @FXML private Button User;
+    @FXML private Button Orders;
+    @FXML private Button Server;
+    @FXML private Text name;
+    @FXML private ListView<String> Table_Here;
+    @FXML private ImageView UserIcon;
+    @FXML private Label manilaCount;
+    @FXML private Label davaoCount;
+    @FXML private Label cebuCount;
 
     private Users user;
     private ArrayList<Orders> orders;
@@ -71,7 +64,6 @@ public class LandingPageController {
         System.out.println("LandingPage initialized!");
         
         // Example: Set default values for some UI elements
-        Table_Here.getItems().addAll("Service 1", "Service 2", "Service 3");
         populateTable();        
     }
     
@@ -81,14 +73,26 @@ public class LandingPageController {
 
     public void populateTable() {
         Table_Here.getItems().clear();
+        int m = 0;
+        int d = 0;
+        int c = 0;
 
         ArrayList<Servers> servers = new Servers().AVAILABLE_SERVERS();
         String[] serverNames = new String[servers.size()];
         for (int i = 0; i < servers.size(); i++) {
             serverNames[i] = servers.get(i).getName();
+            if (servers.get(i).getName().toLowerCase().equals("manila"))
+                m++;
+            if (servers.get(i).getName().toLowerCase().equals("cebu"))
+                c++;
+            if (servers.get(i).getName().toLowerCase().equals("davao"))
+                d++;
         }
 
         Table_Here.getItems().addAll(serverNames);
+        manilaCount.setText(String.valueOf(m));
+        cebuCount.setText(String.valueOf(c));
+        davaoCount.setText(String.valueOf(d));
     }
 
     /**

@@ -15,57 +15,39 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Tables.Orders;
+import Tables.Servers;
 import Tables.SupportTicket;
 import Tables.Users;
 public class ServiceInterfaceController {
 
     // Header Labels
-    @FXML
-    private Label servicesLabel;
-
-    @FXML
-    private Label invoiceLabel;
-
-    @FXML
-    private Label ticketsLabel;
-
-    @FXML
-    private Label helpLabel;
-
-    @FXML
-    private Label userLabel;
-
-    @FXML
-    private ImageView islandHostIcon;
-
+    @FXML private Label servicesLabel;
+    @FXML private Label invoiceLabel;
+    @FXML private Label ticketsLabel;
+    @FXML private Label helpLabel;
+    @FXML private Label userLabel;
+    @FXML private ImageView islandHostIcon;
     // Service Details Labels
-    @FXML
-    private Label manilaLabel;
-
-    @FXML
-    private VBox Manila;
-
-    @FXML
-    private  VBox Davao;
-
-    @FXML
-    private  VBox Cebu;
-
-    @FXML
-    private Label davaoLabel;
-
-    @FXML
-    private Label cebuLabel;
+    @FXML private Label manilaLabel;
+    @FXML private VBox Manila;
+    @FXML private  VBox Davao;
+    @FXML private  VBox Cebu;
+    @FXML private Label davaoLabel;
+    @FXML private Label cebuLabel;
+    @FXML private Label davaoCount;
+    @FXML private Label manilaCount;
+    @FXML private Label cebuCount;
 
     private Users user;
     private ArrayList<Orders> orders;
+    private ArrayList<Servers> servers = new Servers().AVAILABLE_SERVERS();
 
     public void setUser(Users user, ArrayList<Orders> orders) {
         this.user = user;
         this.orders = orders;
     }
 
-    public void setUser(Users user, Tables.Orders order) {
+    public void setUser(Users user, Orders order) {
         this.user = user;
         this.orders.add(order);
     }
@@ -85,6 +67,25 @@ public class ServiceInterfaceController {
         manilaLabel.setText("Manila");
         davaoLabel.setText("Davao");
         cebuLabel.setText("Cebu");
+
+        countStocks();
+    }
+
+    private void countStocks() {
+        int m = 0, c = 0, d = 0;
+
+        for (Servers server : servers) {
+            if (server.getName().toLowerCase().equals("manila"))
+                m++;
+            if (server.getName().toLowerCase().equals("davao"))
+                d++;
+            if (server.getName().toLowerCase().equals("cebu"))
+                c++;            
+        }
+
+        manilaCount.setText(String.valueOf(m) + " Available");
+        davaoCount.setText(String.valueOf(d) + " Available");
+        cebuCount.setText(String.valueOf(c) + " Available");
     }
 
     @FXML

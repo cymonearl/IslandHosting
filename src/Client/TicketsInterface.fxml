@@ -19,6 +19,7 @@
             <Insets bottom="20" left="20" right="20" top="20" />
          </padding>
          <children>
+            <Pane layoutX="171.0" layoutY="30.0" prefHeight="90.0" prefWidth="60.0" HBox.hgrow="SOMETIMES" />
             <ImageView fitHeight="100.0" fitWidth="100.0" onMouseClicked="#navigateToLandingPage" preserveRatio="true">
                <image>
                   <Image url="@User_Interface_edited.png" />
@@ -95,6 +96,7 @@
                   </Label>
                </children>
             </VBox>
+            <Pane layoutX="171.0" layoutY="30.0" prefHeight="90.0" prefWidth="60.0" HBox.hgrow="SOMETIMES" />
          </children>
       </HBox>
       <VBox prefHeight="413.0" prefWidth="1200.0" VBox.vgrow="SOMETIMES">

@@ -196,11 +196,11 @@ public class LoginMenuController {
             lpc.setUser(user);
             user.LOGIN(user);
             lpc.getOrders();
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+            stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setWidth(908);
-            stage.setHeight(530);
             stage.centerOnScreen();
             stage.show();
         } catch (Exception e) {
