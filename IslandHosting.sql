@@ -100,37 +100,6 @@ SELECT server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, loca
 FROM Servers 
 WHERE status = 'available'; 
 
-CREATE VIEW UserOrders AS
-SELECT 
-    o.order_id, 
-    o.user_id, 
-    u.username, 
-    s.name AS server_name, 
-    o.start_date, 
-    o.end_date, 
-    o.total_amount, 
-    o.status AS order_status 
-FROM Orders o 
-JOIN Users u ON o.user_id = u.user_id 
-JOIN Servers s ON o.server_id = s.server_id; 
-
-CREATE VIEW UnresolvedTickets AS 
-SELECT  
-    t.ticket_id, 
-    t.user_id, 
-    u.username, 
-    t.server_id, 
-    s.name AS server_name, 
-    t.subject, 
-    t.description, 
-    t.priority, 
-    t.status, 
-    t.created_at 
-FROM Support_Tickets t 
-JOIN Users u ON t.user_id = u.user_id 
-JOIN Servers s ON t.server_id = s.server_id 
-WHERE t.status IN ('open', 'in_progress'); 
-
 ### Triggers ###
 
 DELIMITER //
@@ -145,6 +114,30 @@ END
 //
 DELIMITER ;
 
+DELIMITER //
+CREATE TRIGGER update_server_status_available
+AFTER DELETE ON Orders
+FOR EACH ROW
+BEGIN
+    UPDATE Servers
+    SET status = 'available'
+    WHERE server_id = OLD.server_id;
+END
+//
+
+DELIMITER //
+CREATE TRIGGER resolve_issue
+BEFORE UPDATE ON Support_Tickets
+FOR EACH ROW
+BEGIN
+    IF NEW.status = 'closed' OR NEW.status = 'resolved' THEN
+        SET NEW.resolved_at = NOW();
+    END IF;
+END;
+//
+DELIMITER ;
+
+
 ### Procedures ###
 
 DELIMITER //
@@ -155,6 +148,15 @@ BEGIN
 
     INSERT INTO Orders (order_id, user_id, server_id, start_date, end_date, total_amount, status, created_at)
     VALUES (order_id, user_id, server_id, start_date, end_date, total_amount, 'pending', NOW());
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE payOrder (IN payment_id INT, IN order_id INT, IN amount DECIMAL(10,2), IN payment_method VARCHAR(50), IN transaction_id VARCHAR(100), IN payment_status ENUM('pending', 'completed', 'failed', 'refunded'))
+BEGIN
+    INSERT INTO Payments (payment_id, order_id, amount, payment_method, transaction_id, payment_status, payment_date)
+    VALUES (payment_id, order_id, amount, payment_method, transaction_id, payment_status, NOW());
 END;
 //
 DELIMITER ;

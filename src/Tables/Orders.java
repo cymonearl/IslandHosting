@@ -39,9 +39,15 @@ public class Orders {
         this.end_date = new SimpleStringProperty(getNext12Months(start_date));
         this.total_amount = new SimpleDoubleProperty(Double.parseDouble(total_amount));
         this.status = new SimpleStringProperty(status);
-        this.created_at = new SimpleStringProperty(getCurrentDate());
+        this.created_at = new SimpleStringProperty(getCurrentTime());
         this.order_id = new SimpleIntegerProperty(getNextOrderId());
         newOrder_id();
+    }
+
+    private String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = dateFormat.format(new Date().getTime());
+        return currentTime;
     }
 
     private String getCurrentDate() {
@@ -86,6 +92,19 @@ public class Orders {
     private static final String USER = "root"; //DB user
     private static final String PASS = ""; //DB password
 
+    public String toString() {
+        return "Orders{" +
+                "order_id=" + order_id +
+                ", user_id=" + user_id +
+                ", server_id=" + server_id +
+                ", start_date=" + start_date +
+                ", end_date=" + end_date +
+                ", total_amount=" + total_amount +
+                ", status=" + status +
+                ", created_at=" + created_at +
+                '}';
+    }
+
     public ArrayList<Orders> SELECT_ALL_ORDERS() {
         ArrayList<Orders> orders = new ArrayList<>();
         Orders order = null;
@@ -111,15 +130,15 @@ public class Orders {
         }
         return orders;
     }
-    public Orders SELECT_ORDER_ID(int user_id) {
-        Orders order = null;
+    public ArrayList<Orders> SELECT_ORDER_ID(int user_id) {
+        ArrayList<Orders> orders = new ArrayList<>();
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM orders WHERE user_id = ?");
             statement.setInt(1, user_id);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                order = new Orders();
+                Orders order = new Orders();
 
                 order.setOrder_id(result.getInt("order_id"));
                 order.setUser_id(result.getInt("user_id"));
@@ -129,11 +148,12 @@ public class Orders {
                 order.setTotal_amount(result.getDouble("total_amount"));
                 order.setStatus(result.getString("status"));
                 order.setCreated_at(result.getString("created_at"));
+                orders.add(order);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return order;
+        return orders;
     }
     public int getNextOrderId() {
         int nextId = 1; // Default to 1 if the table is empty or no gaps exist
@@ -205,61 +225,10 @@ public class Orders {
         }            
     }   
 
-    public ArrayList<Orders> USER_ORDERS(int user_id) {
-        ArrayList<Orders> orders = new ArrayList<>();
-        try {
-            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("SELECT * FROM UserOrders WHERE user_id = ?");
-            statement.setInt(1, user_id);
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                Orders order = new Orders();
-
-                order.setOrder_id(result.getInt("order_id"));
-                order.setUser_id(result.getInt("user_id"));
-                order.setServer_id(result.getInt("server_id"));
-                order.setStart_date(result.getString("start_date"));
-                order.setEnd_date(result.getString("end_date"));
-                order.setTotal_amount(result.getDouble("total_amount"));
-                order.setStatus(result.getString("status"));
-                order.setCreated_at(result.getString("created_at"));
-                orders.add(order);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return orders;
-    }
-
-    public ArrayList<Orders> USER_ORDERS() {
-        ArrayList<Orders> orders = new ArrayList<>();
-        try {
-            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("SELECT * FROM UserOrders");
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                Orders order = new Orders();
-
-                order.setOrder_id(result.getInt("order_id"));
-                order.setUser_id(result.getInt("user_id"));
-                order.setServer_id(result.getInt("server_id"));
-                order.setStart_date(result.getString("start_date"));
-                order.setEnd_date(result.getString("end_date"));
-                order.setTotal_amount(result.getDouble("total_amount"));
-                order.setStatus(result.getString("status"));
-                order.setCreated_at(result.getString("created_at"));
-                orders.add(order);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return orders;
-    }
-
     public void LOG_ORDER_MADE(Orders order) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            CallableStatement statement = connect.prepareCall("{call LOG_ORDER_MADE(?, ?, ?, ?, ?, ?, ?)}");
+            CallableStatement statement = connect.prepareCall("{call logOrderMade(?, ?, ?, ?, ?, ?, ?)}");
             statement.setInt(1, new Audit_Logs().getNextLogId());
             statement.setInt(2, order.getUser_id());
             statement.setInt(3, order.getOrder_id());
@@ -270,6 +239,21 @@ public class Orders {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void COMPLETE_ORDER(ArrayList<Orders> orders) {
+        for (Orders order : orders) {
+            try {
+                Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+                PreparedStatement statement = connect.prepareStatement("UPDATE orders SET status = ? WHERE status = ? AND order_id = ?");
+                statement.setString(1, "Completed");
+                statement.setString(2, "Pending");
+                statement.setInt(3, order.getOrder_id());
+                statement.executeUpdate();
+            }   catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

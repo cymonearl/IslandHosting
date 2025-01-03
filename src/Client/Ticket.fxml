@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="1000.0" style="-fx-background-color: #1c1c26;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ticketController">
+<VBox prefWidth="1000.0" style="-fx-background-color: gray; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ticketController">
    <children>
-      <HBox prefHeight="20.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+      <HBox prefHeight="40.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
          <children>
             <Label fx:id="created_atTF" layoutX="876.0" layoutY="30.0" styleClass="font-white" stylesheets="@../style.css" text="created_at" wrapText="true">
                <font>
@@ -48,7 +48,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </HBox>
-      <HBox prefWidth="200.0" VBox.vgrow="SOMETIMES">
+      <HBox prefHeight="40.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
          <children>
             <Label fx:id="descriptionTF" styleClass="font-white" stylesheets="@../style.css" text="Description" wrapText="true" HBox.hgrow="SOMETIMES">
                <font>

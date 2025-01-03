@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -32,6 +33,8 @@ public class CebuPopUpController {
     @FXML
     private Label billingCycleLabel;
 
+    @FXML private Pane kakaninPane;
+
     private ToggleGroup billingCycleGroup;
 
     private Users user;
@@ -39,6 +42,12 @@ public class CebuPopUpController {
 
     public void setUser(Users user) {
         this.user = user;
+
+        for (Orders order : new Orders().SELECT_ORDER_ID(user.getUser_id())) {
+            if (user.getUser_id() == order.getUser_id()) {
+                kakaninPane.setVisible(false);
+            }
+        }
     }
 
     @FXML
@@ -92,11 +101,16 @@ public class CebuPopUpController {
         return null;
     }
 
+    private double getPrice(boolean b) {
+        Servers server = getInfo("cebu");
+        return b ? server.getPrice_per_month() : (server.getPrice_per_month() - server.getPrice_per_month() * 0.1);
+    }
+
     @FXML
     private void handleCheckOut() {
         // Get the selected billing cycle and total due
         String selectedBillingCycle = billingCycleLabel.getText();
-        String totalDue = billingCycleLabel.getText().contains("Bigas") ? "P 100" : "P 90";
+        String totalDue = billingCycleLabel.getText().contains(String.valueOf(getPrice(true))) ?  "Monthly: "+ String.valueOf(getPrice(true)) :  "Monthly: " + String.valueOf(getPrice(false)); ;
 
         // Perform checkout confirmation using JOptionPane
         int confirmation = JOptionPane.showConfirmDialog(
@@ -129,11 +143,15 @@ public class CebuPopUpController {
                 return;
             }
             
-            // Orders order = new Orders(String.valueOf(user.getUser_id()), String.valueOf(servers.getFirst()),  totalDue, "Pending");
-            // // new Orders().INSERT_ORDER(order);
-            // System.out.println(order);
-            // ServiceInterfaceController controller = new ServiceInterfaceController();
-            // controller.setUser(user, order);
+            double price = billingCycleLabel.getText().contains(String.valueOf(getPrice(true))) ?  getPrice(true) :  getPrice(false);
+            Orders order = new Orders(String.valueOf(user.getUser_id()), String.valueOf(servers.getFirst().getServer_id()),  String.valueOf(price), "Pending");
+            System.out.println(order);
+            new Orders().LOG_ORDER_MADE(order);
+
+            if (s != null) {
+                s.countStocks();
+            }
+
             Stage stage = (Stage) checkoutButton.getScene().getWindow();
             stage.close();
         } else {
@@ -152,5 +170,11 @@ public class CebuPopUpController {
         // Close the pop-up window
         Stage stage = (Stage) checkoutButton.getScene().getWindow();
         stage.close();
+    }
+
+    private ServiceInterfaceController s;
+
+    public void setServiceController(ServiceInterfaceController s) {
+        this.s = s;
     }
 }

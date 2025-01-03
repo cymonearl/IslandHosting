@@ -6,19 +6,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import Tables.Orders;
 import Tables.SupportTicket;
 import Tables.Users;
 public class HelpInterfaceController {
 
     Users user;
-    ArrayList<Orders> orders;
 
-    public void setUser(Users user, ArrayList<Orders> orders) {
+    public void setUser(Users user) {
         this.user = user;
-        this.orders = orders;
     }
 
     public void servicesClicked(MouseEvent event) {
@@ -27,7 +23,7 @@ public class HelpInterfaceController {
             Parent root = loader.load();
     
             ServiceInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -44,7 +40,7 @@ public class HelpInterfaceController {
             Parent root = loader.load();
     
             InvoiceInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -61,7 +57,7 @@ public class HelpInterfaceController {
             Parent root = loader.load();
     
             TicketsInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
             controller.populateTickets(new SupportTicket().SELECT_USER_SUPPORT_TICKETS(user.getUser_id()));
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -79,7 +75,7 @@ public class HelpInterfaceController {
             Parent root = loader.load();
     
             HelpInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -96,7 +92,7 @@ public class HelpInterfaceController {
             Parent root = loader.load();
     
             UserProfileController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -113,7 +109,7 @@ public class HelpInterfaceController {
             Parent root = loader.load();
 
             LandingPageController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);

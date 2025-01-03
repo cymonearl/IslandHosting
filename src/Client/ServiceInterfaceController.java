@@ -1,9 +1,11 @@
 package Client;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -12,9 +14,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import Tables.Orders;
 import Tables.Servers;
 import Tables.SupportTicket;
 import Tables.Users;
@@ -39,17 +39,10 @@ public class ServiceInterfaceController {
     @FXML private Label cebuCount;
 
     private Users user;
-    private ArrayList<Orders> orders;
-    private ArrayList<Servers> servers = new Servers().AVAILABLE_SERVERS();
+    int m = 0, c = 0, d = 0;
 
-    public void setUser(Users user, ArrayList<Orders> orders) {
+    public void setUser(Users user) {
         this.user = user;
-        this.orders = orders;
-    }
-
-    public void setUser(Users user, Orders order) {
-        this.user = user;
-        this.orders.add(order);
     }
 
     @FXML
@@ -71,10 +64,10 @@ public class ServiceInterfaceController {
         countStocks();
     }
 
-    private void countStocks() {
-        int m = 0, c = 0, d = 0;
+    public void countStocks() {
+        m = c = d = 0;
 
-        for (Servers server : servers) {
+        for (Servers server : new Servers().AVAILABLE_SERVERS()) {
             if (server.getName().toLowerCase().equals("manila"))
                 m++;
             if (server.getName().toLowerCase().equals("davao"))
@@ -83,6 +76,7 @@ public class ServiceInterfaceController {
                 c++;            
         }
 
+        System.out.println("Manila: " + m + " Davao: " + d + " Cebu: " + c);
         manilaCount.setText(String.valueOf(m) + " Available");
         davaoCount.setText(String.valueOf(d) + " Available");
         cebuCount.setText(String.valueOf(c) + " Available");
@@ -97,7 +91,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
     
             InvoiceInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -118,7 +112,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
     
             TicketsInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
             controller.populateTickets(new SupportTicket().SELECT_USER_SUPPORT_TICKETS(user.getUser_id()));
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -139,7 +133,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
     
             HelpInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -157,7 +151,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
     
             InvoiceInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -177,7 +171,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
     
             UserProfileController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
@@ -196,7 +190,7 @@ public class ServiceInterfaceController {
             Parent root = loader.load();
 
             LandingPageController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
@@ -212,20 +206,55 @@ public class ServiceInterfaceController {
     }
 
     @FXML
+    private void navigateToLandingPage(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("LandingPage.fxml"));
+            Parent root = loader.load();
+
+            LandingPageController controller = loader.getController();
+            controller.setUser(user);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setTitle("Landing Page");
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+                System.out.println("Error landingPage");
+        }
+    }
+
+
+    @FXML
     private void onManilaClick() {
+        if (m == 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("No Server Available");
+            alert.setHeaderText("No Manila Server Available");
+            alert.setContentText("Please try again later");
+            alert.showAndWait();
+            return;
+        }
+
         try {
             System.out.println("Manila clicked!");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("manilaPopUp.fxml"));
-            Scene scene = new Scene(loader.load());
+            Parent root = loader.load();
     
             // Create a new stage for the pop-up
             ManilaPopUpController controller = loader.getController();
             controller.setUser(user);
+            controller.setServiceController(this);
     
             Stage popupStage = new Stage();
+            Scene scene = new Scene(root);
+
             popupStage.setScene(scene);
             popupStage.setTitle("Manila");
-            popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog
+            popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog;
             popupStage.centerOnScreen();
             popupStage.show();
         } catch (IOException e) {
@@ -235,6 +264,15 @@ public class ServiceInterfaceController {
 
     @FXML
     private void onCebuClick() {
+        if (c == 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("No Server Available");
+            alert.setHeaderText("No Cebu Server Available");
+            alert.setContentText("Please try again later");
+            alert.showAndWait();
+            return;
+        }
+
         System.out.println("Cebu clicked!");
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("cebuPopUp.fxml"));
@@ -243,6 +281,7 @@ public class ServiceInterfaceController {
             // Create a new stage for the pop-up
             CebuPopUpController controller = loader.getController();
             controller.setUser(user);
+            controller.setServiceController(this);
     
             Stage popupStage = new Stage();
             popupStage.setScene(scene);
@@ -257,6 +296,15 @@ public class ServiceInterfaceController {
 
     @FXML
     private void onDavaoClick() {
+        if (d == 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("No Server Available");
+            alert.setHeaderText("No Davao Server Available");
+            alert.setContentText("Please try again later");
+            alert.showAndWait();
+            return;
+        }
+
         System.out.println("Davao clicked!");
         try {
             System.out.println("Manila clicked!");
@@ -266,6 +314,7 @@ public class ServiceInterfaceController {
             // Create a new stage for the pop-up
             DavaoPopUpController controller = loader.getController();
             controller.setUser(user);
+            controller.setServiceController(this);
     
             Stage popupStage = new Stage();
             popupStage.setScene(scene);
@@ -275,29 +324,6 @@ public class ServiceInterfaceController {
             popupStage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void openPopUp(String fxml, String title) {
-        try {
-            // Load the pop-up FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-            Scene scene = new Scene(loader.load());
-
-            // Create a new stage for the pop-up
-            ManilaPopUpController controller = loader.getController();
-            controller.setUser(user);
-
-            Stage popupStage = new Stage();
-            popupStage.setScene(scene);
-            popupStage.setTitle(title);
-            popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog
-            popupStage.centerOnScreen();
-            popupStage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error loading pop-up." + fxml + " " + title);
         }
     }
 }

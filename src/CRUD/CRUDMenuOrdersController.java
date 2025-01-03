@@ -82,7 +82,7 @@ public class CRUDMenuOrdersController {
             userViewMode = true;
             initializeTableColumnsUV();
             CRUD.setText("User View");
-            populateUserOrders();
+            populateTable();
             createButton.setVisible(false);
             updateButton.setVisible(false);
             deleteButton.setVisible(false);
@@ -159,11 +159,6 @@ public class CRUDMenuOrdersController {
     
     public void populateTable() {
         orders_ar = new Orders().SELECT_ALL_ORDERS();
-        orderList.addAll(orders_ar);
-    }
-
-    public void populateUserOrders() {
-        orders_ar = new Orders().USER_ORDERS();
         orderList.addAll(orders_ar);
     }
 

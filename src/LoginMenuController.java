@@ -195,7 +195,6 @@ public class LoginMenuController {
             LandingPageController lpc = loader.getController();
             lpc.setUser(user);
             user.LOGIN(user);
-            lpc.getOrders();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
             stage = new Stage();

@@ -111,10 +111,15 @@
             </HBox>
          </children>
       </VBox>
-          <Pane layoutX="632.0" layoutY="225.0" prefHeight="275.0" prefWidth="222.0" style="-fx-background-radius: 40; -fx-border-radius: 40;">
-              <children>
-                  <ListView fx:id="Table_Here" layoutX="3.0" prefHeight="275.0" prefWidth="216.0" style="-fx-border-radius: 40; -fx-background-radius: 40;" stylesheets="@../style.css" />
-              </children>
-          </Pane>
+      <VBox layoutX="608.0" layoutY="225.0">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Servers Owned" textAlignment="RIGHT" wrappingWidth="280.0">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Text>
+                  <ListView fx:id="Table_Here" prefHeight="221.0" prefWidth="216.0" style="-fx-border-radius: 40; -fx-background-radius: 40;" stylesheets="@../style.css" />
+         </children>
+      </VBox>
       </children>
   </AnchorPane>
