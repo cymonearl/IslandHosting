@@ -59,8 +59,9 @@ public class UserDialogController {
         if (isNewUser) {
             if (!validateUser())
                 return;
-            new Users().INSERT_USER(new Users(username, email, password, full_name, contact_number, address, status));
-            userList.add(new Users(username, email, password, full_name, contact_number, address, status));
+            Users newUser = new Users(username, email, password, full_name, contact_number, address, status);
+            new Users().INSERT_USER(newUser);
+            userList.add(newUser);
         } else {
             user.setUsername(username);
             user.setEmail(email);                                

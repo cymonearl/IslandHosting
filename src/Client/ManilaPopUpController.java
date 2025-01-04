@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -40,13 +41,17 @@ public class ManilaPopUpController {
     @FXML
     private Text orderSummaryText;
 
+    @FXML private Pane kakaninPane;
+
     private ToggleGroup billingToggleGroup;
     private Users user;
+    private ArrayList<Servers> servers = new Servers().AVAILABLE_SERVERS();
 
     // Initialize the pop-up's default values
     @FXML
     private void initialize() {
         // Create the ToggleGroup and assign it to the radio buttons
+
         billingToggleGroup = new ToggleGroup();
         bigasRadioButton.setToggleGroup(billingToggleGroup);
         kakaninRadioButton.setToggleGroup(billingToggleGroup);
@@ -63,34 +68,51 @@ public class ManilaPopUpController {
 
     public void setUser(Users user) {
         this.user = user;
+
+        for (Orders order : new Orders().SELECT_ORDER_ID(user.getUser_id())) {
+            if (user.getUser_id() == order.getUser_id()) {
+                kakaninPane.setVisible(false);
+            }
+        }
     }
 
     // Update the billing details (order summary and total due)
     private void updateBillingDetails() {
+        Servers server = getInfo("manila");
         if (billingToggleGroup.getSelectedToggle() == bigasRadioButton) {
-            billingCycleLabel.setText("Monthly: Bigas (P 250)");
-            orderSummaryText.setText("- 4 GB RAM\n" +
-                    "- Budget Hardware\n" +
-                    "- Unlimited Slots\n" +
-                    "- 50GB SSD Storage\n" +
-                    "- Up to 120 Gbps DDoS Protection\n" +
-                    "- 5 MySQL Databases\n" +
-                    "- Intuitive Pterodactyl Panel\n" +
-                    "- Auto/Pre-Installed jars\n" +
-                    "- 99.99% Uptime SLA");
+            billingCycleLabel.setText("Monthly: " + server.getPrice_per_month());
+            orderSummaryText.setText(
+            String.format("- Hardware: %s\n- Ram: %s GB\n- Storage: %s GB\n- %s",
+                server.getHardware_type(),
+                server.getRam_gb(),
+                server.getStorage_gb(),
+                server.getSpecs())
+            );
         } else if (billingToggleGroup.getSelectedToggle() == kakaninRadioButton) {
-            billingCycleLabel.setText("Monthly: Kakanin (P 225)");
-            orderSummaryText.setText("- 4 GB RAM\n" +
-                    "- Budget Hardware\n" +
-                    "- Unlimited Slots\n" +
-                    "- 50GB SSD Storage\n" +
-                    "- Up to 120 Gbps DDoS Protection\n" +
-                    "- 5 MySQL Databases\n" +
-                    "- Intuitive Pterodactyl Panel\n" +
-                    "- Auto/Pre-Installed jars\n" +
-                    "- 99.99% Uptime SLA\n" +
-                    "- Save 10%");
+            billingCycleLabel.setText("Monthly: " + (server.getPrice_per_month() - server.getPrice_per_month() * 0.1));
+            orderSummaryText.setText(
+            String.format("- %s\n\n- Hardware: %s\n- Ram: %s GB\n- Storage: %s GB\n- %s",
+        "First Time User Discount, applied for first time server only",
+                server.getHardware_type(),
+                server.getRam_gb(),
+                server.getStorage_gb(),
+                server.getSpecs())
+            );
         }
+    }
+    
+    private Servers getInfo(String name) {
+        for (Servers server : servers) {
+            if (server.getName().toLowerCase().equals(name)) {
+                return server;
+            }
+        }
+        return null;
+    }
+
+    private double getPrice(boolean b) {
+        Servers server = getInfo("manila");
+        return b ? server.getPrice_per_month() : (server.getPrice_per_month() - server.getPrice_per_month() * 0.1);
     }
 
     // Handle the "Check Out" button click
@@ -98,7 +120,7 @@ public class ManilaPopUpController {
     private void handleCheckOut() {
         // Get the selected billing cycle and total due
         String selectedBillingCycle = billingCycleLabel.getText();
-        String totalDue = billingCycleLabel.getText().contains("Bigas") ? "P 250" : "P 225";
+        String totalDue = billingCycleLabel.getText().contains(String.valueOf(getPrice(true))) ?  "Monthly: "+ String.valueOf(getPrice(true)) :  "Monthly: " + String.valueOf(getPrice(false));
 
         // Perform checkout confirmation using JOptionPane
         int confirmation = JOptionPane.showConfirmDialog(
@@ -131,12 +153,15 @@ public class ManilaPopUpController {
                 return;
             }
             
-            // System.out.println(totalDue);
-            // Orders order = new Orders(String.valueOf(user.getUser_id()), String.valueOf(servers.getFirst()),  totalDue, "Pending");
-            // // new Orders().INSERT_ORDER(order);
-            // System.out.println(order);
-            // ServiceInterfaceController controller = new ServiceInterfaceController();
-            // controller.setUser(user, order);
+            double price = billingCycleLabel.getText().contains(String.valueOf(getPrice(true))) ?  getPrice(true) :  getPrice(false);
+            Orders order = new Orders(String.valueOf(user.getUser_id()), String.valueOf(servers.getFirst().getServer_id()),  String.valueOf(price), "Pending");
+            System.out.println(order);
+            new Orders().LOG_ORDER_MADE(order);
+
+            if (s != null) {
+                s.countStocks();
+            }
+            
             Stage stage = (Stage) checkoutButton.getScene().getWindow();
             stage.close();
         } else {
@@ -155,4 +180,10 @@ public class ManilaPopUpController {
         Stage stage = (Stage) checkoutButton.getScene().getWindow();
         stage.close();
     };
+
+    private ServiceInterfaceController s;
+
+    public void setServiceController(ServiceInterfaceController s) {
+        this.s = s;
+    }
 }

@@ -297,7 +297,7 @@ public class Servers {
         ArrayList<Servers> serverList = new ArrayList<>();
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("SELECT * FROM AvailableServers WHERE ram_gb = ? ANDEMai storage_gb = ?;");
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM AvailableServers WHERE ram_gb = ? AND storage_gb = ?;");
             statement.setInt(1, ram_gb);
             statement.setInt(2, storage_gb);
             ResultSet result = statement.executeQuery();
@@ -318,6 +318,18 @@ public class Servers {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return serverList;
+    }
+
+    public ArrayList<Servers> SERVERS_OWNED(ArrayList<Orders> orders) {
+        ArrayList<Servers> serverList = new ArrayList<>();
+        for (Orders order : orders) {
+            if (order.getStatus().equals("completed")) {
+                Servers server = new Servers();
+                server = new Servers().SELECT_SERVER(order.getServer_id());
+                serverList.add(server);
+            }
         }
         return serverList;
     }

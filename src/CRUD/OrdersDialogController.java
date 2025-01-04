@@ -45,8 +45,9 @@ public class OrdersDialogController {
         String status = statusComboBox.getValue();
         
         if (isNewOrder) {
-            new Orders().INSERT_ORDER(new Orders(user_id, server_id, total_amount, status));
-            orderList.add(new Orders(user_id, server_id, total_amount, status));
+            Orders newOrder = new Orders(user_id, server_id, total_amount, status);
+            new Orders().INSERT_ORDER(newOrder);
+            orderList.add(newOrder);
         } else {
             order.setUser_id(Integer.parseInt(user_idTextField.getText()));
             order.setServer_id(Integer.parseInt(server_idTextField.getText()));

@@ -19,6 +19,7 @@
             <Insets bottom="20" left="20" right="20" top="20" />
          </padding>
          <children>
+            <Pane layoutX="957.0" layoutY="30.0" prefHeight="90.0" prefWidth="60.0" HBox.hgrow="SOMETIMES" />
             <ImageView fitHeight="100.0" fitWidth="100.0" onMouseClicked="#navigateToLandingPage" preserveRatio="true">
                <image>
                   <Image url="@User_Interface_edited.png" />
@@ -95,6 +96,7 @@
                   </Label>
                </children>
             </VBox>
+            <Pane layoutX="171.0" layoutY="30.0" prefHeight="90.0" prefWidth="60.0" HBox.hgrow="SOMETIMES" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="534.0" prefWidth="1200.0" spacing="50.0">
@@ -106,7 +108,7 @@
             </ImageView>
             <VBox alignment="CENTER" prefHeight="534.0" prefWidth="571.0" HBox.hgrow="NEVER">
                <children>
-                  <TextField fx:id="name" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
+                  <TextField fx:id="name" focusTraversable="false" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
                      <font>
                         <Font size="18.0" />
                      </font></TextField>
@@ -115,7 +117,7 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="password" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
+                  <TextField fx:id="password" focusTraversable="false" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
                      <font>
                         <Font size="18.0" />
                      </font></TextField>
@@ -124,7 +126,7 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="address" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
+                  <TextField fx:id="address" focusTraversable="false" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
                      <font>
                         <Font size="18.0" />
                      </font></TextField>
@@ -133,7 +135,7 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="contact_number" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
+                  <TextField fx:id="contact_number" focusTraversable="false" prefHeight="35.0" prefWidth="207.0" styleClass="textfield-design" stylesheets="@../style.css">
                      <font>
                         <Font size="18.0" />
                      </font></TextField>

@@ -179,6 +179,10 @@ public class CRUDSupportTickets {
         navigateToScene(event, "CRUDAuditLogsMenu.fxml");
     }
 
+    public void navigateToPayments(ActionEvent event) {
+        navigateToScene(event, "CRUDPaymentsMenu.fxml");
+    }
+
     private void navigateToScene(ActionEvent event, String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
@@ -192,7 +196,7 @@ public class CRUDSupportTickets {
             stage.centerOnScreen();
             if (fxmlFile.equals("../LoginMenu.fxml")) {
                 stage.setWidth(650);
-                stage.setHeight(300);
+                stage.setHeight(310);
                 stage.centerOnScreen();
             }
             stage.show();
@@ -259,9 +263,6 @@ public class CRUDSupportTickets {
              
             if (ticket != null) {
                 controller.setTicket(ticket); // Existing ticket for editing
-                 
-            } else {
-                controller.setTicket(new SupportTicket()); // Initialize a new SupportTicket if creating
             }
 
             // Show the dialog

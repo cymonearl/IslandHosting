@@ -100,36 +100,80 @@ SELECT server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, loca
 FROM Servers 
 WHERE status = 'available'; 
 
-CREATE VIEW UserOrders AS
-SELECT 
-    o.order_id, 
-    o.user_id, 
-    u.username, 
-    s.name AS server_name, 
-    o.start_date, 
-    o.end_date, 
-    o.total_amount, 
-    o.status AS order_status 
-FROM Orders o 
-JOIN Users u ON o.user_id = u.user_id 
-JOIN Servers s ON o.server_id = s.server_id; 
-
-CREATE VIEW UnresolvedTickets AS 
-SELECT  
-    t.ticket_id, 
-    t.user_id, 
-    u.username, 
-    t.server_id, 
-    s.name AS server_name, 
-    t.subject, 
-    t.description, 
-    t.priority, 
-    t.status, 
-    t.created_at 
-FROM Support_Tickets t 
-JOIN Users u ON t.user_id = u.user_id 
-JOIN Servers s ON t.server_id = s.server_id 
-WHERE t.status IN ('open', 'in_progress'); 
-
 ### Triggers ###
 
+DELIMITER //
+CREATE TRIGGER update_server_status_occupied
+AFTER INSERT ON Orders
+FOR EACH ROW
+BEGIN
+    UPDATE Servers
+    SET status = 'occupied'
+    WHERE server_id = NEW.server_id;
+END
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER update_server_status_available
+AFTER DELETE ON Orders
+FOR EACH ROW
+BEGIN
+    UPDATE Servers
+    SET status = 'available'
+    WHERE server_id = OLD.server_id;
+END
+//
+
+DELIMITER //
+CREATE TRIGGER resolve_issue
+BEFORE UPDATE ON Support_Tickets
+FOR EACH ROW
+BEGIN
+    IF NEW.status = 'closed' OR NEW.status = 'resolved' THEN
+        SET NEW.resolved_at = NOW();
+    END IF;
+END;
+//
+DELIMITER ;
+
+
+### Procedures ###
+
+DELIMITER //
+CREATE PROCEDURE logOrderMade (IN log_id INT, IN user_id INT, IN order_id INT, IN server_id INT, IN start_date DATE, IN end_date DATE, IN total_amount DECIMAL(10,2))
+BEGIN
+    INSERT INTO Audit_Logs (log_id, user_id, action_type, description, ip_address, timestamp)
+    VALUES (log_id, user_id, 'Order Made', 'Order made successfully', '127.0.0.1', NOW());
+
+    INSERT INTO Orders (order_id, user_id, server_id, start_date, end_date, total_amount, status, created_at)
+    VALUES (order_id, user_id, server_id, start_date, end_date, total_amount, 'pending', NOW());
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE payOrder (IN payment_id INT, IN order_id INT, IN amount DECIMAL(10,2), IN payment_method VARCHAR(50), IN transaction_id VARCHAR(100), IN payment_status ENUM('pending', 'completed', 'failed', 'refunded'))
+BEGIN
+    INSERT INTO Payments (payment_id, order_id, amount, payment_method, transaction_id, payment_status, payment_date)
+    VALUES (payment_id, order_id, amount, payment_method, transaction_id, payment_status, NOW());
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE deleteOtherData (IN id INT)
+BEGIN
+    -- Update the status of servers associated with the user's orders to 'available'
+    UPDATE Servers 
+    SET status = 'available' 
+    WHERE server_id IN (SELECT server_id FROM Orders WHERE user_id = id);
+
+    -- Delete records from related tables
+    DELETE FROM Payments WHERE order_id IN (SELECT order_id FROM Orders WHERE user_id = id);
+    DELETE FROM Orders WHERE user_id = id;
+    DELETE FROM Support_Tickets WHERE user_id = id;
+    DELETE FROM Audit_Logs WHERE user_id = id;
+END;
+//
+DELIMITER ;

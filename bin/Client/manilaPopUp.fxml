@@ -73,7 +73,6 @@
                                              </font>
                                           </Text>
                                           <Pane layoutX="253.0" layoutY="7.0" prefHeight="57.0" prefWidth="6.0" style="-fx-background-color: white;" />
-                                          <Text layoutX="93.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16; -fx-fill: red;" text="Save 0%" wrappingWidth="66.0" />
                                           <Text layoutX="272.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16; -fx-fill: white;" text="Monthly " wrappingWidth="66.0" />
                                           <Text layoutX="270.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16; -fx-fill: white;" text="P 250" wrappingWidth="66.0" />
                                        </children>
@@ -82,7 +81,7 @@
                               </Pane>
                               <Pane prefHeight="109.0" prefWidth="462.0">
                                  <children>
-                                    <Pane layoutX="40.0" layoutY="14.0" prefHeight="69.0" prefWidth="382.0" style="-fx-background-color: grey; -fx-background-radius: 20;">
+                                    <Pane fx:id="kakaninPane" layoutX="40.0" layoutY="14.0" prefHeight="69.0" prefWidth="382.0" style="-fx-background-color: grey; -fx-background-radius: 20;">
                                        <children>
                                           <RadioButton fx:id="kakaninRadioButton" layoutX="20.0" layoutY="12.0" prefHeight="45.0" prefWidth="342.0" style="-fx-text-fill: white; -fx-font-size: 30;" />
                                           <Text layoutX="87.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: white; -fx-font-weight: bold;" text="Kakanin">

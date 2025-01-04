@@ -99,10 +99,6 @@ public class CRUDMenuUsersController {
                     return true;
                 } else if (user.getStatus().toLowerCase().contains(lowerCaseSearchText)) {
                     return true;
-                } else if (user.getCreated_at().toString().toLowerCase().contains(lowerCaseSearchText)) {
-                    return true;
-                } else if (user.getLast_login().toString().toLowerCase().contains(lowerCaseSearchText)) {
-                    return true;
                 }
                 return false; // Does not match
             });
@@ -196,6 +192,10 @@ public class CRUDMenuUsersController {
         navigateToScene(event, "CRUDSupportTicketsMenu.fxml");    
     }
 
+    public void navigateToPayments(ActionEvent event) {
+        navigateToScene(event, "CRUDPaymentsMenu.fxml");
+    }
+
     private void navigateToScene(ActionEvent event, String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
@@ -209,7 +209,7 @@ public class CRUDMenuUsersController {
             stage.centerOnScreen();
             if (fxmlFile.equals("../LoginMenu.fxml")) {
                 stage.setWidth(650);
-                stage.setHeight(300);
+                stage.setHeight(310);
                 stage.centerOnScreen();
             }
             stage.show();
@@ -248,8 +248,15 @@ public class CRUDMenuUsersController {
             alert.setTitle("Delete User");
             alert.setHeaderText("Are you sure you want to delete this user?");
             if (alert.showAndWait().get() == ButtonType.OK) {
-                userList.remove(selectedUser); // Remove from TableView
-                new Users().DELETE_USER(selectedUser); // Remove from database
+                alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Delete User");
+                alert.setHeaderText("Deleting this User will delete all associated data. Are you sure you want to delete this user?");
+                if (alert.showAndWait().get() == ButtonType.OK) {
+                    new Users().DELETE_USER(selectedUser); // Remove from database                    
+                    new Users().DELETE_OTHER_DATA(selectedUser.getUser_id());
+                    System.out.println(selectedUser.getUser_id());
+                    userList.remove(selectedUser); // Remove from TableView
+                }
             }
         } else {
             showAlert(Alert.AlertType.INFORMATION, "Delete User", "Please select a user to delete.");

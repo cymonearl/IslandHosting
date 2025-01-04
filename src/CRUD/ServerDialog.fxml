@@ -31,7 +31,7 @@
       <Label styleClass="font-white" stylesheets="@../style.css" text="server_location" />
       <TextField fx:id="additional_specsTextField" layoutX="20.0" layoutY="282.0" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
       <Label layoutX="20.0" layoutY="265.0" styleClass="font-white" stylesheets="@../style.css" text="additional_specs" />
-      <ComboBox fx:id="statusComboBox" prefWidth="150.0" styleClass="button-design" stylesheets="@../style.css" />
+      <ComboBox fx:id="statusComboBox" prefWidth="150.0" styleClass="combo-boxDesign" stylesheets="@../style.css" />
       <Label styleClass="font-white" stylesheets="@../style.css" text="status" />
       <Pane maxHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" stylesheets="@../style.css" />
       <HBox stylesheets="@../style.css">

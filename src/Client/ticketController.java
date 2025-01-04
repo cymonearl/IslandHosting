@@ -17,19 +17,15 @@ public class ticketController {
     public void setTicket(SupportTicket ticket) {
         this.ticket = ticket;
         updateTicketInfo();
-
-        if (ticket.getServer_id() == -1) {
-            server_idTF.setText("Server ID:");
-        }
     }
 
     public void updateTicketInfo() {
-        subjectTF.setText(ticket.getSubject());
-        server_idTF.setText(String.valueOf(ticket.getServer_id()));
+        subjectTF.setText("Subject:" + ticket.getSubject());
+        server_idTF.setText("Server ID:" + String.valueOf(ticket.getServer_id() != 0 ? ticket.getServer_id() : "N/A"));
         descriptionTF.setText(ticket.getDescription());
-        priorityTF.setText(ticket.getPriority());
+        priorityTF.setText("Priority: " + ticket.getPriority());
         created_atTF.setText(ticket.getCreated_at().toString());
-        statusTF.setText(ticket.getStatus());
+        statusTF.setText("Status: " + ticket.getStatus());
     }
 
     public SupportTicket getTicket() {

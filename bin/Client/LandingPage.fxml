@@ -6,7 +6,9 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
@@ -54,33 +56,81 @@
                   </Text>
               </children>
           </Pane>
-          <Text fill="WHITE" layoutX="373.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Services" wrappingWidth="162.0">
-              <font>
+      <VBox layoutX="359.0" layoutY="225.0" spacing="10.0">
+         <children>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Servers Available" wrappingWidth="280.0">
+                    <font>
+                        <Font size="30.0" />
+                    </font>
+                </Text>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <children>
+                  <StackPane>
+                     <children>
+                            <Circle fill="RED" radius="31.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label fx:id="manilaCount" text="c" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+                      <Label prefHeight="35.0" prefWidth="118.0" text="Manila" textFill="WHITE">
+                          <font>
+                              <Font size="30.0" />
+                          </font>
+                      </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <children>
+                  <StackPane>
+                     <children>
+                            <Circle fill="#e7b416" radius="31.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label fx:id="davaoCount" text="c" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+                      <Label prefHeight="35.0" prefWidth="118.0" text="Davao" textFill="WHITE">
+                          <font>
+                              <Font size="30.0" />
+                          </font>
+                      </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <children>
+                  <StackPane>
+                     <children>
+                            <Circle fill="#008009" radius="31.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label fx:id="cebuCount" text="c" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+                      <Label prefHeight="35.0" prefWidth="96.0" text="Cebu" textFill="#f5f0f0">
+                          <font>
+                              <Font size="30.0" />
+                          </font>
+                      </Label>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="608.0" layoutY="225.0">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Servers Owned" textAlignment="RIGHT" wrappingWidth="280.0">
+               <font>
                   <Font size="30.0" />
-              </font>
-          </Text>
-          <Circle fill="#008009" layoutX="398.0" layoutY="301.0" radius="31.0" stroke="BLACK" strokeType="INSIDE" />
-          <Circle fill="#e7b416" layoutX="398.0" layoutY="372.0" radius="31.0" stroke="BLACK" strokeType="INSIDE" />
-          <Circle fill="RED" layoutX="398.0" layoutY="446.0" radius="31.0" stroke="BLACK" strokeType="INSIDE" />
-          <Label layoutX="454.0" layoutY="279.0" prefHeight="35.0" prefWidth="96.0" text="Cebu" textFill="#f5f0f0">
-              <font>
-                  <Font size="30.0" />
-              </font>
-          </Label>
-          <Label layoutX="454.0" layoutY="355.0" prefHeight="35.0" prefWidth="118.0" text="Davao" textFill="WHITE">
-              <font>
-                  <Font size="30.0" />
-              </font>
-          </Label>
-          <Label layoutX="454.0" layoutY="424.0" prefHeight="35.0" prefWidth="118.0" text="Manila" textFill="WHITE">
-              <font>
-                  <Font size="30.0" />
-              </font>
-          </Label>
-          <Pane layoutX="632.0" layoutY="225.0" prefHeight="275.0" prefWidth="222.0" style="-fx-background-radius: 40; -fx-border-radius: 40;">
-              <children>
-                  <ListView fx:id="Table_Here" layoutX="3.0" prefHeight="275.0" prefWidth="216.0" style="-fx-border-radius: 40; -fx-background-radius: 40;" />
-              </children>
-          </Pane>
+               </font>
+            </Text>
+                  <ListView fx:id="Table_Here" prefHeight="221.0" prefWidth="216.0" style="-fx-border-radius: 40; -fx-background-radius: 40;" stylesheets="@../style.css" />
+         </children>
+      </VBox>
       </children>
   </AnchorPane>

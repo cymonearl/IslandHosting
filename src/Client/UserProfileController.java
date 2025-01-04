@@ -9,9 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import Tables.Orders;
+import Tables.Audit_Logs;
 import Tables.SupportTicket;
 import Tables.Users;
 public class UserProfileController {
@@ -22,7 +21,6 @@ public class UserProfileController {
     @FXML TextField contact_number;
 
     private Users user;
-    private ArrayList<Orders> orders;
 
     public Users getUser() {
         return user;
@@ -32,9 +30,9 @@ public class UserProfileController {
 
     }
 
-    public void setUser(Users user, ArrayList<Orders> orders) {
+    public void setUser(Users user) {
         this.user = user;
-        this.orders = orders;
+
         name.setText(user.getFull_name());
         password.setText(user.getPassword());
         address.setText(user.getAddress());
@@ -48,7 +46,7 @@ public class UserProfileController {
             Parent root = loader.load();
     
             ServiceInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -65,7 +63,7 @@ public class UserProfileController {
             Parent root = loader.load();
     
             InvoiceInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -82,7 +80,7 @@ public class UserProfileController {
             Parent root = loader.load();
     
             TicketsInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
             controller.populateTickets(new SupportTicket().SELECT_USER_SUPPORT_TICKETS(user.getUser_id()));
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -100,7 +98,7 @@ public class UserProfileController {
             Parent root = loader.load();
     
             HelpInterfaceController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
     
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
@@ -120,7 +118,7 @@ public class UserProfileController {
             Parent root = loader.load();
 
             LandingPageController controller = loader.getController();
-            controller.setUser(user, orders);
+            controller.setUser(user);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
@@ -145,6 +143,7 @@ public class UserProfileController {
         user.setAddress(address.getText());
         user.setContact_number(contact_number.getText());
         user.UPDATE_USER(user);
+        new Audit_Logs().INSERT_AUDIT_LOG(new Audit_Logs(user.getUser_id(), "Update", "Updated user profile", "127.0.0.1"));
     }
 
     public boolean validateInput() {

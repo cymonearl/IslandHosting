@@ -340,4 +340,15 @@ public class Users {
             e.printStackTrace();
         }
     }
+
+    public void DELETE_OTHER_DATA(int user_id) {    
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            CallableStatement statement = connect.prepareCall("{call deleteOtherData(?)}");
+            statement.setInt(1, user_id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
