@@ -200,6 +200,10 @@ public class CRUDMenuServersController {
         navigateToScene(event, "CRUDSupportTicketsMenu.fxml");    
     }
 
+    public void navigateToPayments(ActionEvent event) {
+        navigateToScene(event, "CRUDPaymentsMenu.fxml");
+    }
+
     private void navigateToScene(ActionEvent event, String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));

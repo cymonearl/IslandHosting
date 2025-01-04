@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import Tables.Audit_Logs;
 import Tables.SupportTicket;
 import Tables.Users;
 public class UserProfileController {
@@ -142,6 +143,7 @@ public class UserProfileController {
         user.setAddress(address.getText());
         user.setContact_number(contact_number.getText());
         user.UPDATE_USER(user);
+        new Audit_Logs().INSERT_AUDIT_LOG(new Audit_Logs(user.getUser_id(), "Update", "Updated user profile", "127.0.0.1"));
     }
 
     public boolean validateInput() {

@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.stage.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import Tables.Audit_Logs;
 import Tables.Orders;
 import Tables.Payments;
 import Tables.SupportTicket;
@@ -81,6 +82,7 @@ public class InvoiceInterfaceController {
                 }
 
                 order.DELETE_ORDER(order);
+                new Audit_Logs().INSERT_AUDIT_LOG(new Audit_Logs(user.getUser_id(), "Cancel Order", "Cancelled order with order id " + order.getOrder_id(), "127.0.0.1"));
                 invoiceVBOX.getChildren().remove(selectedBox);
                 selectedBox = null;
             }
@@ -103,6 +105,7 @@ public class InvoiceInterfaceController {
 
         completeOrder();
         populateOrders(new Orders().SELECT_ORDER_ID(user.getUser_id()));
+        new Audit_Logs().INSERT_AUDIT_LOG(new Audit_Logs(user.getUser_id(), "Pay Order", "Paid order with " + paymentComboBox.getValue() + " payment method", "127.0.0.1"));
     }
 
     private void completeOrder() {

@@ -126,7 +126,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
                <content>
-                  <VBox fx:id="ticketsVBOX" style="-fx-background-color: #18181f;" />
+                  <VBox fx:id="ticketsVBOX" spacing="20.0" style="-fx-background-color: #18181f;" />
                </content>
             </ScrollPane>
          </children>

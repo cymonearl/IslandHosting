@@ -42,7 +42,7 @@ public class Payments {
 
     private static String getCurrentDate() {
         java.util.Date date = new java.util.Date();
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
         return sdf.format(date);
     }
 
@@ -110,7 +110,7 @@ public class Payments {
             while (result.next()) {
                 Payments payment = new Payments();
                 payment.setPayment_id(result.getInt("payment_id"));
-                payment.setUser_id(result.getInt("user_id"));
+                payment.setUser_id(result.getInt("order_id"));
                 payment.setAmount(result.getString("amount"));
                 payment.setPayment_method(result.getString("payment_method"));
                 payment.setTransaction_id(result.getString("transaction_id"));
@@ -127,13 +127,14 @@ public class Payments {
     public void INSERT_PAYMENT(Payments payment) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO payments (user_id, amount, payment_method, transaction_id, payment_status, payment_date) VALUES (?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO payments (order_id, amount, payment_method, transaction_id, payment_status, payment_date, payment_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
             statement.setInt(1, payment.getUser_id());
             statement.setString(2, payment.getAmount());
             statement.setString(3, payment.getPayment_method());
             statement.setString(4, payment.getTransaction_id());
             statement.setString(5, payment.getPayment_status());
             statement.setString(6, payment.getPayment_date());
+            statement.setInt(7, payment.getPayment_id());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -143,7 +144,7 @@ public class Payments {
     public void UPDATE_PAYMENT(Payments payment) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("UPDATE payments SET user_id = ?, amount = ?, payment_method = ?, transaction_id = ?, payment_status = ?, payment_date = ? WHERE payment_id = ?");
+            PreparedStatement statement = connect.prepareStatement("UPDATE payments SET order_id = ?, amount = ?, payment_method = ?, transaction_id = ?, payment_status = ?, payment_date = ? WHERE payment_id = ?");
             statement.setInt(1, payment.getUser_id());
             statement.setString(2, payment.getAmount());
             statement.setString(3, payment.getPayment_method());

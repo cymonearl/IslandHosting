@@ -12,6 +12,7 @@ import javafx.stage.*;
 import java.util.ArrayList;
 
 import Tables.Audit_Logs;
+
 public class CRUDMenuAuditLogsController {
 
     @FXML private TableView<Audit_Logs> auditLogsTable;
@@ -160,6 +161,10 @@ public class CRUDMenuAuditLogsController {
     public void navigateToTickets(ActionEvent event) {
         navigateToScene(event, "CRUDSupportTicketsMenu.fxml");    
     }
+
+    public void navigateToPayments(ActionEvent event) {
+        navigateToScene(event, "CRUDPaymentsMenu.fxml");
+    }
     
     private void navigateToScene(ActionEvent event, String fxmlFile) {
         try {
@@ -192,6 +197,15 @@ public class CRUDMenuAuditLogsController {
         if (selectedAudit_logs == null) {
             showAlert(Alert.AlertType.WARNING, "No Audit Logs Selected", "Please select an Audit Logs to update.");
             return;
+        }
+
+                Audit_Logs selectedAudit_logs_original = auditLogs_ar.stream()
+                .filter(user -> user.getLog_id() == selectedAudit_logs.getLog_id())
+                .findFirst()
+                .orElse(null);
+
+        if (selectedAudit_logs_original != null) {
+            showAudit_logsDialog(selectedAudit_logs_original); // Pass the selected user for editing
         }
     }
 

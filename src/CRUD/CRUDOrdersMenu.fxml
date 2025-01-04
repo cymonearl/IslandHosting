@@ -109,6 +109,11 @@
                   <Font name="HP Simplified" size="30.0" />
                </font>
             </Button>
+            <Button mnemonicParsing="false" onAction="#navigateToPayments" prefHeight="60.0" prefWidth="350.0" styleClass="button-design" stylesheets="@../style.css" text="Payments">
+               <font>
+                  <Font name="HP Simplified" size="30.0" />
+               </font>
+            </Button>
             <Pane VBox.vgrow="SOMETIMES">
                <VBox.margin>
                   <Insets />
