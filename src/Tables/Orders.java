@@ -215,6 +215,7 @@ public class Orders {
             e.printStackTrace();
         }
     }
+    
     public void DELETE_ORDER(OrderView order) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);

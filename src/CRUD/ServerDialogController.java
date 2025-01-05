@@ -69,8 +69,8 @@ public class ServerDialogController {
             server.setStatus(status);
             
             Servers updateServer = server;
-            serverList.set(serverList.indexOf(server), updateServer);
             new Servers().UPDATE_SERVER(updateServer);
+            serverList.set(serverList.indexOf(server), updateServer);
         }
         closeDialog();
     }

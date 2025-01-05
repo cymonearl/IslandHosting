@@ -117,6 +117,21 @@ public class CRUDMenuAuditLogsController {
     public void navigateToPayments(ActionEvent event) {
         navigateToScene(event, "CRUDPaymentsMenu.fxml");
     }
+
+    public void openSummary(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Summary.fxml"));
+            Stage stage = new Stage();
+
+            scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     private void navigateToScene(ActionEvent event, String fxmlFile) {
         try {

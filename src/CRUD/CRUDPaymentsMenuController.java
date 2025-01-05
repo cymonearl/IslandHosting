@@ -117,6 +117,10 @@ public class CRUDPaymentsMenuController {
         paymentList.clear();
         payments_ar = new PaymentView().getPaymentsWithUserServerAndOrder();
         paymentList.addAll(payments_ar);
+
+        for (PaymentView payment : paymentList) {
+           System.out.println(payment);
+        } 
     }
 
     public void changeView(ActionEvent event) {
@@ -157,6 +161,21 @@ public class CRUDPaymentsMenuController {
                 paymentList.remove(selectedPayment); // Remove from TableView
                 new Payments().DELETE_PAYMENT(selectedPayment); // Remove from database
             }
+        }
+    }
+
+    public void openSummary(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Summary.fxml"));
+            Stage stage = new Stage();
+
+            scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

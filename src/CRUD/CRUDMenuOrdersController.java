@@ -11,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Tables.Orders;
@@ -41,14 +42,42 @@ public class CRUDMenuOrdersController {
             if (searchText == null || searchText.isEmpty()) {
                 return true;
             }
-            String lowerCaseFilter = searchText.toLowerCase();
+    
+            // Check if searchText is a date range (e.g., "2025:2026")
+                    // Check for date range in year:year format (e.g., 2025:2026)
+            if (searchText.matches("\\d{4}:\\d{4}")) {
+                String[] years = searchText.split(":");
+                int startYear = Integer.parseInt(years[0]);
+                int endYear = Integer.parseInt(years[1]);
 
+                // Extract year from order dates
+                int orderStartYear = Integer.parseInt(order.getStartDate().substring(0, 4));
+                int orderEndYear = Integer.parseInt(order.getEndDate().substring(0, 4));
+
+                return (orderStartYear >= startYear && orderEndYear <= endYear);
+            }
+
+            // Check for month-based filtering in yyyy-MM or yyyy-MM:yyyy-MM format
+            if (searchText.matches("\\d{4}-\\d{2}") || searchText.matches("\\d{4}-\\d{2}:\\d{4}-\\d{2}")) {
+                String[] months = searchText.split(":");
+                LocalDate startMonth = LocalDate.parse(months[0] + "-01");
+                LocalDate endMonth = months.length > 1 ? LocalDate.parse(months[1] + "-01") : startMonth;
+
+                LocalDate orderStartDate = LocalDate.parse(order.getStartDate());
+                LocalDate orderEndDate = LocalDate.parse(order.getEndDate());
+
+                return (!orderStartDate.isBefore(startMonth) && !orderEndDate.isAfter(endMonth));
+            }
+    
+            // General text filtering
+            String lowerCaseFilter = searchText.toLowerCase();
+    
             if (String.valueOf(order.getOrderId()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             } else if (String.valueOf(order.getUserId()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             } else if (order.getUserName().toLowerCase().contains(lowerCaseFilter)) {
-                return true;                
+                return true;
             } else if (String.valueOf(order.getServerId()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             } else if (order.getServerName().toLowerCase().contains(lowerCaseFilter)) {
@@ -227,6 +256,21 @@ public class CRUDMenuOrdersController {
     public void logout(ActionEvent event) {
         try {
             navigateToScene(event, "../LoginMenu.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openSummary(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Summary.fxml"));
+            Stage stage = new Stage();
+
+            scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.centerOnScreen();
+            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }

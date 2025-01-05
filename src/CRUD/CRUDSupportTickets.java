@@ -150,6 +150,21 @@ public class CRUDSupportTickets {
         }
     }
 
+    public void openSummary(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Summary.fxml"));
+            Stage stage = new Stage();
+
+            scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void createTicket() {
         showUserDialog(null); // Passing null for a new ticket creation
     }

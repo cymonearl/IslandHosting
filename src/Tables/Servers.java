@@ -201,8 +201,9 @@ public class Servers {
             statement.setInt(4, storage_gb);
             statement.setString(5, specs);
             statement.setString(6, status);
-            statement.setInt(7, server_id);
-            statement.setDouble(8, server.getPrice_per_month());
+            statement.setDouble(7, server.getPrice_per_month());
+            statement.setInt(8, server_id);
+
             statement.executeUpdate();
 
             System.out.println("Server " + name + " has been updated.");

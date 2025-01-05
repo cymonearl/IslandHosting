@@ -125,6 +125,7 @@ JOIN
 LEFT JOIN
     Servers s ON t.server_id = s.server_id;
 
+DROP view PaymentsWithUserServerAndOrder;
 CREATE VIEW PaymentsWithUserServerAndOrder AS
 SELECT
     p.payment_id,
@@ -146,6 +147,8 @@ JOIN
     Users u ON o.user_id = u.user_id
 JOIN
     Servers s ON o.server_id = s.server_id;
+
+Select * from PaymentsWithUserServerAndOrder;
 
 CREATE VIEW Audit_LogsWithUser AS
 SELECT
@@ -175,12 +178,26 @@ END
 //
 DELIMITER ;
 
+-- AFTER DELETE trigger
+DELIMITER //
+CREATE TRIGGER update_server_status_after_delete
+AFTER DELETE ON Orders
+FOR EACH ROW
+BEGIN
+    UPDATE Servers
+    SET status = 'available'
+    WHERE server_id = OLD.server_id;
+END;
+//
+DELIMITER ;
+
+-- AFTER UPDATE trigger
 DELIMITER //
 CREATE TRIGGER update_server_status_after_update
 AFTER UPDATE ON Orders
 FOR EACH ROW
 BEGIN
-    IF OLD.order_status = 'completed' THEN
+    IF NEW.status = 'cancelled' AND OLD.status != 'cancelled' THEN
         UPDATE Servers
         SET status = 'available'
         WHERE server_id = OLD.server_id;

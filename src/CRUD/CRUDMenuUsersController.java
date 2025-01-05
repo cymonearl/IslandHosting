@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import Tables.Users;
@@ -54,6 +55,30 @@ public class CRUDMenuUsersController {
                     return true;
                 }
     
+                if (searchText.matches("\\d{4}:\\d{4}")) {
+                    String[] dates = searchText.split(":");
+                    int startYear = Integer.parseInt(dates[0]);
+                    int endYear = Integer.parseInt(dates[1]);
+        
+                    // Convert order dates to year and filter
+                    int userStartYear = Integer.parseInt(user.getCreated_at().substring(0, 4));
+                    int userEndYear = Integer.parseInt(user.getCreated_at().substring(0, 4));
+        
+                    return (userStartYear >= startYear && userEndYear <= endYear);
+                }    
+
+                if (searchText.matches("\\d{4}-\\d{2}") || searchText.matches("\\d{4}-\\d{2}:\\d{4}-\\d{2}")) {
+                    String[] months = searchText.split(":");
+                    LocalDate startMonth = LocalDate.parse(months[0] + "-01");
+                    LocalDate endMonth = months.length > 1 ? LocalDate.parse(months[1] + "-01") : startMonth;
+
+                    LocalDate userStartDate = LocalDate.parse(user.getCreated_at());
+                    LocalDate userEndDate = LocalDate.parse(user.getCreated_at());
+
+                    return (!userStartDate.isBefore(startMonth) && !userEndDate.isAfter(endMonth));
+                }
+
+
                 // Convert search text to lowercase for case-insensitive search
                 String lowerCaseSearchText = searchText.toLowerCase();
     
@@ -150,6 +175,21 @@ public class CRUDMenuUsersController {
                 stage.setHeight(310);
                 stage.centerOnScreen();
             }
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openSummary(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Summary.fxml"));
+            Stage stage = new Stage();
+
+            scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.centerOnScreen();
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
