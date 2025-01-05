@@ -18,12 +18,6 @@ public class CRUDMenuServersController {
 
     // UI Components
     @FXML private TableView<Servers> serversTableView;
-    @FXML private Label CRUD;
-    @FXML private Button viewButton;
-    @FXML private Button createButton;
-    @FXML private Button updateButton;
-    @FXML private Button deleteButton;
-    boolean userViewMode = false;
 
     // Data and Stage Properties
     private ObservableList<Servers> serverList = FXCollections.observableArrayList();
@@ -36,13 +30,8 @@ public class CRUDMenuServersController {
 
     // ========= Initialization =========
     public void initialize() {
-        CRUD.setText("CRUD");
         initializeTableColumns();
         populateTable();
-        createButton.setVisible(true);
-        updateButton.setVisible(true);
-        deleteButton.setVisible(true);
-        viewButton.setText("User View");
         filteredData = new FilteredList<>(serverList, b -> true);
         serversTableView.setItems(filteredData);
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -70,8 +59,6 @@ public class CRUDMenuServersController {
                 return true;
             } else if (String.valueOf(server.getStatus()).toLowerCase().contains(lowerCaseSearchText)) {
                 return true;
-            } else if (server.getServer_location().toLowerCase().contains(lowerCaseSearchText)) {
-                return true;
             } else if (server.getSpecs().toLowerCase().contains(lowerCaseSearchText)) {
                 return true;
             } else if (server.getStatus().toLowerCase().contains(lowerCaseSearchText)) {
@@ -81,31 +68,6 @@ public class CRUDMenuServersController {
             
         });
         serversTableView.setItems(filteredData);
-    }
-
-    public void changeView(ActionEvent event) {
-        serversTableView.getColumns().clear();
-
-        if (userViewMode) {
-            userViewMode = false;
-            serverList.clear();
-            initialize();
-        } else {
-            serverList.clear();
-            userViewMode = true;
-            initializeTableColumnsUV();
-            CRUD.setText("User View");
-            populateAvailableServers();
-            createButton.setVisible(false);
-            updateButton.setVisible(false);
-            deleteButton.setVisible(false);
-            viewButton.setText("CRUD");
-            filteredData = new FilteredList<>(serverList, b -> true);
-            serversTableView.setItems(filteredData);
-            searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                filterTable(newValue);
-            });    
-        }       
     }
 
     @SuppressWarnings("unchecked")
@@ -142,44 +104,8 @@ public class CRUDMenuServersController {
         serversTableView.setItems(serverList); // Set ObservableList to TableView
     }
 
-    @SuppressWarnings("unchecked")
-    private void initializeTableColumnsUV() {
-        // Map Users class fields to TableView columns
-        TableColumn<Servers, Integer> server_id = new TableColumn<>("Server ID");
-        server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
-        
-        TableColumn<Servers, String> name = new TableColumn<>("Name");
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        
-        TableColumn<Servers, String> hardware_type = new TableColumn<>("Hardware Type");
-        hardware_type.setCellValueFactory(new PropertyValueFactory<>("hardware_type"));
-        
-        TableColumn<Servers, Integer> ram_gb = new TableColumn<>("RAM (GB)");
-        ram_gb.setCellValueFactory(new PropertyValueFactory<>("ram_gb"));
-        
-        TableColumn<Servers, Integer> storage_gb = new TableColumn<>("Storage (GB)");
-        storage_gb.setCellValueFactory(new PropertyValueFactory<>("storage_gb"));
-        
-        TableColumn<Servers, Double> price_per_month = new TableColumn<>("Price Per Month");
-        price_per_month.setCellValueFactory(new PropertyValueFactory<>("price_per_month"));
-        
-        TableColumn<Servers, String> specs = new TableColumn<>("Specs");
-        specs.setCellValueFactory(new PropertyValueFactory<>("specs"));
-        
-        TableColumn<Servers, String> status = new TableColumn<>("Status");
-        status.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        serversTableView.getColumns().addAll(server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, specs, status);
-        serversTableView.setItems(serverList); // Set ObservableList to TableView
-    }
-
     private void populateTable() {
         servers_ar = new Servers().SELECT_ALL_SERVERS();
-        serverList.addAll(servers_ar);
-    }
-
-    private void populateAvailableServers() {
-        servers_ar = new Servers().AVAILABLE_SERVERS();
         serverList.addAll(servers_ar);
     }
 

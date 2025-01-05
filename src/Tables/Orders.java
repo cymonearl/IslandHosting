@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import Tables.Views.OrderView;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -197,28 +198,28 @@ public class Orders {
             e.printStackTrace();
         }
     }
-    public void UPDATE_ORDER(Orders order) {
+    public void UPDATE_ORDER(OrderView order) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("UPDATE orders SET user_id = ?, server_id = ?, start_date = ?, end_date = ?, total_amount = ?, status = ?, created_at = ? WHERE order_id = ?");
-            statement.setInt(1, order.getUser_id());
-            statement.setInt(2, order.getServer_id());
-            statement.setString(3, order.getStart_date());
-            statement.setString(4, order.getEnd_date());
-            statement.setDouble(5, order.getTotal_amount());
+            statement.setInt(1, order.getUserId());
+            statement.setInt(2, order.getServerId());
+            statement.setString(3, order.getStartDate());
+            statement.setString(4, order.getEndDate());
+            statement.setDouble(5, order.getTotalAmount());
             statement.setString(6, order.getStatus());
-            statement.setString(7, order.getCreated_at());
-            statement.setInt(8, order.getOrder_id());
+            statement.setString(7, order.getCreatedAt());
+            statement.setInt(8, order.getOrderId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public void DELETE_ORDER(Orders order) {
+    public void DELETE_ORDER(OrderView order) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("DELETE FROM orders WHERE order_id = ?");
-            statement.setInt(1, order.getOrder_id());
+            statement.setInt(1, order.getOrderId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -254,6 +255,19 @@ public class Orders {
             }   catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void CANCEL_ORDER(Orders orders) {
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("UPDATE orders SET status = ? WHERE status = ? AND order_id = ?");
+            statement.setString(1, "Cancelled");
+            statement.setString(2, "Pending");
+            statement.setInt(3, orders.getOrder_id());
+            statement.executeUpdate();
+        }   catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,11 +1,11 @@
 package CRUD;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import Tables.SupportTicket;
+import Tables.Views.SupportTicketView;
 
 public class SupportTicketDialogController {
     @FXML private TextField user_idTextField;
@@ -15,11 +15,15 @@ public class SupportTicketDialogController {
     @FXML private ComboBox<String> statusComboBox;
     @FXML private ComboBox<String> priorityComboBox;
 
-    private SupportTicket supportTicket;
+    private SupportTicketView supportTicket;
     
-    private ObservableList<SupportTicket> supportTicketList;
     private boolean isNewSupportTicket = true;
     @FXML private Label CreateSupportTicketLabel;
+    private CRUDSupportTickets controller;
+
+    public void setController(CRUDSupportTickets controller) {
+        this.controller = controller;
+    }
 
     public void initialize() {
         statusComboBox.getItems().addAll("Open", "Closed", "In_Progress", "Resolved");
@@ -29,11 +33,7 @@ public class SupportTicketDialogController {
         priorityComboBox.setValue("Low");
     }
 
-    public void setTicketList(ObservableList<SupportTicket> supportTicketList) {
-        this.supportTicketList = supportTicketList;
-    }
-
-    public void setTicket(SupportTicket supportTicket) {
+    public void setTicket(SupportTicketView supportTicket) {
         this.supportTicket = supportTicket;
         if (supportTicket != null) {
             isNewSupportTicket = false;
@@ -41,8 +41,8 @@ public class SupportTicketDialogController {
 
         if (!isNewSupportTicket) {
             // Existing ticket - populate fields
-            user_idTextField.setText(String.valueOf(supportTicket.getUser_id()));
-            server_idTextField.setText(String.valueOf(supportTicket.getServer_id()));
+            user_idTextField.setText(String.valueOf(supportTicket.getUserId()));
+            server_idTextField.setText(String.valueOf(supportTicket.getServerId()));
             subjectTextField.setText(supportTicket.getSubject());
             descriptionTextField.setText(supportTicket.getDescription());
             statusComboBox.setValue(supportTicket.getStatus());
@@ -81,7 +81,6 @@ public class SupportTicketDialogController {
             // Insert into the database
             if (new SupportTicket().INSERT_SUPPORT_TICKET(newTicket)) {
                 // Add to the ObservableList ONLY if the database insert is successful
-                supportTicketList.add(newTicket);
                 closeDialog();  // Close the dialog after successful creation
             } else {
                 // Handle database insertion error (e.g., show an alert)
@@ -89,8 +88,8 @@ public class SupportTicketDialogController {
             }
         } else {
             // Update the existing SupportTicket object
-            supportTicket.setUser_id(Integer.parseInt(user_idTextField.getText()));
-            supportTicket.setServer_id(Integer.parseInt(server_idTextField.getText()));
+            supportTicket.setUserId(Integer.parseInt(user_idTextField.getText()));
+            supportTicket.setServerId(Integer.parseInt(server_idTextField.getText()));
             supportTicket.setSubject(subjectTextField.getText());
             supportTicket.setDescription(descriptionTextField.getText());
             supportTicket.setStatus(statusComboBox.getValue());
@@ -99,25 +98,13 @@ public class SupportTicketDialogController {
             // Update in the database
             if (new SupportTicket().UPDATE_SUPPORT_TICKET(supportTicket)) {
                 // Update the ObservableList only if the database update is successful
-                SupportTicket newST = supportTicket;
-                int index = -1;
-                for (int i = 0; i < supportTicketList.size(); i++) {
-                    if (supportTicketList.get(i).getTicket_id() == newST.getTicket_id()) {
-                        index = i;
-                        break;
-                    }
-                }
-
-                if (index != -1) {
-                    supportTicketList.set(index, newST);
-                }
-
                 closeDialog(); // Close the dialog after successful update
             } else {
                 // Handle database update error (e.g., show an alert)
                 alert("Database Error", "Failed to update the support ticket.");
             }
-        } 
+        }
+        controller.initialize();
     }
 
     private boolean validateInput() {

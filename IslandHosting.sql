@@ -23,9 +23,7 @@ CREATE TABLE Servers (
     hardware_type VARCHAR(50),
     ram_gb INT,
     storage_gb INT,
-    price_per_month DECIMAL(10,2),
-    location VARCHAR(50),
-    status ENUM('available', 'occupied', 'maintenance'),
+    status ENUM('available', 'occupied'),
     specs TEXT,
     created_at TIMESTAMP
 );
@@ -37,7 +35,7 @@ CREATE TABLE Orders (
     start_date DATE,
     end_date DATE,
     total_amount DECIMAL(10,2),
-    status ENUM('pending', 'completed', 'cancelled', 'expired'),
+    status ENUM('pending', 'completed', 'cancelled'),
     created_at TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (server_id) REFERENCES Servers(server_id)
@@ -54,28 +52,16 @@ CREATE TABLE Payments (
     FOREIGN KEY (order_id) REFERENCES Orders(order_id)
 );
 
-CREATE TABLE ServerBackups (
-    backup_id INT PRIMARY KEY,
-    server_id INT,
-    backup_date TIMESTAMP,
-    backup_size_gb DECIMAL(10,2),
-    status ENUM('in_progress', 'completed', 'failed'),
-    storage_location VARCHAR(255),
-    FOREIGN KEY (server_id) REFERENCES Servers(server_id)
-);
-
 CREATE TABLE Support_Tickets (
     ticket_id INT PRIMARY KEY,
     user_id INT,
-    server_id INT,
-    subject VARCHAR(200),
-    description TEXT,
+    subject VARCHAR(100),
+    message TEXT,
+    status ENUM('open', 'closed', 'resolved'),
     priority ENUM('low', 'medium', 'high'),
-    status ENUM('open', 'in_progress', 'resolved', 'closed'),
     created_at TIMESTAMP,
     resolved_at TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (server_id) REFERENCES Servers(server_id)
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
 CREATE TABLE Audit_Logs (
@@ -91,14 +77,89 @@ CREATE TABLE Audit_Logs (
 ### UserView ###
 
 CREATE VIEW ActiveUsers AS
-SELECT user_id, username, email, full_name, contact_number, address
+SELECT user_id, username as user_name, email, full_name, contact_number, address
 FROM Users
 WHERE status = 'active';
 
 CREATE VIEW AvailableServers AS 
-SELECT server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, location, specs 
+SELECT server_id, name as server_name, hardware_type, ram_gb, storage_gb, price_per_month, specs 
 FROM Servers 
-WHERE status = 'available'; 
+WHERE status = 'available';
+
+CREATE VIEW OrdersWithUserAndServer AS
+SELECT
+    o.order_id,
+    o.user_id,
+    u.username AS user_name,
+    o.server_id,
+    s.name AS server_name,
+    o.start_date,
+    o.end_date,
+    o.total_amount,
+    o.status,
+    o.created_at
+FROM
+    Orders o
+JOIN
+    Users u ON o.user_id = u.user_id
+JOIN
+    Servers s ON o.server_id = s.server_id;
+
+CREATE VIEW SupportTicketsWithUserAndServer AS
+SELECT
+    t.ticket_id,
+    t.user_id,
+    u.username AS user_name,
+    t.server_id,
+    s.name AS server_name,
+    t.subject,
+    t.description,
+    t.priority,
+    t.status,
+    t.created_at,
+    t.resolved_at
+FROM
+    Support_Tickets t
+JOIN
+    Users u ON t.user_id = u.user_id
+LEFT JOIN
+    Servers s ON t.server_id = s.server_id;
+
+CREATE VIEW PaymentsWithUserServerAndOrder AS
+SELECT
+    p.payment_id,
+    p.order_id,
+    o.user_id,
+    u.username AS user_name,
+    o.server_id,
+    s.name AS server_name,
+    p.amount,
+    p.payment_method,
+    p.transaction_id,
+    p.payment_status,
+    p.payment_date
+FROM
+    Payments p
+JOIN
+    Orders o ON p.order_id = o.order_id
+JOIN
+    Users u ON o.user_id = u.user_id
+JOIN
+    Servers s ON o.server_id = s.server_id;
+
+CREATE VIEW Audit_LogsWithUser AS
+SELECT
+    l.log_id,
+    l.user_id,
+    u.username AS user_name,
+    l.action_type,
+    l.description,
+    l.ip_address,
+    l.timestamp
+FROM
+    Audit_Logs l
+JOIN
+    Users u ON l.user_id = u.user_id;
 
 ### Triggers ###
 
@@ -115,15 +176,18 @@ END
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER update_server_status_available
-AFTER DELETE ON Orders
+CREATE TRIGGER update_server_status_after_update
+AFTER UPDATE ON Orders
 FOR EACH ROW
 BEGIN
-    UPDATE Servers
-    SET status = 'available'
-    WHERE server_id = OLD.server_id;
-END
+    IF OLD.order_status = 'completed' THEN
+        UPDATE Servers
+        SET status = 'available'
+        WHERE server_id = OLD.server_id;
+    END IF;
+END;
 //
+DELIMITER ;
 
 DELIMITER //
 CREATE TRIGGER resolve_issue
@@ -134,6 +198,18 @@ BEGIN
         SET NEW.resolved_at = NOW();
     END IF;
 END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER payed
+AFTER INSERT ON Payments
+FOR EACH ROW
+BEGIN
+    UPDATE Orders
+    SET status = 'completed'
+    WHERE order_id = NEW.order_id;
+END
 //
 DELIMITER ;
 

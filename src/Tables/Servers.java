@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.sql.*;
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,16 +16,9 @@ public class Servers {
     private SimpleIntegerProperty ram_gb;
     private SimpleIntegerProperty storage_gb;
     private SimpleDoubleProperty price_per_month;
-    private SimpleStringProperty server_location;
     private SimpleStringProperty status;
     private SimpleStringProperty specs;
     private SimpleStringProperty created_at;
-
-    public enum Status {
-        AVAILABLE,
-        OCCUPIED,
-        MAINTENANCE
-    }
 
     public Servers() {}
 
@@ -39,7 +33,6 @@ public class Servers {
         this.storage_gb = new SimpleIntegerProperty(storage_gb);
         this.price_per_month = new SimpleDoubleProperty(price_per_month);
         this.specs = new SimpleStringProperty(specs);
-        this.server_location = new SimpleStringProperty(server_location);
         this.status = new SimpleStringProperty(status);
         this.created_at = new SimpleStringProperty(getCurrentDate());
         newServer_id();
@@ -50,11 +43,10 @@ public class Servers {
     public String getHardware_type() {return hardware_type.get();}
     public int getRam_gb() {return ram_gb.get();}
     public int getStorage_gb() {return storage_gb.get();}
-    public double getPrice_per_month() {return price_per_month.get();}
     public String getSpecs() {return specs.get();}
-    public String getServer_location() {return server_location.get();}
     public String getStatus() {return status.get();}
     public String getCreated_at() {return created_at.get();}
+    public double getPrice_per_month() {return price_per_month.get();}
     private String getCurrentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = dateFormat.format(new Date().getTime());
@@ -67,15 +59,10 @@ public class Servers {
     public void setHardware_type(String hardware_type) {this.hardware_type = new SimpleStringProperty(hardware_type);}
     public void setRam_gb(int ram_gb) {this.ram_gb = new SimpleIntegerProperty(ram_gb);}
     public void setStorage_gb(int storage_gb) {this.storage_gb = new SimpleIntegerProperty(storage_gb);}
-    public void setPrice_per_month(double price_per_month) {this.price_per_month = new SimpleDoubleProperty(price_per_month);}
     public void setSpecs(String specs) {this.specs = new SimpleStringProperty(specs);}
-    public void setServer_location(String server_location) {this.server_location = new SimpleStringProperty(server_location);}
     public void setStatus(String status) {this.status = new SimpleStringProperty(status);}
-    public void setCreated_at(Date created_at) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleStringProperty dateString = new SimpleStringProperty(dateFormat.format(created_at));
-        this.created_at = dateString;
-    }
+    public void setCreated_at(String created_at) {this.created_at = new SimpleStringProperty(created_at);}
+    public void setPrice_per_month(double price_per_month) {this.price_per_month = new SimpleDoubleProperty(price_per_month);}
 
     @Override
     public String toString() {
@@ -85,9 +72,7 @@ public class Servers {
                 ", hardware_type='" + hardware_type + '\'' + 
                 ", ram_gb=" + ram_gb + 
                 ", storage_gb=" + storage_gb + 
-                ", price_per_month=" + price_per_month + 
                 ", specs='" + specs + '\'' + 
-                ", server_location='" + server_location + '\'' + 
                 ", status='" + status + '\'' + 
                 ", created_at=" + created_at + 
                 '}';
@@ -111,11 +96,10 @@ public class Servers {
                     server.setHardware_type(result.getString("hardware_type"));
                     server.setRam_gb(result.getInt("ram_gb"));
                     server.setStorage_gb(result.getInt("storage_gb"));
-                    server.setPrice_per_month(result.getDouble("price_per_month"));
                     server.setSpecs(result.getString("specs"));
-                    server.setServer_location(result.getString("location"));
                     server.setStatus(result.getString("status"));
-                    server.setCreated_at(result.getDate("created_at"));
+                    server.setCreated_at(result.getString("created_at"));
+                    server.setPrice_per_month(result.getDouble("price_per_month"));
                 serverList.add(server);
             }
         } catch (SQLException e) {
@@ -136,35 +120,10 @@ public class Servers {
                     server.setHardware_type(result.getString("hardware_type"));
                     server.setRam_gb(result.getInt("ram_gb"));
                     server.setStorage_gb(result.getInt("storage_gb"));
-                    server.setPrice_per_month(result.getDouble("price_per_month"));
                     server.setSpecs(result.getString("specs"));
-                    server.setServer_location(result.getString("location"));
                     server.setStatus(result.getString("status"));
-                    server.setCreated_at(result.getDate("created_at"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return server;
-    }
-    public Servers SELECT_SERVER(String name) {
-        Servers server = new Servers();
-        try {
-            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("SELECT * FROM servers WHERE name = ?");
-            statement.setString(1, name);
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                server.setServer_id(result.getInt("server_id"));
-                server.setName(result.getString("name"));
-                server.setHardware_type(result.getString("hardware_type"));
-                server.setRam_gb(result.getInt("ram_gb"));
-                server.setStorage_gb(result.getInt("storage_gb"));
-                server.setPrice_per_month(result.getDouble("price_per_month"));
-                server.setSpecs(result.getString("specs"));
-                server.setServer_location(result.getString("location"));
-                server.setStatus(result.getString("status"));
-                server.setCreated_at(result.getDate("created_at"));
+                    server.setCreated_at(result.getString("created_at"));
+                    server.setPrice_per_month(result.getDouble("price_per_month"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -199,24 +158,23 @@ public class Servers {
         String hardware_type = server.getHardware_type();
         int ram_gb = server.getRam_gb();
         int storage_gb = server.getStorage_gb();
-        double price_per_month = server.getPrice_per_month();
         String specs = server.getSpecs();
-        String server_location = server.getServer_location();
         String status = server.getStatus();
         String created_at = server.getCreated_at().toString();
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO servers (server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, specs, location, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            statement.setInt(1, getNextServerId());
+            PreparedStatement statement = connect.prepareStatement(
+                "INSERT INTO servers (server_id ,name, hardware_type, ram_gb, storage_gb, specs, status, created_at, price_per_month) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+            statement.setInt(1, server.getServer_id());
             statement.setString(2, name);
             statement.setString(3, hardware_type);
             statement.setInt(4, ram_gb);
             statement.setInt(5, storage_gb);
-            statement.setDouble(6, price_per_month);
-            statement.setString(7, specs);
-            statement.setString(8, server_location);
-            statement.setString(9, status);
-            statement.setString(10, created_at);
+            statement.setString(6, specs);
+            statement.setString(7, status);
+            statement.setString(8, created_at);
+            statement.setDouble(9, server.getPrice_per_month());
             statement.executeUpdate();
             System.out.println("Server " + name + " has been added.");
         } catch (SQLException e) {
@@ -229,26 +187,24 @@ public class Servers {
         String hardware_type = server.getHardware_type();
         int ram_gb = server.getRam_gb();
         int storage_gb = server.getStorage_gb();
-        double price_per_month = server.getPrice_per_month();
         String specs = server.getSpecs();
-        String server_location = server.getServer_location();
         String status = server.getStatus();
 
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement(
-                "UPDATE servers SET name = ?, hardware_type = ?, ram_gb = ?, storage_gb = ?, price_per_month = ?, specs = ?, location = ?, status = ? WHERE server_id = ?"  
+                "UPDATE servers SET name = ?, hardware_type = ?, ram_gb = ?, storage_gb = ?, specs = ?, status = ?, price_per_month = ? WHERE server_id = ?"  
             );
             statement.setString(1, name);
             statement.setString(2, hardware_type);
             statement.setInt(3, ram_gb);
             statement.setInt(4, storage_gb);
-            statement.setDouble(5, price_per_month);
-            statement.setString(6, specs);
-            statement.setString(7, server_location);
-            statement.setString(8, status);
-            statement.setInt(9, server_id);
+            statement.setString(5, specs);
+            statement.setString(6, status);
+            statement.setInt(7, server_id);
+            statement.setDouble(8, server.getPrice_per_month());
             statement.executeUpdate();
+
             System.out.println("Server " + name + " has been updated.");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -280,8 +236,6 @@ public class Servers {
                 server.setHardware_type(result.getString("hardware_type"));
                 server.setRam_gb(result.getInt("ram_gb"));
                 server.setStorage_gb(result.getInt("storage_gb"));
-                server.setPrice_per_month(result.getDouble("price_per_month"));
-                server.setServer_location(result.getString("location"));
                 server.setSpecs(result.getString("specs"));
                 server.setStatus("Available");
 
@@ -293,13 +247,12 @@ public class Servers {
         return serverList;
     }
 
-    public ArrayList<Servers> AVAILABLE_SERVERS(int ram_gb, int storage_gb) {
+    public ArrayList<Servers> AVAILABLE_SERVERS(String name) {
         ArrayList<Servers> serverList = new ArrayList<>();
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("SELECT * FROM AvailableServers WHERE ram_gb = ? AND storage_gb = ?;");
-            statement.setInt(1, ram_gb);
-            statement.setInt(2, storage_gb);
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM AvailableServers WHERE name = ?;");
+            statement.setString(1, name);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 Servers server = new Servers();
@@ -307,10 +260,9 @@ public class Servers {
                 server.setServer_id(result.getInt("server_id"));
                 server.setName(result.getString("name"));
                 server.setHardware_type(result.getString("hardware_type"));
+                server.setPrice_per_month(result.getDouble("price_per_month"));
                 server.setRam_gb(result.getInt("ram_gb"));
                 server.setStorage_gb(result.getInt("storage_gb"));
-                server.setPrice_per_month(result.getDouble("price_per_month"));
-                server.setServer_location(result.getString("location"));
                 server.setSpecs(result.getString("specs"));
                 server.setStatus("Available");
 

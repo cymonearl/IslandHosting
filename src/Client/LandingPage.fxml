@@ -30,7 +30,6 @@
                   </ImageView>
                         <Button fx:id="User" mnemonicParsing="false" onAction="#onUserClick" prefHeight="35.0" prefWidth="135.0" style="-fx-background-radius: 40; -fx-background-color: f9c784;" text="User" />
                         <Button fx:id="Orders" mnemonicParsing="false" onAction="#onOrdersClick" prefHeight="35.0" prefWidth="135.0" style="-fx-background-radius: 40; -fx-background-color: f9c784;" text="Orders" />
-                  <Button layoutX="43.0" layoutY="285.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="135.0" style="-fx-background-radius: 40; -fx-background-color: f9c784;" text="Servers" />
                         <Button fx:id="Server" mnemonicParsing="false" onAction="#logout" prefHeight="35.0" prefWidth="135.0" style="-fx-background-radius: 40; -fx-background-color: #f9c784;" text="Logout" />
                </children>
             </VBox>
@@ -75,7 +74,7 @@
                         </Label>
                      </children>
                   </StackPane>
-                      <Label prefHeight="35.0" prefWidth="118.0" text="Manila" textFill="WHITE">
+                      <Label prefHeight="45.0" prefWidth="168.0" text="Enterprise" textFill="WHITE">
                           <font>
                               <Font size="30.0" />
                           </font>
@@ -94,7 +93,7 @@
                         </Label>
                      </children>
                   </StackPane>
-                      <Label prefHeight="35.0" prefWidth="118.0" text="Davao" textFill="WHITE">
+                      <Label prefHeight="35.0" prefWidth="118.0" text="Pro" textFill="WHITE">
                           <font>
                               <Font size="30.0" />
                           </font>
@@ -113,7 +112,7 @@
                         </Label>
                      </children>
                   </StackPane>
-                      <Label prefHeight="35.0" prefWidth="96.0" text="Cebu" textFill="#f5f0f0">
+                      <Label prefHeight="35.0" prefWidth="96.0" text="Basic" textFill="#f5f0f0">
                           <font>
                               <Font size="30.0" />
                           </font>

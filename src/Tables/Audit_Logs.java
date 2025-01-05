@@ -2,6 +2,9 @@ package Tables;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import Tables.Views.Audit_LogsView;
+
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
@@ -144,31 +147,29 @@ public class Audit_Logs {
             e.printStackTrace();
         }
     }
-    public void UPDATE_AUDIT_LOG(Audit_Logs audit_log) {
+    public void UPDATE_AUDIT_LOG(Audit_LogsView audit_log) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("UPDATE audit_logs SET user_id = ?, action_type = ?, description = ?, ip_address = ?, timestamp = ? WHERE log_id = ?");
-            statement.setInt(1, audit_log.getUser_id());
-            statement.setString(2, audit_log.getAction_type());
+            statement.setInt(1, audit_log.getUserId());
+            statement.setString(2, audit_log.getAction());
             statement.setString(3, audit_log.getDescription());
-            statement.setString(4, audit_log.getIp_address());
+            statement.setString(4, audit_log.getIpAddress());
             statement.setString(5, audit_log.getTimestamp());
-            statement.setInt(6, audit_log.getLog_id());
+            statement.setInt(6, audit_log.getLogId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public void DELETE_AUDIT_LOG(Audit_Logs audit_log) {
+    public void DELETE_AUDIT_LOG(Audit_LogsView audit_log) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("DELETE FROM audit_logs WHERE log_id = ?");
-            statement.setInt(1, audit_log.getLog_id());
+            statement.setInt(1, audit_log.getLogId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    
 }

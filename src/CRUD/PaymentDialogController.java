@@ -2,38 +2,41 @@ package CRUD;
 
 import javafx.scene.control.*;
 import javafx.stage.*;
-import javafx.collections.*;
 
 import Tables.Payments;
+import Tables.Views.PaymentView;
 
 public class PaymentDialogController {
     public Label CreatePaymentLabel;
-    public TextField UserIDField;
+    public TextField order_idTF;
     public TextField AmountField;
-    public TextField PaymentMethodField;
+    public ComboBox<String> PaymentMethodComboBox;
     public ComboBox<String> StatusComboBox;
-    private Payments payment;
-    private ObservableList<Payments> paymentList;
+    private PaymentView payment;
+    private CRUDPaymentsMenuController controller;
     private boolean isNewPayment = true;
 
     public void initialize() {
         StatusComboBox.getItems().addAll("pending","completed","failed","refunded");
         StatusComboBox.setValue("pending");
+
+        PaymentMethodComboBox.getItems().addAll("Credit Card", "Debit Card", "PayPal", "GCash");
+        PaymentMethodComboBox.setValue("Credit Card");
     }
 
-    public void setPayment(Payments payment) {
+    public void setPayment(PaymentView payment) {
         CreatePaymentLabel.setText("Update Payment");
         this.payment = payment;
         isNewPayment = false;
 
-        UserIDField.setText(String.valueOf(payment.getUser_id()));
-        AmountField.setText(payment.getAmount());
-        PaymentMethodField.setText(payment.getPayment_method());
-        StatusComboBox.setValue(payment.getPayment_status());
+        order_idTF.setText(String.valueOf(payment.getOrderId()));
+        AmountField.setText(String.valueOf(payment.getAmount()));
+        PaymentMethodComboBox.setValue(payment.getPaymentMethod());
+        StatusComboBox.setValue(payment.getPaymentStatus());
     }
 
-    public void setPaymentList(ObservableList<Payments> paymentList) {
-        this.paymentList = paymentList;
+    public void setController(CRUDPaymentsMenuController controller) {
+        this.controller = controller;
     }
 
     public void handleSavePayment() {
@@ -41,46 +44,35 @@ public class PaymentDialogController {
             return;
         }
         
-        String paymentID = UserIDField.getText();
+        String order = order_idTF.getText();
         String amount = AmountField.getText();
-        String paymentMethod = PaymentMethodField.getText();
+        String paymentMethod = PaymentMethodComboBox.getValue();
         String paymentStatus = StatusComboBox.getValue();
         if (isNewPayment) {
-            Payments payment = new Payments(Integer.parseInt(paymentID), amount, paymentMethod, paymentStatus);
+            Payments payment = new Payments(Integer.parseInt(order), amount, paymentMethod, paymentStatus);
             new Payments().INSERT_PAYMENT(payment);
-            paymentList.add(payment);
         } else {
-            payment.setUser_id(Integer.parseInt(paymentID));
-            payment.setAmount(amount);
-            payment.setPayment_method(paymentMethod);
-            payment.setPayment_status(paymentStatus);
-            Payments newPayment = payment;
-            paymentList.set(paymentList.indexOf(payment), newPayment);
-            System.out.println(newPayment);
-            new Payments().UPDATE_PAYMENT(newPayment);
+            payment.setOrderId(Integer.parseInt(order));
+            payment.setAmount(Double.parseDouble(amount));
+            payment.setPaymentMethod(paymentMethod);
+            payment.setPaymentStatus(paymentStatus);
+            new Payments().UPDATE_PAYMENT(payment);
         }
         closeDialog();
+        controller.initialize();
     }
 
     public boolean validateInput() {
         String errorMessage = "";
 
-        String paymentID = UserIDField.getText();
+        String order_id = order_idTF.getText();
         String amount = AmountField.getText();
-        String paymentMethod = PaymentMethodField.getText();
-        String paymentStatus = StatusComboBox.getValue();
 
-        if (paymentID.isEmpty()) {
-            errorMessage += "User ID is required!\n";
+        if (order_id.isEmpty()) {
+            errorMessage += "Order ID is required!\n";
         }
         if (amount.isEmpty() || !amount.matches("\\d*(\\.\\d+)?")) {
             errorMessage += "Invalid Amount!\n";
-        }
-        if (paymentMethod.isEmpty()) {
-            errorMessage += "Payment Method is required!\n";
-        }
-        if (paymentStatus.isEmpty()) {
-            errorMessage += "Payment Status is required!\n";
         }
 
         if (errorMessage.isEmpty()) {

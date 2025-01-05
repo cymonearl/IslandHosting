@@ -10,41 +10,50 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.stage.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import Tables.Audit_Logs;
 import Tables.Orders;
-import Tables.Payments;
 import Tables.SupportTicket;
 import Tables.Users;
 public class InvoiceInterfaceController {
 
     private Users user;
-    private ArrayList<Orders> orders;
-    @FXML private ComboBox<String> paymentComboBox;
     @FXML private VBox invoiceVBOX;
     @FXML private Label totalLabel;
     private VBox selectedBox;
     double total;
+    @FXML private ComboBox<String> statusComboBox;
+    @FXML private HBox bottomHBOX;
 
     public void initialize() {
-        paymentComboBox.getItems().addAll("Paypal", "Credit Card", "Debit Card", "GCash");
-        paymentComboBox.setValue("Paypal");
+        statusComboBox.getItems().addAll("pending", "completed", "cancelled");
+        statusComboBox.setValue("pending");
+    }
+
+    public void selectFilter(ActionEvent event) {
+        String selected = statusComboBox.getValue();
+        populateOrders(populateByFilter(selected));
+
+        if (selected.equals("cancelled") || selected.equals("completed"))
+        bottomHBOX.setVisible(false);
+        else
+        bottomHBOX.setVisible(true);
     }
 
     public void setUser(Users user) {
         this.user = user;
-        this.orders = new Orders().SELECT_ORDER_ID(user.getUser_id());
 
-        populateOrders(orders);
+        populateOrders(populateByFilter("pending"));
     }
 
     public void populateOrders(ArrayList<Orders> orders)  {
+        invoiceVBOX.getChildren().clear();
         if (orders.isEmpty()) {
             return;
         }
         
         total = 0;
-        invoiceVBOX.getChildren().clear();
         try {
             for (Orders order : orders) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("invoice.fxml"));
@@ -67,6 +76,18 @@ public class InvoiceInterfaceController {
         totalLabel.setText(String.valueOf("Total Due: " + total));
     }
 
+    public ArrayList<Orders> populateByFilter(String status) {
+        ArrayList<Orders> orders = new ArrayList<>();
+        for (Orders order : new Orders().SELECT_ORDER_ID(user.getUser_id())) {
+            if (order.getStatus() != "cancelled") {
+                if (order.getStatus().equals(status)) {
+                    orders.add(order);
+                }                
+            }
+        }
+        return orders;
+    }
+
     public void cancelOrder(ActionEvent event) {
         if (selectedBox != null) {
             invoiceController controller = (invoiceController) selectedBox.getUserData();
@@ -81,7 +102,7 @@ public class InvoiceInterfaceController {
                     return;
                 }
 
-                order.DELETE_ORDER(order);
+                order.CANCEL_ORDER(order);
                 new Audit_Logs().INSERT_AUDIT_LOG(new Audit_Logs(user.getUser_id(), "Cancel Order", "Cancelled order with order id " + order.getOrder_id(), "127.0.0.1"));
                 invoiceVBOX.getChildren().remove(selectedBox);
                 selectedBox = null;
@@ -90,8 +111,16 @@ public class InvoiceInterfaceController {
     }
 
     public void pay(ActionEvent event) {
-        if (!checkOrderStatus()) {
-            Alert("Pay Order", "No pending orders.");
+        if (selectedBox == null) {
+            Alert("Pay Order", "Please select an order to pay.");
+            return;
+        }
+        
+        invoiceController controller = ((invoiceController) selectedBox.getUserData());
+        Orders order = controller.getOrder();
+
+        if (order.getStatus().equals("completed")) {
+            Alert("Pay Order", "You cannot pay for an order that has already been completed.");
             return;
         }
 
@@ -99,29 +128,27 @@ public class InvoiceInterfaceController {
             return;
         }
 
-        Payments payment = new Payments(user.getUser_id(), String.valueOf(total), paymentComboBox.getValue(), "completed");
-        System.out.println(payment);
-        new Payments().PAY_ORDER(payment);
-
-        completeOrder();
-        populateOrders(new Orders().SELECT_ORDER_ID(user.getUser_id()));
-        new Audit_Logs().INSERT_AUDIT_LOG(new Audit_Logs(user.getUser_id(), "Pay Order", "Paid order with " + paymentComboBox.getValue() + " payment method", "127.0.0.1"));
+        selectedBox = null;
+        System.out.println(order);
+        showPayPopup(order);
     }
 
-    private void completeOrder() {
-        ArrayList<Orders> orders = new Orders().SELECT_ORDER_ID(user.getUser_id());
-        new Orders().COMPLETE_ORDER(orders);
-        totalLabel.setText("Total Due: 0");
-    }
-
-    private boolean checkOrderStatus() {
-        ArrayList<Orders> orders = new Orders().SELECT_ORDER_ID(user.getUser_id());
-        for (Orders order : orders) {
-            if (order.getStatus().equals("pending")) {
-                return true;
-            }            
+    public void showPayPopup(Orders order) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("payPopup.fxml"));
+            Parent root = loader.load();
+    
+            payPopupController controller = loader.getController();
+            controller.setPayment(String.valueOf(order.getTotal_amount()), order.getOrder_id());
+            controller.setController(this);
+    
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return false;
     }
 
     public void selectOrder(MouseEvent event) {
@@ -136,6 +163,7 @@ public class InvoiceInterfaceController {
         if (selectedBox == clickedBox) {
             // Deselect the clicked box
             selectedBox.setStyle("-fx-background-color: gray; -fx-background-radius: 20; -fx-border-radius: 20;");
+            pay(null);
             selectedBox = null;
         } else {
             // Select the clicked box
@@ -143,6 +171,7 @@ public class InvoiceInterfaceController {
             selectedBox.setStyle("-fx-background-color: lightblue; -fx-background-radius: 20;");
         }
     }
+
     public void servicesClicked(MouseEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ServiceInterface.fxml"));

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Tables.Payments;
+import Tables.Views.PaymentView;
 
 public class CRUDPaymentsMenuController {
 
@@ -22,28 +23,17 @@ public class CRUDPaymentsMenuController {
     private Stage stage;
     private Scene scene;
 
-    @FXML private TableView<Payments> paymentsTable;
-    @FXML private Label CRUD;
-    @FXML private Button viewButton;
-    @FXML private Button createButton;
-    @FXML private Button updateButton;
-    @FXML private Button deleteButton;
-    boolean paymentViewMode = false;
+    @FXML private TableView<PaymentView> paymentsTable;
 
-    private ObservableList<Payments> paymentList = FXCollections.observableArrayList();
-    private ArrayList<Payments> payments_ar = new ArrayList<>();
-    private FilteredList<Payments> filteredData;
+    private ObservableList<PaymentView> paymentList = FXCollections.observableArrayList();
+    private ArrayList<PaymentView> payments_ar = new ArrayList<>();
+    private FilteredList<PaymentView> filteredData;
     @FXML private TextField searchTextField;
     
     public void initialize() {
         // Initialize the controller here
-        CRUD.setText("CRUD");
         initializeTableColumns();
         populateTable();
-        createButton.setVisible(true);
-        updateButton.setVisible(true);
-        deleteButton.setVisible(true);
-        viewButton.setText("User View");
         filteredData = new FilteredList<>(paymentList, b -> true);
         paymentsTable.setItems(filteredData);
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -57,19 +47,24 @@ public class CRUDPaymentsMenuController {
                 return true;
             }
             String lowerCaseFilter = query.toLowerCase();
-            if (String.valueOf(payment.getPayment_id()).toLowerCase().contains(lowerCaseFilter)) {
+
+            if (String.valueOf(payment.getPaymentId()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (String.valueOf(payment.getUser_id()).toLowerCase().contains(lowerCaseFilter)) {
+            } else if (String.valueOf(payment.getUserId()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (payment.getAmount().toLowerCase().contains(lowerCaseFilter)) {
+            } else if (payment.getUserName().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (payment.getPayment_method().toLowerCase().contains(lowerCaseFilter)) {
+            } else if (String.valueOf(payment.getOrderId()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (payment.getTransaction_id().toLowerCase().contains(lowerCaseFilter)) {
+            } else if (String.valueOf(payment.getServerId()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (payment.getPayment_status().toLowerCase().contains(lowerCaseFilter)) {
+            } else if (payment.getServerName().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (payment.getPayment_date().toLowerCase().contains(lowerCaseFilter)) {
+            } else if (String.valueOf(payment.getAmount()).toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (payment.getPaymentMethod().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (payment.getTransactionId().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             }
             return false;
@@ -78,34 +73,49 @@ public class CRUDPaymentsMenuController {
 
     @SuppressWarnings("unchecked")
     public void initializeTableColumns() {
-        TableColumn<Payments, Integer> payment_id = new TableColumn<>("Payment ID");
-        payment_id.setCellValueFactory(new PropertyValueFactory<>("payment_id"));
+        paymentsTable.getColumns().clear();
 
-        TableColumn<Payments, Integer> user_id = new TableColumn<>("User ID");
-        user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+        TableColumn<PaymentView, Integer> payment_id = new TableColumn<>("Payment ID");
+        payment_id.setCellValueFactory(new PropertyValueFactory<>("paymentId"));
 
-        TableColumn<Payments, String> amount = new TableColumn<>("Amount");
+        TableColumn<PaymentView, Integer> user_id = new TableColumn<>("User ID");
+        user_id.setCellValueFactory(new PropertyValueFactory<>("userId"));
+
+        TableColumn<PaymentView, Integer> user_name = new TableColumn<>("Username");
+        user_name.setCellValueFactory(new PropertyValueFactory<>("userName"));
+
+        TableColumn<PaymentView, Integer> order_id = new TableColumn<>("Order ID");
+        order_id.setCellValueFactory(new PropertyValueFactory<>("orderId"));
+
+        TableColumn<PaymentView, Integer> server_id = new TableColumn<>("Server ID");
+        server_id.setCellValueFactory(new PropertyValueFactory<>("serverId"));
+
+        TableColumn<PaymentView, String> server_name = new TableColumn<>("Server Name");
+        server_name.setCellValueFactory(new PropertyValueFactory<>("serverName"));
+
+        TableColumn<PaymentView, String> amount = new TableColumn<>("Amount");
         amount.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
-        TableColumn<Payments, String> payment_method = new TableColumn<>("Payment Method");
-        payment_method.setCellValueFactory(new PropertyValueFactory<>("payment_method"));
+        TableColumn<PaymentView, String> payment_method = new TableColumn<>("Payment Method");
+        payment_method.setCellValueFactory(new PropertyValueFactory<>("paymentMethod"));
 
-        TableColumn<Payments, String> transaction_id = new TableColumn<>("Transaction ID");
-        transaction_id.setCellValueFactory(new PropertyValueFactory<>("transaction_id"));
+        TableColumn<PaymentView, String> transaction_id = new TableColumn<>("Transaction ID");
+        transaction_id.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
 
-        TableColumn<Payments, String> payment_status = new TableColumn<>("Payment Status");
-        payment_status.setCellValueFactory(new PropertyValueFactory<>("payment_status"));
+        TableColumn<PaymentView, String> payment_status = new TableColumn<>("Payment Status");
+        payment_status.setCellValueFactory(new PropertyValueFactory<>("paymentStatus"));
 
-        TableColumn<Payments, String> payment_date = new TableColumn<>("Payment Date");
-        payment_date.setCellValueFactory(new PropertyValueFactory<>("payment_date"));
+        TableColumn<PaymentView, String> payment_date = new TableColumn<>("Payment Date");
+        payment_date.setCellValueFactory(new PropertyValueFactory<>("paymentDate"));
 
         // Add the columns to the TableView
-        paymentsTable.getColumns().addAll(payment_id, user_id, amount, payment_method, transaction_id, payment_status, payment_date);
+        paymentsTable.getColumns().addAll(payment_id, user_id, user_name, order_id, server_id, server_name, amount, payment_method, transaction_id, payment_status, payment_date);
         paymentsTable.setItems(paymentList);
     }
 
     public void populateTable() {
-        payments_ar = new Payments().SELECT_ALL_PAYMENTS();
+        paymentList.clear();
+        payments_ar = new PaymentView().getPaymentsWithUserServerAndOrder();
         paymentList.addAll(payments_ar);
     }
 
@@ -118,14 +128,14 @@ public class CRUDPaymentsMenuController {
     }
 
     public void updatePayment(ActionEvent event) {
-        Payments selectedPayment = paymentsTable.getSelectionModel().getSelectedItem();
+        PaymentView selectedPayment = paymentsTable.getSelectionModel().getSelectedItem();
         if (selectedPayment == null) {
             showAlert(Alert.AlertType.WARNING, "No Payment Selected", "Please select an Payment to update.");
             return;
         }
 
-        Payments selectedPayment_orignal = payments_ar.stream()
-        .filter(user -> user.getPayment_id() == selectedPayment.getPayment_id())
+        PaymentView selectedPayment_orignal = payments_ar.stream()
+        .filter(user -> user.getPaymentId() == selectedPayment.getPaymentId())
         .findFirst()
         .orElse(null);
 
@@ -135,7 +145,7 @@ public class CRUDPaymentsMenuController {
     }
 
     public void deletePayment(ActionEvent event) {
-        Payments selectedPayment = paymentsTable.getSelectionModel().getSelectedItem();
+        PaymentView selectedPayment = paymentsTable.getSelectionModel().getSelectedItem();
         if (selectedPayment == null) {
             showAlert(Alert.AlertType.WARNING, "No Payment Selected", "Please select an Payment to delete.");
             return;
@@ -150,15 +160,16 @@ public class CRUDPaymentsMenuController {
         }
     }
 
-    private void showPaymentDialog(Payments selectedPayment) {
+    private void showPaymentDialog(PaymentView selectedPayment) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("PaymentDialog.fxml"));
             Parent root = loader.load();
 
             PaymentDialogController controller = loader.getController();
-            controller.setPaymentList(paymentList);
+            controller.setController(this);
+
             if (selectedPayment != null) {
-                controller.setPayment(selectedPayment); // Existing user for editing
+            controller.setPayment(selectedPayment); // Existing user for editing
             }
 
             Stage dialogStage = new Stage();

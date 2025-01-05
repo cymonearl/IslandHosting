@@ -15,6 +15,7 @@ public class invoiceController {
     @FXML private Label ca;
     @FXML private Label total_amount;
     @FXML private Label status;
+    @FXML private Label server_id;
     Orders order;
 
     public void setOrder(Orders order) {
@@ -27,6 +28,7 @@ public class invoiceController {
         getServer(order.getServer_id()).getStorage_gb(),
         getServer(order.getServer_id()).getSpecs()));
 
+        server_id.setText(String.valueOf("Server ID: " + order.getServer_id()));
         sd.setText(String.valueOf("Start Date: " + order.getStart_date()));
         ed.setText(String.valueOf("End Date: " + order.getEnd_date()));
         ca.setText(String.valueOf("Created At: " + order.getCreated_at()));
