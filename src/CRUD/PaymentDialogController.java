@@ -26,7 +26,7 @@ public class PaymentDialogController {
         this.payment = payment;
         isNewPayment = false;
 
-        UserIDField.setText(String.valueOf(payment.getUser_id()));
+        UserIDField.setText(String.valueOf(payment.getOrder_id()));
         AmountField.setText(payment.getAmount());
         PaymentMethodField.setText(payment.getPayment_method());
         StatusComboBox.setValue(payment.getPayment_status());

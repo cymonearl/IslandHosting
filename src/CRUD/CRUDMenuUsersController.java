@@ -21,11 +21,9 @@ public class CRUDMenuUsersController {
     // UI Components
     @FXML private TableView<Users> usersTableView;
     @FXML private Label CRUD;
-    @FXML private Button viewButton;
     @FXML private Button createButton;
     @FXML private Button updateButton;
     @FXML private Button deleteButton;
-    boolean userViewMode = false;
 
     // Data and Stage Properties
     private ObservableList<Users> userList = FXCollections.observableArrayList();
@@ -37,45 +35,18 @@ public class CRUDMenuUsersController {
 
     // ========= Initialization =========
     public void initialize() {
-            CRUD.setText("CRUD");
             initializeTableColumns();
             populateAllUsers();
             createButton.setVisible(true);
             updateButton.setVisible(true);
             deleteButton.setVisible(true);
-            viewButton.setText("User View");
             filteredData = new FilteredList<>(userList, b -> true);
             usersTableView.setItems(filteredData);
             searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
                 filterTable(newValue);
             });    
         }
-        
-        public void changeView(ActionEvent event) {
-            usersTableView.getColumns().clear();
-
-            if (userViewMode) {
-                userViewMode = false;
-                userList.clear();
-                initialize();
-            } else {
-                userList.clear();
-                userViewMode = true;
-                initializeTableColumnsUV();
-                CRUD.setText("User View");
-                populateActiveUsers();
-                createButton.setVisible(false);
-                updateButton.setVisible(false);
-                deleteButton.setVisible(false);
-                viewButton.setText("CRUD");
-                filteredData = new FilteredList<>(userList, b -> true);
-                usersTableView.setItems(filteredData);
-                searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                    filterTable(newValue);
-                });    
-            }       
-        }
-        
+                
         public void filterTable(String searchText) {
             filteredData.setPredicate(user -> {
                 // If search text is empty, show all users
@@ -137,41 +108,8 @@ public class CRUDMenuUsersController {
             usersTableView.setItems(userList); // Set ObservableList to TableView
         }
     
-        @SuppressWarnings("unchecked")
-        private void initializeTableColumnsUV() {
-            // Define User View columns
-            TableColumn<Users, Integer> user_id = new TableColumn<>("User ID");
-            user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
-    
-            TableColumn<Users, String> username = new TableColumn<>("Username");
-            username.setCellValueFactory(new PropertyValueFactory<>("username"));
-    
-            TableColumn<Users, String> email = new TableColumn<>("Email");
-            email.setCellValueFactory(new PropertyValueFactory<>("email"));
-    
-            TableColumn<Users, String> full_name = new TableColumn<>("Full Name");
-            full_name.setCellValueFactory(new PropertyValueFactory<>("full_name"));
-    
-            TableColumn<Users, String> contact_number = new TableColumn<>("Contact Number");
-            contact_number.setCellValueFactory(new PropertyValueFactory<>("contact_number"));
-    
-            TableColumn<Users, String> status = new TableColumn<>("Status");
-            status.setCellValueFactory(new PropertyValueFactory<>("status"));
-            
-            // Add User View specific columns to the TableView
-            usersTableView.getColumns().addAll(user_id, username, email, full_name, contact_number, status);
-    
-            usersTableView.setItems(userList); // Set ObservableList to TableView
-        }
-
-
     private void populateAllUsers() {
         users_ar = new Users().SELECT_ALL_USERS();
-        userList.addAll(users_ar);
-    }
-
-    private void populateActiveUsers() {
-        users_ar = new Users().SELECT_ACTIVE_USERS();
         userList.addAll(users_ar);
     }
 

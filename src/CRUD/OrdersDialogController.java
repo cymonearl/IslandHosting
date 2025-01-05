@@ -2,36 +2,36 @@ package CRUD;
 
 import javafx.scene.control.*;
 import javafx.stage.*;
-import javafx.collections.*;
 import Tables.Orders;
+import Tables.Views.OrderView;;
 public class OrdersDialogController {
     public Label CreateOrderLabel;
     public TextField user_idTextField;
     public TextField server_idTextField;
     public TextField total_amountTextField;
     public ComboBox<String> statusComboBox;
+    private CRUDMenuOrdersController controller;
     
-    private Orders order;
-    private ObservableList<Orders> orderList;
+    private OrderView orderView;
     private boolean isNewOrder = true;
     public void initialize() {
         statusComboBox.getItems().addAll("Pending", "Completed", "Cancelled", "Expired");
         statusComboBox.setValue("Pending");
     }
 
-    public void setOrder(Orders order) {
+    public void setOrder(OrderView orderView) {
         CreateOrderLabel.setText("Update Order");
-        this.order = order;
+        this.orderView = orderView;
         isNewOrder = false;
 
-        total_amountTextField.setText(String.valueOf(order.getTotal_amount()));
-        user_idTextField.setText(String.valueOf(order.getUser_id()));
-        server_idTextField.setText(String.valueOf(order.getServer_id()));
-        statusComboBox.setValue(order.getStatus());
+        total_amountTextField.setText(String.valueOf(orderView.getTotalAmount()));
+        user_idTextField.setText(String.valueOf(orderView.getUserId()));
+        server_idTextField.setText(String.valueOf(orderView.getServerId()));
+        statusComboBox.setValue(orderView.getStatus());
     }
 
-    public void setOrderList(ObservableList<Orders> orderList) {
-        this.orderList = orderList;
+    public void setController(CRUDMenuOrdersController controller) {
+        this.controller = controller;
     }
 
     public void handleSave() {
@@ -47,18 +47,16 @@ public class OrdersDialogController {
         if (isNewOrder) {
             Orders newOrder = new Orders(user_id, server_id, total_amount, status);
             new Orders().INSERT_ORDER(newOrder);
-            orderList.add(newOrder);
         } else {
-            order.setUser_id(Integer.parseInt(user_idTextField.getText()));
-            order.setServer_id(Integer.parseInt(server_idTextField.getText()));
-            order.setTotal_amount(Double.parseDouble(total_amountTextField.getText()));
-            order.setStatus(statusComboBox.getValue());
-            Orders updateOrder = order;
-            orderList.set(orderList.indexOf(order), updateOrder);
-            new Orders().UPDATE_ORDER(updateOrder);
+            orderView.setUserId(Integer.parseInt(user_idTextField.getText()));
+            orderView.setServerId(Integer.parseInt(server_idTextField.getText()));
+            orderView.setTotalAmount(Double.parseDouble(total_amountTextField.getText()));
+            orderView.setStatus(statusComboBox.getValue());
+            new Orders().UPDATE_ORDER(orderView);
         }
-        closeDialog();
 
+        controller.initialize();
+        closeDialog();
     }
 
     public void handleCancel() {

@@ -20,15 +20,13 @@ public class InvoiceInterfaceController {
 
     private Users user;
     private ArrayList<Orders> orders;
-    @FXML private ComboBox<String> paymentComboBox;
     @FXML private VBox invoiceVBOX;
     @FXML private Label totalLabel;
     private VBox selectedBox;
     double total;
 
     public void initialize() {
-        paymentComboBox.getItems().addAll("Paypal", "Credit Card", "Debit Card", "GCash");
-        paymentComboBox.setValue("Paypal");
+
     }
 
     public void setUser(Users user) {
@@ -81,7 +79,7 @@ public class InvoiceInterfaceController {
                     return;
                 }
 
-                order.DELETE_ORDER(order);
+                order.CANCEL_ORDER(order);
                 new Audit_Logs().INSERT_AUDIT_LOG(new Audit_Logs(user.getUser_id(), "Cancel Order", "Cancelled order with order id " + order.getOrder_id(), "127.0.0.1"));
                 invoiceVBOX.getChildren().remove(selectedBox);
                 selectedBox = null;
@@ -90,8 +88,16 @@ public class InvoiceInterfaceController {
     }
 
     public void pay(ActionEvent event) {
-        if (!checkOrderStatus()) {
-            Alert("Pay Order", "No pending orders.");
+        if (selectedBox == null) {
+            Alert("Pay Order", "Please select an order to pay.");
+            return;
+        }
+        
+        invoiceController controller = ((invoiceController) selectedBox.getUserData());
+        Orders order = controller.getOrder();
+
+        if (order.getStatus().equals("completed")) {
+            Alert("Pay Order", "You cannot pay for an order that has already been completed.");
             return;
         }
 
@@ -99,29 +105,15 @@ public class InvoiceInterfaceController {
             return;
         }
 
-        Payments payment = new Payments(user.getUser_id(), String.valueOf(total), paymentComboBox.getValue(), "completed");
-        System.out.println(payment);
-        new Payments().PAY_ORDER(payment);
-
-        completeOrder();
-        populateOrders(new Orders().SELECT_ORDER_ID(user.getUser_id()));
-        new Audit_Logs().INSERT_AUDIT_LOG(new Audit_Logs(user.getUser_id(), "Pay Order", "Paid order with " + paymentComboBox.getValue() + " payment method", "127.0.0.1"));
+        new Audit_Logs().INSERT_AUDIT_LOG(new Audit_Logs(user.getUser_id(), "Pay Order", "Paid for order with order id " + order.getOrder_id(), "127.0.0.1"));
+        invoiceVBOX.getChildren().remove(selectedBox);
+        selectedBox = null;
     }
 
     private void completeOrder() {
         ArrayList<Orders> orders = new Orders().SELECT_ORDER_ID(user.getUser_id());
         new Orders().COMPLETE_ORDER(orders);
         totalLabel.setText("Total Due: 0");
-    }
-
-    private boolean checkOrderStatus() {
-        ArrayList<Orders> orders = new Orders().SELECT_ORDER_ID(user.getUser_id());
-        for (Orders order : orders) {
-            if (order.getStatus().equals("pending")) {
-                return true;
-            }            
-        }
-        return false;
     }
 
     public void selectOrder(MouseEvent event) {

@@ -33,7 +33,6 @@ public class ServerDialogController {
         ram_gbTextField.setText(String.valueOf(server.getRam_gb()));
         storage_gbTextField.setText(String.valueOf(server.getStorage_gb()));
         price_per_monthTextField.setText(String.valueOf(server.getPrice_per_month()));
-        server_locationTextField.setText(server.getServer_location());
         additional_specsTextField.setText(server.getSpecs());
         statusComboBox.setValue(server.getStatus());
     }
@@ -66,7 +65,7 @@ public class ServerDialogController {
             server.setPrice_per_month(price_per_month);
             server.setSpecs(specs);
             server.setStatus(status);
-            server.setServer_location(server_location);
+            
             Servers updateServer = server;
             serverList.set(serverList.indexOf(server), updateServer);
             new Servers().UPDATE_SERVER(updateServer);

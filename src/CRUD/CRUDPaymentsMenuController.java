@@ -59,7 +59,7 @@ public class CRUDPaymentsMenuController {
             String lowerCaseFilter = query.toLowerCase();
             if (String.valueOf(payment.getPayment_id()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (String.valueOf(payment.getUser_id()).toLowerCase().contains(lowerCaseFilter)) {
+            } else if (String.valueOf(payment.getOrder_id()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             } else if (payment.getAmount().toLowerCase().contains(lowerCaseFilter)) {
                 return true;

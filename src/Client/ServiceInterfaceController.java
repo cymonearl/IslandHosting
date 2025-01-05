@@ -1,5 +1,4 @@
 package Client;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -204,29 +203,6 @@ public class ServiceInterfaceController {
                 System.out.println("Error landingPage");
         }
     }
-
-    @FXML
-    private void navigateToLandingPage(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("LandingPage.fxml"));
-            Parent root = loader.load();
-
-            LandingPageController controller = loader.getController();
-            controller.setUser(user);
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-
-            stage.setScene(scene);
-            stage.setTitle("Landing Page");
-            stage.centerOnScreen();
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-                System.out.println("Error landingPage");
-        }
-    }
-
 
     @FXML
     private void onManilaClick() {

@@ -70,8 +70,6 @@ public class CRUDMenuServersController {
                 return true;
             } else if (String.valueOf(server.getStatus()).toLowerCase().contains(lowerCaseSearchText)) {
                 return true;
-            } else if (server.getServer_location().toLowerCase().contains(lowerCaseSearchText)) {
-                return true;
             } else if (server.getSpecs().toLowerCase().contains(lowerCaseSearchText)) {
                 return true;
             } else if (server.getStatus().toLowerCase().contains(lowerCaseSearchText)) {
@@ -93,7 +91,6 @@ public class CRUDMenuServersController {
         } else {
             serverList.clear();
             userViewMode = true;
-            initializeTableColumnsUV();
             CRUD.setText("User View");
             populateAvailableServers();
             createButton.setVisible(false);
@@ -139,37 +136,6 @@ public class CRUDMenuServersController {
         created_at.setCellValueFactory(new PropertyValueFactory<>("created_at"));
 
         serversTableView.getColumns().addAll(server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, specs, status, created_at);
-        serversTableView.setItems(serverList); // Set ObservableList to TableView
-    }
-
-    @SuppressWarnings("unchecked")
-    private void initializeTableColumnsUV() {
-        // Map Users class fields to TableView columns
-        TableColumn<Servers, Integer> server_id = new TableColumn<>("Server ID");
-        server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
-        
-        TableColumn<Servers, String> name = new TableColumn<>("Name");
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        
-        TableColumn<Servers, String> hardware_type = new TableColumn<>("Hardware Type");
-        hardware_type.setCellValueFactory(new PropertyValueFactory<>("hardware_type"));
-        
-        TableColumn<Servers, Integer> ram_gb = new TableColumn<>("RAM (GB)");
-        ram_gb.setCellValueFactory(new PropertyValueFactory<>("ram_gb"));
-        
-        TableColumn<Servers, Integer> storage_gb = new TableColumn<>("Storage (GB)");
-        storage_gb.setCellValueFactory(new PropertyValueFactory<>("storage_gb"));
-        
-        TableColumn<Servers, Double> price_per_month = new TableColumn<>("Price Per Month");
-        price_per_month.setCellValueFactory(new PropertyValueFactory<>("price_per_month"));
-        
-        TableColumn<Servers, String> specs = new TableColumn<>("Specs");
-        specs.setCellValueFactory(new PropertyValueFactory<>("specs"));
-        
-        TableColumn<Servers, String> status = new TableColumn<>("Status");
-        status.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        serversTableView.getColumns().addAll(server_id, name, hardware_type, ram_gb, storage_gb, price_per_month, specs, status);
         serversTableView.setItems(serverList); // Set ObservableList to TableView
     }
 

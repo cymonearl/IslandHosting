@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="450.0" prefWidth="600.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.ServerDialogController">
+<VBox styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.ServerDialogController">
    <children>
       <Label fx:id="CreateServerLabel" styleClass="font-white" stylesheets="@../style.css" text="Create Server">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="server_nameTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <TextField fx:id="hardware_typeTextField1" layoutX="20.0" layoutY="72.0" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
       <Label styleClass="font-white" stylesheets="@../style.css" text="server_name" />
       <TextField fx:id="hardware_typeTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
       <Label styleClass="font-white" stylesheets="@../style.css" text="hardware_type" />
@@ -27,8 +27,6 @@
       <Label styleClass="font-white" stylesheets="@../style.css" text="storage_gb" />
       <TextField fx:id="price_per_monthTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
       <Label styleClass="font-white" stylesheets="@../style.css" text="price_per_month" />
-      <TextField fx:id="server_locationTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
-      <Label styleClass="font-white" stylesheets="@../style.css" text="server_location" />
       <TextField fx:id="additional_specsTextField" layoutX="20.0" layoutY="282.0" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
       <Label layoutX="20.0" layoutY="265.0" styleClass="font-white" stylesheets="@../style.css" text="additional_specs" />
       <ComboBox fx:id="statusComboBox" prefWidth="150.0" styleClass="combo-boxDesign" stylesheets="@../style.css" />

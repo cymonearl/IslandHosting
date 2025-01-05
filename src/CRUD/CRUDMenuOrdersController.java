@@ -14,30 +14,21 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 import Tables.Orders;
+import Tables.Views.OrderView;
 public class CRUDMenuOrdersController {
-    @FXML private TableView<Orders> ordersTableView;
-    @FXML private Label CRUD;
-    @FXML private Button viewButton;
-    @FXML private Button createButton;
-    @FXML private Button updateButton;
-    @FXML private Button deleteButton;
-    boolean userViewMode = false;
+    @FXML private TableView<OrderView> ordersTableView;
 
-    private ObservableList<Orders> orderList = FXCollections.observableArrayList();
-    private ArrayList<Orders> orders_ar = new ArrayList<>();
-    private FilteredList<Orders> filteredData;
+    private ObservableList<OrderView> orderList = FXCollections.observableArrayList();
+    private ArrayList<OrderView> orderView_ar = new ArrayList<>();
+    private FilteredList<OrderView> filteredData;
+
     private Scene scene;
     private Stage stage;
     @FXML private TextField searchTextField;
 
     public void initialize() {
-        CRUD.setText("CRUD");
         initializeTableColumns();
         populateTable();
-        createButton.setVisible(true);
-        updateButton.setVisible(true);
-        deleteButton.setVisible(true);
-        viewButton.setText("User View");
         filteredData = new FilteredList<>(orderList, b -> true);
         ordersTableView.setItems(filteredData);
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -51,115 +42,75 @@ public class CRUDMenuOrdersController {
                 return true;
             }
             String lowerCaseFilter = searchText.toLowerCase();
-            if (String.valueOf(order.getOrder_id()).toLowerCase().contains(lowerCaseFilter)) {
+
+            if (String.valueOf(order.getOrderId()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (String.valueOf(order.getUser_id()).toLowerCase().contains(lowerCaseFilter)) {
+            } else if (String.valueOf(order.getUserId()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (String.valueOf(order.getServer_id()).toLowerCase().contains(lowerCaseFilter)) {
+            } else if (order.getUserName().toLowerCase().contains(lowerCaseFilter)) {
+                return true;                
+            } else if (String.valueOf(order.getServerId()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (order.getStart_date().toLowerCase().contains(lowerCaseFilter)) {
-                return true;
-            } else if (order.getEnd_date().toLowerCase().contains(lowerCaseFilter)) {
-                return true;
-            } else if (String.valueOf(order.getTotal_amount()).toLowerCase().contains(lowerCaseFilter)) {
+            } else if (order.getServerName().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             } else if (order.getStatus().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (order.getStartDate().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (order.getEndDate().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (String.valueOf(order.getTotalAmount()).toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (order.getCreatedAt().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             }
             return false;
         });
     }
 
-    public void changeView(ActionEvent event) {
-        ordersTableView.getColumns().clear();
-
-        if (userViewMode) {
-            userViewMode = false;
-            orderList.clear();
-            initialize();
-        } else {
-            orderList.clear();
-            userViewMode = true;
-            initializeTableColumnsUV();
-            CRUD.setText("User View");
-            populateTable();
-            createButton.setVisible(false);
-            updateButton.setVisible(false);
-            deleteButton.setVisible(false);
-            viewButton.setText("CRUD");
-            filteredData = new FilteredList<>(orderList, b -> true);
-            ordersTableView.setItems(filteredData);
-            searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                filterTable(newValue);
-            });    
-        }       
-    }
-
     @SuppressWarnings("unchecked")
     public void initializeTableColumns() {
+        ordersTableView.getColumns().clear();
         // Map Users class fields to TableView columns
-        TableColumn<Orders, Integer> order_id = new TableColumn<>("Order ID");
-        order_id.setCellValueFactory(new PropertyValueFactory<>("order_id"));
+        TableColumn<OrderView, Integer> order_id = new TableColumn<>("Order ID");
+        order_id.setCellValueFactory(new PropertyValueFactory<>("orderId"));
 
-        TableColumn<Orders, Integer> user_id = new TableColumn<>("User ID");
-        user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+        TableColumn<OrderView, Integer> user_id = new TableColumn<>("User ID");
+        user_id.setCellValueFactory(new PropertyValueFactory<>("userId"));
 
-        TableColumn<Orders, Integer> server_id = new TableColumn<>("Server ID");
-        server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
+        TableColumn<OrderView, Integer> user_name = new TableColumn<>("Username");
+        user_name.setCellValueFactory(new PropertyValueFactory<>("userName"));
 
-        TableColumn<Orders, String> start_date = new TableColumn<>("Start Date");
-        start_date.setCellValueFactory(new PropertyValueFactory<>("start_date"));
+        TableColumn<OrderView, Integer> server_id = new TableColumn<>("Server ID");
+        server_id.setCellValueFactory(new PropertyValueFactory<>("serverId"));
 
-        TableColumn<Orders, String> end_date = new TableColumn<>("End Date");
-        end_date.setCellValueFactory(new PropertyValueFactory<>("end_date"));
+        TableColumn<OrderView, String> server_name = new TableColumn<>("Server Name");
+        server_name.setCellValueFactory(new PropertyValueFactory<>("serverName"));
 
-        TableColumn<Orders, Double> total_amount = new TableColumn<>("Total Amount");
-        total_amount.setCellValueFactory(new PropertyValueFactory<>("total_amount"));
+        TableColumn<OrderView, String> start_date = new TableColumn<>("Start Date");
+        start_date.setCellValueFactory(new PropertyValueFactory<>("startDate"));
 
-        TableColumn<Orders, String> status = new TableColumn<>("Status");
+        TableColumn<OrderView, String> end_date = new TableColumn<>("End Date");
+        end_date.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+
+        TableColumn<OrderView, Double> total_amount = new TableColumn<>("Total Amount");
+        total_amount.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
+
+        TableColumn<OrderView, String> status = new TableColumn<>("Status");
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        TableColumn<Orders, String> created_at = new TableColumn<>("Created At");
-        created_at.setCellValueFactory(new PropertyValueFactory<>("created_at"));
+        TableColumn<OrderView, String> created_at = new TableColumn<>("Created At");
+        created_at.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
 
-        ordersTableView.getColumns().addAll(order_id, user_id, server_id, start_date, end_date, total_amount, status, created_at);
+        // Add the columns to the TableView
+        ordersTableView.getColumns().addAll(order_id, user_id, user_name, server_id, server_name, start_date, end_date, total_amount, status, created_at);
         ordersTableView.setItems(orderList); // Set ObservableList to TableView
     }
 
-    @SuppressWarnings("unchecked")
-    public void initializeTableColumnsUV() {
-        // Map Users class fields to TableView columns
-        TableColumn<Orders, Integer> order_id = new TableColumn<>("Order ID");
-        order_id.setCellValueFactory(new PropertyValueFactory<>("order_id"));
-
-        TableColumn<Orders, Integer> user_id = new TableColumn<>("User ID");
-        user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
-
-        TableColumn<Orders, Integer> server_id = new TableColumn<>("Server ID");
-        server_id.setCellValueFactory(new PropertyValueFactory<>("server_id"));
-
-        TableColumn<Orders, String> start_date = new TableColumn<>("Start Date");
-        start_date.setCellValueFactory(new PropertyValueFactory<>("start_date"));
-
-        TableColumn<Orders, String> end_date = new TableColumn<>("End Date");
-        end_date.setCellValueFactory(new PropertyValueFactory<>("end_date"));
-
-        TableColumn<Orders, Double> total_amount = new TableColumn<>("Total Amount");
-        total_amount.setCellValueFactory(new PropertyValueFactory<>("total_amount"));    
-
-        TableColumn<Orders, String> status = new TableColumn<>("Status");
-        status.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        TableColumn<Orders, String> created_at = new TableColumn<>("Created At");
-        created_at.setCellValueFactory(new PropertyValueFactory<>("created_at"));
-
-        ordersTableView.getColumns().addAll(order_id, user_id, server_id, start_date, end_date, total_amount, status, created_at);
-        ordersTableView.setItems(orderList); // Set ObservableList to TableView
-    }
-    
     public void populateTable() {
-        orders_ar = new Orders().SELECT_ALL_ORDERS();
-        orderList.addAll(orders_ar);
+        orderList.clear();
+        orderView_ar = new OrderView().getOrderView();
+        orderList.addAll(orderView_ar);
     }
 
     public void navigateToUsers(ActionEvent event) {
@@ -209,14 +160,14 @@ public class CRUDMenuOrdersController {
     }
 
     public void updateOrder(ActionEvent event) {
-        Orders selectedOrder = ordersTableView.getSelectionModel().getSelectedItem();
+        OrderView selectedOrder = ordersTableView.getSelectionModel().getSelectedItem();
         if (selectedOrder == null) {
             showAlert(Alert.AlertType.WARNING, "No Order Selected", "Please select an order to update.");
             return;
         }
 
-        Orders selectedOrder_original = orders_ar.stream()
-                .filter(user -> user.getOrder_id() == selectedOrder.getOrder_id())
+        OrderView selectedOrder_original = orderView_ar.stream()
+                .filter(user -> user.getOrderId() == selectedOrder.getOrderId())
                 .findFirst()
                 .orElse(null);
 
@@ -226,7 +177,7 @@ public class CRUDMenuOrdersController {
     }
 
     public void deleteOrder(ActionEvent event) {
-        Orders selectedOrder = ordersTableView.getSelectionModel().getSelectedItem();
+        OrderView selectedOrder = ordersTableView.getSelectionModel().getSelectedItem();
         if (selectedOrder == null) {
             showAlert(Alert.AlertType.WARNING, "No Order Selected", "Please select an order to delete.");
             return;
@@ -241,21 +192,21 @@ public class CRUDMenuOrdersController {
         }
     }
 
-    private void showOrdersDialog(Orders order) {
+    private void showOrdersDialog(OrderView orderView) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("OrderDialog.fxml"));
             Parent root = loader.load();
 
             // Pass data to UserDialogController
             OrdersDialogController controller = loader.getController();
-            controller.setOrderList(orderList);
-            if (order != null) {
-                controller.setOrder(order); // Existing user for editing
+            controller.setController(this);
+            if (orderView != null) {
+                controller.setOrder(orderView); // Existing user for editing
             }
 
             // Show the dialog
             Stage dialogStage = new Stage();
-            dialogStage.setTitle(order == null ? "Create Order" : "Update Order");
+            dialogStage.setTitle(orderView == null ? "Create Order" : "Update Order");
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.setScene(new Scene(root));
             dialogStage.setResizable(false);
