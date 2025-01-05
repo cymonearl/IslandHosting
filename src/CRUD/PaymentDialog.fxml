@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox prefWidth="600.0" styleClass="background-black" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD.PaymentDialogController">
    <children>
       <Label fx:id="CreatePaymentLabel" styleClass="font-white" stylesheets="@../style.css" text="Create Payment">
@@ -18,9 +17,9 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="UserIDField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
-      <Label styleClass="font-white" stylesheets="@../style.css" text="user_id" />
-      <TextField fx:id="PaymentMethodField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <TextField fx:id="order_idTF" layoutX="20.0" layoutY="98.0" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <Label layoutX="20.0" layoutY="124.0" styleClass="font-white" stylesheets="@../style.css" text="order_id" />
+      <ComboBox fx:id="PaymentMethodComboBox" layoutX="20.0" layoutY="158.0" prefWidth="150.0" promptText="completed" styleClass="combo-boxDesign" stylesheets="@../style.css" />
       <Label styleClass="font-white" stylesheets="@../style.css" text="payment_method" />
       <TextField fx:id="AmountField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
       <Label styleClass="font-white" stylesheets="@../style.css" text="amount" />

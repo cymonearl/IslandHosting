@@ -238,6 +238,8 @@ public class Views {
         private  SimpleStringProperty paymentStatus;
         private  SimpleStringProperty paymentDate; // Changed to String
 
+        public PaymentView() {}
+
         // Constructor with String date
         public PaymentView(int paymentId, int orderId, int userId, String userName, int serverId, String serverName,
                            double amount, String paymentMethod, String transactionId, String paymentStatus, String paymentDate) {
@@ -267,6 +269,19 @@ public class Views {
         public String getPaymentStatus() { return paymentStatus.get(); }
         public String getPaymentDate() { return paymentDate.get(); } // Returns String
 
+        // Setters
+        public void setPaymentId(int paymentId) { this.paymentId = new SimpleIntegerProperty(paymentId); }
+        public void setOrderId(int orderId) { this.orderId = new SimpleIntegerProperty(orderId); }
+        public void setUserId(int userId) { this.userId = new SimpleIntegerProperty(userId); }
+        public void setUserName(String userName) { this.userName = new SimpleStringProperty(userName); }
+        public void setServerId(int serverId) { this.serverId = new SimpleIntegerProperty(serverId); }
+        public void setServerName(String serverName) { this.serverName = new SimpleStringProperty(serverName); }
+        public void setAmount(double amount) { this.amount = new SimpleDoubleProperty(amount); }
+        public void setPaymentMethod(String paymentMethod) { this.paymentMethod = new SimpleStringProperty(paymentMethod); }
+        public void setTransactionId(String transactionId) { this.transactionId = new SimpleStringProperty(transactionId); }
+        public void setPaymentStatus(String paymentStatus) { this.paymentStatus = new SimpleStringProperty(paymentStatus); }
+        public void setPaymentDate(String paymentDate) { this.paymentDate = new SimpleStringProperty(paymentDate); }
+
         // Property Getters (for JavaFX TableView)
         public SimpleIntegerProperty paymentIdProperty() { return paymentId; }
         public SimpleIntegerProperty orderIdProperty() { return orderId; }
@@ -279,5 +294,111 @@ public class Views {
         public SimpleStringProperty transactionIdProperty() { return transactionId; }
         public SimpleStringProperty paymentStatusProperty() { return paymentStatus; }
         public SimpleStringProperty paymentDateProperty() { return paymentDate; } // Returns StringProperty
+
+        public ArrayList<PaymentView> getPaymentsWithUserServerAndOrder() { 
+            ArrayList<PaymentView> payments = new ArrayList<>(); // Create an ArrayList of PaymentView objects
+            try {
+                Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM PaymentsWithUserServerAndOrder");
+                while (resultSet.next()) {
+                    int paymentId = resultSet.getInt("payment_id");
+                    int orderId = resultSet.getInt("order_id");
+                    int userId = resultSet.getInt("user_id");
+                    String userName = resultSet.getString("user_name");
+                    int serverId = resultSet.getInt("server_id");
+                    String serverName = resultSet.getString("server_name");
+                    double amount = resultSet.getDouble("amount");
+                    String paymentMethod = resultSet.getString("payment_method");
+                    String transactionId = resultSet.getString("transaction_id");
+                    String paymentStatus = resultSet.getString("payment_status");
+                    String paymentDate = resultSet.getString("payment_date"); // Changed to String
+                    PaymentView paymentView = new PaymentView(paymentId, orderId, userId, userName, serverId, serverName, amount, paymentMethod, transactionId, paymentStatus, paymentDate);
+                    payments.add(paymentView);
+                }   
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return payments;
+        } // Method to retrieve PaymentsWithUserServerAndOrder
+    }
+
+    public static class Audit_LogsView {
+        private  SimpleIntegerProperty logId;
+        private  SimpleIntegerProperty userId;
+        private  SimpleStringProperty userName;
+        private  SimpleStringProperty action;
+        private  SimpleStringProperty description;
+        private  SimpleStringProperty timestamp;
+        private  SimpleStringProperty ipAddress;
+
+        public Audit_LogsView() {}
+
+        public Audit_LogsView(int logId, int userId, String userName, String action, String description, String timestamp, String ipAddress) {
+            this.logId = new SimpleIntegerProperty(logId);
+            this.userId = new SimpleIntegerProperty(userId);
+            this.userName = new SimpleStringProperty(userName);
+            this.action = new SimpleStringProperty(action);
+            this.description = new SimpleStringProperty(description);
+            this.timestamp = new SimpleStringProperty(timestamp);
+            this.ipAddress = new SimpleStringProperty(ipAddress);
+        }
+
+        public int getLogId() { return logId.get(); }
+        public int getUserId() { return userId.get(); }
+        public String getUserName() { return userName.get(); }
+        public String getAction() { return action.get(); }
+        public String getDescription() { return description.get(); }
+        public String getTimestamp() { return timestamp.get(); }
+        public String getIpAddress() { return ipAddress.get(); }
+
+        public SimpleIntegerProperty logIdProperty() { return logId; }
+        public SimpleIntegerProperty userIdProperty() { return userId; }
+        public SimpleStringProperty userNameProperty() { return userName; }
+        public SimpleStringProperty actionProperty() { return action; }
+        public SimpleStringProperty descriptionProperty() { return description; }
+        public SimpleStringProperty timestampProperty() { return timestamp; }
+        public SimpleStringProperty ipAddressProperty() { return ipAddress; }
+
+        public void setLogId(int logId) { this.logId = new SimpleIntegerProperty(logId); }
+        public void setUserId(int userId) { this.userId = new SimpleIntegerProperty(userId); }
+        public void setUserName(String userName) { this.userName = new SimpleStringProperty(userName); }
+        public void setAction(String action) { this.action = new SimpleStringProperty(action); }
+        public void setDescription(String description) { this.description = new SimpleStringProperty(description); }
+        public void setTimestamp(String timestamp) { this.timestamp = new SimpleStringProperty(timestamp); }
+        public void setIpAddress(String ipAddress) { this.ipAddress = new SimpleStringProperty(ipAddress); }
+
+        public String toString() {
+            return "Log ID: " + logId.get() +
+                    ", User ID: " + userId.get() +
+                    ", User Name: " + userName.get() +
+                    ", Action: " + action.get() +
+                    ", Description: " + description.get() +
+                    ", Timestamp: " + timestamp.get() +
+                    ", IP Address: " + ipAddress.get();
+        }
+
+        public ArrayList<Audit_LogsView> getAudit_LogsWithUser() {
+            ArrayList<Audit_LogsView> audit_LogsList = new ArrayList<>();
+            try {
+                Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM Audit_LogsWithUser");
+                while (resultSet.next()) {
+                    int logId = resultSet.getInt("log_id");
+                    int userId = resultSet.getInt("user_id");
+                    String userName = resultSet.getString("user_name"); 
+                    String action = resultSet.getString("action_type");
+                    String description = resultSet.getString("description");
+                    String createdAt = resultSet.getString("timestamp");
+                    String ipAddress = resultSet.getString("ip_address");
+                    Audit_LogsView audit_LogsView = new Audit_LogsView(logId, userId, userName, action, description, createdAt, ipAddress);
+                    audit_LogsList.add(audit_LogsView);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return audit_LogsList;
+        }
     }
 }

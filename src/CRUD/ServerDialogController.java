@@ -6,7 +6,6 @@ import javafx.collections.*;
 import Tables.Servers;
 public class ServerDialogController {
     public Label CreateServerLabel;
-    public TextField server_nameTextField;
     public TextField hardware_typeTextField;
     public TextField ram_gbTextField;
     public TextField storage_gbTextField;
@@ -14,6 +13,7 @@ public class ServerDialogController {
     public TextField server_locationTextField;
     public TextField additional_specsTextField;
     public ComboBox<String> statusComboBox;
+    public ComboBox<String> server_nameComboBox;
 
     private Servers server;
     private ObservableList<Servers> serverList;
@@ -22,13 +22,16 @@ public class ServerDialogController {
     public void initialize() {
         statusComboBox.getItems().addAll("available","occupied","maintenance");
         statusComboBox.setValue("available");
+
+        server_nameComboBox.getItems().addAll("Basic", "Pro", "Enterprise");
+        server_nameComboBox.setValue("Basic");
     }
     public void setServer(Servers server) {
         CreateServerLabel.setText("Update Server");
         this.server = server;
         isNewServer = false;
 
-        server_nameTextField.setText(server.getName());
+        server_nameComboBox.setValue(server.getName());
         hardware_typeTextField.setText(server.getHardware_type());
         ram_gbTextField.setText(String.valueOf(server.getRam_gb()));
         storage_gbTextField.setText(String.valueOf(server.getStorage_gb()));
@@ -44,17 +47,16 @@ public class ServerDialogController {
             return;
         }
 
-        String name = server_nameTextField.getText();
+        String name = server_nameComboBox.getValue();
         String hardware_type = hardware_typeTextField.getText();
         int ram_gb = Integer.parseInt(ram_gbTextField.getText());
         int storage_gb = Integer.parseInt(storage_gbTextField.getText());
         double price_per_month = Double.parseDouble(price_per_monthTextField.getText());
         String specs = additional_specsTextField.getText();
-        String server_location = server_locationTextField.getText();
         String status = statusComboBox.getValue();
 
         if (isNewServer) {
-            Servers newServer = new Servers(name, hardware_type, ram_gb, storage_gb, price_per_month, specs, server_location,status);
+            Servers newServer = new Servers(name, hardware_type, ram_gb, storage_gb, price_per_month, specs, "server_location", status);
             new Servers().INSERT_SERVER(newServer);
             serverList.add(newServer);
         } else {
@@ -78,9 +80,6 @@ public class ServerDialogController {
     public boolean validateInput() {
         String errorMessage = "";
 
-        if (server_nameTextField.getText().isEmpty()) {
-            errorMessage += "Server name is required!\n";
-        }
         if (hardware_typeTextField.getText().isEmpty()) {
             errorMessage += "Hardware type is required!\n";
         }
@@ -93,10 +92,6 @@ public class ServerDialogController {
         if (price_per_monthTextField.getText().isEmpty() || !price_per_monthTextField.getText().matches("\\d*(\\.\\d+)?")) {
             errorMessage += "Invalid Price per month!\n";
         }
-        if (server_locationTextField.getText().isEmpty()) {
-            errorMessage += "Server location is required!\n";
-        }
-
         if (errorMessage.isEmpty()) {
             return true;
         } else {
@@ -105,7 +100,7 @@ public class ServerDialogController {
         }
     }
     public void closeDialog() {
-        Stage stage = (Stage) server_nameTextField.getScene().getWindow();
+        Stage stage = (Stage) server_nameComboBox.getScene().getWindow();
         stage.close();
     }
 

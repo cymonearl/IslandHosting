@@ -53,7 +53,7 @@ public class CRUDSupportTickets {
                 return true;
             } else if (String.valueOf(ticket.getServerId()).toLowerCase().contains(lowerCaseSearchText)) {
                 return true;
-            } else if (ticket.getServerName().toLowerCase().contains(lowerCaseSearchText)) {
+            } else if (Objects.toString(ticket.getServerName(), "").toLowerCase().contains(lowerCaseSearchText)) {
                 return true;
             } else if (ticket.getSubject().toLowerCase().contains(lowerCaseSearchText)) {
                 return true;

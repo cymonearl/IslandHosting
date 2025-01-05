@@ -2,34 +2,34 @@ package CRUD;
 
 import javafx.scene.control.*;
 import javafx.stage.*;
-import javafx.collections.*;
 import Tables.Audit_Logs;
+import Tables.Views.Audit_LogsView;
 public class Audit_logsDialogController {
     public Label Audit_logsOrderLabel;
     public TextField user_idTextField;
     public TextField action_typeTextField;
     public TextField descriptionTextField;
     public TextField ip_addressTextField;
+    private CRUDMenuAuditLogsController controller;
     
-    private Audit_Logs audit_logs;
-    private ObservableList<Audit_Logs> audit_logsList;
+    private Audit_LogsView audit_logs;
     private boolean isNewAudit_logs = true;
     public void initialize() {
         
     }
 
-    public void setAudit_logs(Audit_Logs audit_logs) {
+    public void getController(CRUDMenuAuditLogsController controller) {
+        this.controller = controller;
+    }
+
+    public void setAudit_logs(Audit_LogsView audit_logs) {
         this.audit_logs = audit_logs;
         this.isNewAudit_logs = false;
 
-        user_idTextField.setText(String.valueOf(audit_logs.getUser_id()));
-        action_typeTextField.setText(audit_logs.getAction_type());
+        user_idTextField.setText(String.valueOf(audit_logs.getUserId()));
+        action_typeTextField.setText(audit_logs.getAction());
         descriptionTextField.setText(audit_logs.getDescription());
-        ip_addressTextField.setText(audit_logs.getIp_address());
-    }
-
-    public void setAudit_logsList(ObservableList<Audit_Logs> audit_logsList) {
-        this.audit_logsList = audit_logsList;
+        ip_addressTextField.setText(audit_logs.getIpAddress());
     }
 
     public void handleSave() {
@@ -45,17 +45,15 @@ public class Audit_logsDialogController {
 
         if (isNewAudit_logs) {  
             new Audit_Logs().INSERT_AUDIT_LOG(new Audit_Logs(user_id, action_type, description, ip_address));
-            audit_logsList.add(new Audit_Logs(user_id, action_type, description, ip_address));
         } else {
-            audit_logs.setUser_id(Integer.parseInt(user_idTextField.getText()));
-            audit_logs.setAction_type(action_typeTextField.getText());
+            audit_logs.setUserId(Integer.parseInt(user_idTextField.getText()));
+            audit_logs.setAction(action_typeTextField.getText());
             audit_logs.setDescription(descriptionTextField.getText());
-            audit_logs.setIp_address(ip_addressTextField.getText());
-            Audit_Logs updateAudit_Logs = audit_logs;
-            audit_logsList.set(audit_logsList.indexOf(audit_logs), updateAudit_Logs);
-            new Audit_Logs().UPDATE_AUDIT_LOG(updateAudit_Logs);
+            audit_logs.setIpAddress(ip_addressTextField.getText());
+            new Audit_Logs().UPDATE_AUDIT_LOG(audit_logs);
         }
         closeDialog();
+        controller.initialize();
     }
 
     public void handleCancel() {

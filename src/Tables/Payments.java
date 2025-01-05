@@ -2,6 +2,9 @@ package Tables;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+
+import Tables.Views.PaymentView;
+
 import java.sql.*;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -19,7 +22,7 @@ public class Payments {
     public Payments() {}
 
     public Payments(int order_id , String amount, String payment_method, String payment_status) {
-        this.order_id = new SimpleIntegerProperty(order_id );
+        this.order_id = new SimpleIntegerProperty(order_id);
         this.amount = new SimpleStringProperty(amount);
         this.payment_method = new SimpleStringProperty(payment_method);
         this.payment_id = new SimpleIntegerProperty(getNextPaymentId());
@@ -59,7 +62,7 @@ public class Payments {
     }
 
     public void setPayment_id(int payment_id) { this.payment_id = new SimpleIntegerProperty(payment_id); }
-    public void setUser_id(int order_id ) { this.order_id = new SimpleIntegerProperty(order_id ); }
+    public void setOrder_id(int order_id ) { this.order_id = new SimpleIntegerProperty(order_id ); }
     public void setAmount(String amount) { this.amount = new SimpleStringProperty(amount); }
     public void setPayment_method(String payment_method) { this.payment_method = new SimpleStringProperty(payment_method); }
     public void setTransaction_id(String transaction_id) { this.transaction_id = new SimpleStringProperty(transaction_id); }
@@ -110,7 +113,7 @@ public class Payments {
             while (result.next()) {
                 Payments payment = new Payments();
                 payment.setPayment_id(result.getInt("payment_id"));
-                payment.setUser_id(result.getInt("order_id"));
+                payment.setOrder_id(result.getInt("order_id"));
                 payment.setAmount(result.getString("amount"));
                 payment.setPayment_method(result.getString("payment_method"));
                 payment.setTransaction_id(result.getString("transaction_id"));
@@ -141,28 +144,28 @@ public class Payments {
         }
     }
 
-    public void UPDATE_PAYMENT(Payments payment) {
+    public void UPDATE_PAYMENT(PaymentView payment) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("UPDATE payments SET order_id = ?, amount = ?, payment_method = ?, transaction_id = ?, payment_status = ?, payment_date = ? WHERE payment_id = ?");
-            statement.setInt(1, payment.getOrder_id());
-            statement.setString(2, payment.getAmount());
-            statement.setString(3, payment.getPayment_method());
-            statement.setString(4, payment.getTransaction_id());
-            statement.setString(5, payment.getPayment_status());
-            statement.setString(6, payment.getPayment_date());
-            statement.setInt(7, payment.getPayment_id());
+            statement.setInt(1, payment.getOrderId());
+            statement.setDouble(2, payment.getAmount());
+            statement.setString(3, payment.getPaymentMethod());
+            statement.setString(4, payment.getTransactionId());
+            statement.setString(5, payment.getPaymentStatus());
+            statement.setString(6, payment.getPaymentDate());
+            statement.setInt(7, payment.getPaymentId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void DELETE_PAYMENT(Payments payment) {
+    public void DELETE_PAYMENT(PaymentView payment) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("DELETE FROM payments WHERE payment_id = ?");
-            statement.setInt(1, payment.getPayment_id());
+            statement.setInt(1, payment.getPaymentId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

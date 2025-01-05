@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="service-card" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.serverCardController">
+   <padding>
+      <Insets left="20.0" right="20.0" top="20.0" />
+   </padding>
+   <children>
+      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="235.0" style="-fx-background-color: red;" VBox.vgrow="SOMETIMES">
+         <children>
+            <Label fx:id="server_name" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20;" text="Manila" HBox.hgrow="SOMETIMES">
+               <font>
+                  <Font size="20" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <Label fx:id="specs" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="260.0" style="-fx-text-fill: white;" text="specs" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER" prefHeight="27.0" prefWidth="274.0">
+         <children>
+            <Label fx:id="price" style="-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 36;" text="P 250">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </children>
+</VBox>

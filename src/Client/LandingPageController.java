@@ -55,6 +55,8 @@ public class LandingPageController {
         for (Servers server : new Servers().SERVERS_OWNED(new Orders().SELECT_ORDER_ID(user.getUser_id()))) {
             Table_Here.getItems().add(server.getName());
         }
+
+        populateTable();
     }
     @FXML
     public void initialize() {
@@ -62,7 +64,6 @@ public class LandingPageController {
         System.out.println("LandingPage initialized!");
         
         // Example: Set default values for some UI elements
-        populateTable();        
     }
     
     public void populateTable() {
@@ -72,21 +73,25 @@ public class LandingPageController {
         int c = 0;
 
 
+        ArrayList<Servers> serversOwned = new Servers().SERVERS_OWNED(new Orders().SELECT_ORDER_ID(user.getUser_id()));
         ArrayList<Servers> servers = new Servers().AVAILABLE_SERVERS();
-        String[] serverNames = new String[servers.size()];
-        for (int i = 0; i < servers.size(); i++) {
-            serverNames[i] = servers.get(i).getName();
-            if (servers.get(i).getName().toLowerCase().equals("manila"))
-                m++;
-            if (servers.get(i).getName().toLowerCase().equals("cebu"))
+
+        for (Servers server : servers) {
+            if (server.getName().equals("Basic")) 
                 c++;
-            if (servers.get(i).getName().toLowerCase().equals("davao"))
+            if (server.getName().equals("Pro")) 
                 d++;
+            if (server.getName().equals("Enterprise"))
+                m++;
         }
 
         manilaCount.setText(String.valueOf(m));
-        cebuCount.setText(String.valueOf(c));
         davaoCount.setText(String.valueOf(d));
+        cebuCount.setText(String.valueOf(c));
+
+        for (Servers server : serversOwned) {
+            Table_Here.getItems().add(server.getName());
+        }
     }
 
     /**

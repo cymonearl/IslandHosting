@@ -28,14 +28,6 @@ CREATE TABLE Servers (
     created_at TIMESTAMP
 );
 
--- CREATE TABLE Plans (
---     plan_id INT PRIMARY KEY,
---     server_id INT,
---     name enum ('Basic', 'Pro', 'Enterprise'),
---     price_per_month DECIMAL(10,2),
---     FOREIGN KEY (server_id) REFERENCES Servers(server_id)
--- );
-
 CREATE TABLE Orders (
     order_id INT PRIMARY KEY,
     user_id INT,
@@ -155,6 +147,20 @@ JOIN
 JOIN
     Servers s ON o.server_id = s.server_id;
 
+CREATE VIEW Audit_LogsWithUser AS
+SELECT
+    l.log_id,
+    l.user_id,
+    u.username AS user_name,
+    l.action_type,
+    l.description,
+    l.ip_address,
+    l.timestamp
+FROM
+    Audit_Logs l
+JOIN
+    Users u ON l.user_id = u.user_id;
+
 ### Triggers ###
 
 DELIMITER //
@@ -170,15 +176,18 @@ END
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER update_server_status_available
-AFTER DELETE ON Orders
+CREATE TRIGGER update_server_status_after_update
+AFTER UPDATE ON Orders
 FOR EACH ROW
 BEGIN
-    UPDATE Servers
-    SET status = 'available'
-    WHERE server_id = OLD.server_id;
-END
+    IF OLD.order_status = 'completed' THEN
+        UPDATE Servers
+        SET status = 'available'
+        WHERE server_id = OLD.server_id;
+    END IF;
+END;
 //
+DELIMITER ;
 
 DELIMITER //
 CREATE TRIGGER resolve_issue
@@ -189,6 +198,18 @@ BEGIN
         SET NEW.resolved_at = NOW();
     END IF;
 END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER payed
+AFTER INSERT ON Payments
+FOR EACH ROW
+BEGIN
+    UPDATE Orders
+    SET status = 'completed'
+    WHERE order_id = NEW.order_id;
+END
 //
 DELIMITER ;
 

@@ -247,13 +247,12 @@ public class Servers {
         return serverList;
     }
 
-    public ArrayList<Servers> AVAILABLE_SERVERS(int ram_gb, int storage_gb) {
+    public ArrayList<Servers> AVAILABLE_SERVERS(String name) {
         ArrayList<Servers> serverList = new ArrayList<>();
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
-            PreparedStatement statement = connect.prepareStatement("SELECT * FROM AvailableServers WHERE ram_gb = ? AND storage_gb = ?;");
-            statement.setInt(1, ram_gb);
-            statement.setInt(2, storage_gb);
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM AvailableServers WHERE name = ?;");
+            statement.setString(1, name);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 Servers server = new Servers();
@@ -261,6 +260,7 @@ public class Servers {
                 server.setServer_id(result.getInt("server_id"));
                 server.setName(result.getString("name"));
                 server.setHardware_type(result.getString("hardware_type"));
+                server.setPrice_per_month(result.getDouble("price_per_month"));
                 server.setRam_gb(result.getInt("ram_gb"));
                 server.setStorage_gb(result.getInt("storage_gb"));
                 server.setSpecs(result.getString("specs"));

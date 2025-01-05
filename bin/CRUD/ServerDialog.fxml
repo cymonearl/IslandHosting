@@ -17,7 +17,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="hardware_typeTextField1" layoutX="20.0" layoutY="72.0" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
+      <ComboBox fx:id="server_nameComboBox" layoutX="20.0" layoutY="313.0" prefWidth="150.0" styleClass="combo-boxDesign" stylesheets="@../style.css" />
       <Label styleClass="font-white" stylesheets="@../style.css" text="server_name" />
       <TextField fx:id="hardware_typeTextField" prefHeight="25.0" prefWidth="575.0" styleClass="textfield-design" stylesheets="@../style.css" />
       <Label styleClass="font-white" stylesheets="@../style.css" text="hardware_type" />

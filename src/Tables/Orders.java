@@ -257,4 +257,17 @@ public class Orders {
             }
         }
     }
+
+    public void CANCEL_ORDER(Orders orders) {
+        try {
+            Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+            PreparedStatement statement = connect.prepareStatement("UPDATE orders SET status = ? WHERE status = ? AND order_id = ?");
+            statement.setString(1, "Cancelled");
+            statement.setString(2, "Pending");
+            statement.setInt(3, orders.getOrder_id());
+            statement.executeUpdate();
+        }   catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -12,64 +12,29 @@ import javafx.stage.*;
 import java.util.ArrayList;
 
 import Tables.Audit_Logs;
+import Tables.Views.Audit_LogsView;
 
 public class CRUDMenuAuditLogsController {
 
-    @FXML private TableView<Audit_Logs> auditLogsTable;
-    @FXML private Label CRUD;
-    @FXML private Button createButton;
-    @FXML private Button updateButton;
-    @FXML private Button deleteButton;
-    @FXML private Button viewButton;
-    boolean userViewMode = false;
+    @FXML private TableView<Audit_LogsView> auditLogsTable;
 
-    private ObservableList<Audit_Logs> auditLogsList = FXCollections.observableArrayList();
-    private ArrayList<Audit_Logs> auditLogs_ar = new ArrayList<>();
+    private ObservableList<Audit_LogsView> auditLogsList = FXCollections.observableArrayList();
+    private ArrayList<Audit_LogsView> auditLogs_ar = new ArrayList<>();
 
-    private FilteredList<Audit_Logs> filteredData;
+    private FilteredList<Audit_LogsView> filteredData;
     private Scene scene;
     private Stage stage;
     @FXML private TextField searchTextField;
 
     public void initialize() {
-        CRUD.setText("CRUD");
         initializeTableColumns();
         populateTable();
-        createButton.setVisible(true);
-        updateButton.setVisible(true);
-        deleteButton.setVisible(true);
-        viewButton.setText("User View");
         filteredData = new FilteredList<>(auditLogsList, b -> true);
         auditLogsTable.setItems(filteredData);
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filterTable(newValue);
             });
         }       
-
-    public void changeView(ActionEvent event) {
-        auditLogsTable.getColumns().clear();
-
-        if (userViewMode) {
-            userViewMode = false;
-            auditLogsList.clear();
-            initialize();
-        } else {
-            auditLogsList.clear();
-            userViewMode = true;
-            initializeTableColumnsUV();
-            CRUD.setText("User View");
-            populateTable();
-            createButton.setVisible(false);
-            updateButton.setVisible(false);
-            deleteButton.setVisible(false);
-            viewButton.setText("CRUD");
-            filteredData = new FilteredList<>(auditLogsList, b -> true);
-            auditLogsTable.setItems(filteredData);
-            searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                filterTable(newValue);
-            });
-        }       
-    }
 
     public void filterTable(String newValue) {
         filteredData.setPredicate(auditLogs -> {
@@ -78,71 +43,58 @@ public class CRUDMenuAuditLogsController {
             }
 
             String lowerCaseFilter = newValue.toLowerCase();
-            if (String.valueOf(auditLogs.getLog_id()).toLowerCase().contains(lowerCaseFilter)) {
+
+            if (String.valueOf(auditLogs.getLogId()).toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (auditLogs.getAction_type().toLowerCase().contains(lowerCaseFilter)) {
+            } else if (String.valueOf(auditLogs.getUserId()).toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (auditLogs.getUserName().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (auditLogs.getAction().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             } else if (auditLogs.getDescription().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
-            } else if (auditLogs.getIp_address().toLowerCase().contains(lowerCaseFilter)) {
-                return true;
-            } else if (String.valueOf(auditLogs.getUser_id()).toLowerCase().contains(lowerCaseFilter)) {
+            } else if (auditLogs.getIpAddress().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             }
+
             return false;
         });
     }
     
     @SuppressWarnings("unchecked")
     public void initializeTableColumns() {
+        auditLogsTable.getColumns().clear();
         // Map Users class fields to TableView columns
-        TableColumn<Audit_Logs, Integer> log_id = new TableColumn<>("Log ID");
-        log_id.setCellValueFactory(new PropertyValueFactory<>("log_id"));
+        TableColumn<Audit_LogsView, Integer> log_id = new TableColumn<>("Log ID");
+        log_id.setCellValueFactory(new PropertyValueFactory<>("logId"));
 
-        TableColumn<Audit_Logs, Integer> user_id = new TableColumn<>("User ID");
-        user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+        TableColumn<Audit_LogsView, Integer> user_id = new TableColumn<>("User ID");
+        user_id.setCellValueFactory(new PropertyValueFactory<>("userId"));
 
-        TableColumn<Audit_Logs, String> action_type = new TableColumn<>("Action Type");
-        action_type.setCellValueFactory(new PropertyValueFactory<>("action_type"));
+        TableColumn<Audit_LogsView, String> username = new TableColumn<>("Username");
+        username.setCellValueFactory(new PropertyValueFactory<>("userName"));
 
-        TableColumn<Audit_Logs, String> description = new TableColumn<>("Description");
+        TableColumn<Audit_LogsView, String> action_type = new TableColumn<>("Action Type");
+        action_type.setCellValueFactory(new PropertyValueFactory<>("action"));
+
+        TableColumn<Audit_LogsView, String> description = new TableColumn<>("Description");
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        TableColumn<Audit_Logs, String> ip_address = new TableColumn<>("IP Address");
-        ip_address.setCellValueFactory(new PropertyValueFactory<>("ip_address"));
+        TableColumn<Audit_LogsView, String> ip_address = new TableColumn<>("IP Address");
+        ip_address.setCellValueFactory(new PropertyValueFactory<>("ipAddress"));
 
-        TableColumn<Audit_Logs, String> timestamp = new TableColumn<>("Timestamp");
+        TableColumn<Audit_LogsView, String> timestamp = new TableColumn<>("Timestamp");
         timestamp.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
 
-        auditLogsTable.getColumns().addAll(log_id, user_id, action_type, description, ip_address, timestamp);
-        auditLogsTable.setItems(auditLogsList);
-    }
-
-    @SuppressWarnings("unchecked")
-    public void initializeTableColumnsUV() {
-        // Map Users class fields to TableView columns
-        TableColumn<Audit_Logs, Integer> log_id = new TableColumn<>("Log ID");
-        log_id.setCellValueFactory(new PropertyValueFactory<>("log_id"));
-
-        TableColumn<Audit_Logs, Integer> user_id = new TableColumn<>("User ID");
-        user_id.setCellValueFactory(new PropertyValueFactory<>("user_id"));
-
-        TableColumn<Audit_Logs, String> action_type = new TableColumn<>("Action Type");
-        action_type.setCellValueFactory(new PropertyValueFactory<>("action_type"));
-
-        TableColumn<Audit_Logs, String> description = new TableColumn<>("Description");
-        description.setCellValueFactory(new PropertyValueFactory<>("description"));
-
-        TableColumn<Audit_Logs, String> ip_address = new TableColumn<>("IP Address");
-        ip_address.setCellValueFactory(new PropertyValueFactory<>("ip_address"));
-
-        auditLogsTable.getColumns().addAll(log_id, user_id, action_type, description, ip_address);
+        auditLogsTable.getColumns().addAll(log_id, user_id, username, action_type, description, ip_address, timestamp);
         auditLogsTable.setItems(auditLogsList);
     }
 
 
     public void populateTable() {
-        auditLogs_ar = new Audit_Logs().SELECT_ALL_AUDIT_LOGS();
+        auditLogsList.clear();
+        auditLogs_ar = new Audit_LogsView().getAudit_LogsWithUser();
         auditLogsList.addAll(auditLogs_ar);
     }
 
@@ -193,24 +145,25 @@ public class CRUDMenuAuditLogsController {
     }
 
     public void updateAudit_logs() {
-        Audit_Logs selectedAudit_logs = auditLogsTable.getSelectionModel().getSelectedItem();
+        Audit_LogsView selectedAudit_logs = auditLogsTable.getSelectionModel().getSelectedItem();
         if (selectedAudit_logs == null) {
             showAlert(Alert.AlertType.WARNING, "No Audit Logs Selected", "Please select an Audit Logs to update.");
             return;
         }
 
-                Audit_Logs selectedAudit_logs_original = auditLogs_ar.stream()
-                .filter(user -> user.getLog_id() == selectedAudit_logs.getLog_id())
-                .findFirst()
-                .orElse(null);
+            Audit_LogsView selectedAudit_logs_original = auditLogs_ar.stream()
+            .filter(user -> user.getLogId() == selectedAudit_logs.getLogId())
+            .findFirst()
+            .orElse(null);
 
+            System.out.println(selectedAudit_logs_original);
         if (selectedAudit_logs_original != null) {
             showAudit_logsDialog(selectedAudit_logs_original); // Pass the selected user for editing
         }
     }
 
     public void deleteAudit_logs() {
-        Audit_Logs selectedAudit_logs = auditLogsTable.getSelectionModel().getSelectedItem();
+        Audit_LogsView selectedAudit_logs = auditLogsTable.getSelectionModel().getSelectedItem();
         if (selectedAudit_logs == null) {
             showAlert(Alert.AlertType.WARNING, "No Audit Logs Selected", "Please select an Audit Logs to delete.");
             return;
@@ -225,16 +178,14 @@ public class CRUDMenuAuditLogsController {
         }
     }
 
-    public void showAudit_logsDialog(Audit_Logs audit_logs) {
+    public void showAudit_logsDialog(Audit_LogsView audit_logs) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Audit_logsDialog.fxml"));
             Parent root = loader.load();
 
             Audit_logsDialogController controller = loader.getController();
-            controller.setAudit_logsList(auditLogsList);
-            if (audit_logs != null) {
-                controller.setAudit_logs(audit_logs); // Existing user for editing
-            }
+            controller.getController(this);
+            controller.setAudit_logs(audit_logs);
 
             Stage dialogStage = new Stage();
             dialogStage.setTitle(audit_logs == null ? "Create Audit Logs" : "Update Audit Logs");
