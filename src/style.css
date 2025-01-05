@@ -128,3 +128,24 @@
     -fx-border-width: 1;
     -fx-border-radius: 20;
 }
+
+.textarea-dark {
+    -fx-background-color: #2c2c34; /* Dark background */
+    -fx-border-color: gray; /* Subtle border color */
+    -fx-border-radius: 10; /* Rounded border */
+    -fx-background-radius: 10; /* Rounded background */
+    -fx-text-fill: white; /* White text color */
+    -fx-control-inner-background: #2c2c34; /* Inner background color */
+    -fx-font-family: "Arial"; /* Optional: Set a font family */
+    -fx-font-size: 14px; /* Optional: Set font size */
+    -fx-padding: 10; /* Optional: Add padding */
+}
+
+.textarea-dark:hover {
+    -fx-border-color: white; /* Highlight border on hover */
+}
+
+.textarea-dark:focused {
+    -fx-border-color: maroon; /* Border color when focused */
+    -fx-text-fill: white; /* Keep text white when focused */
+}
