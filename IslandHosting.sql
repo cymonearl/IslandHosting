@@ -130,7 +130,7 @@ FROM
     Support_Tickets t
 JOIN
     Users u ON t.user_id = u.user_id
-JOIN
+LEFT JOIN
     Servers s ON t.server_id = s.server_id;
 
 CREATE VIEW PaymentsWithUserServerAndOrder AS

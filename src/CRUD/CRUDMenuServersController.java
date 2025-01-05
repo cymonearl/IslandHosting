@@ -18,12 +18,6 @@ public class CRUDMenuServersController {
 
     // UI Components
     @FXML private TableView<Servers> serversTableView;
-    @FXML private Label CRUD;
-    @FXML private Button viewButton;
-    @FXML private Button createButton;
-    @FXML private Button updateButton;
-    @FXML private Button deleteButton;
-    boolean userViewMode = false;
 
     // Data and Stage Properties
     private ObservableList<Servers> serverList = FXCollections.observableArrayList();
@@ -36,13 +30,8 @@ public class CRUDMenuServersController {
 
     // ========= Initialization =========
     public void initialize() {
-        CRUD.setText("CRUD");
         initializeTableColumns();
         populateTable();
-        createButton.setVisible(true);
-        updateButton.setVisible(true);
-        deleteButton.setVisible(true);
-        viewButton.setText("User View");
         filteredData = new FilteredList<>(serverList, b -> true);
         serversTableView.setItems(filteredData);
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -81,30 +70,6 @@ public class CRUDMenuServersController {
         serversTableView.setItems(filteredData);
     }
 
-    public void changeView(ActionEvent event) {
-        serversTableView.getColumns().clear();
-
-        if (userViewMode) {
-            userViewMode = false;
-            serverList.clear();
-            initialize();
-        } else {
-            serverList.clear();
-            userViewMode = true;
-            CRUD.setText("User View");
-            populateAvailableServers();
-            createButton.setVisible(false);
-            updateButton.setVisible(false);
-            deleteButton.setVisible(false);
-            viewButton.setText("CRUD");
-            filteredData = new FilteredList<>(serverList, b -> true);
-            serversTableView.setItems(filteredData);
-            searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                filterTable(newValue);
-            });    
-        }       
-    }
-
     @SuppressWarnings("unchecked")
     private void initializeTableColumns() {
         // Map Users class fields to TableView columns
@@ -141,11 +106,6 @@ public class CRUDMenuServersController {
 
     private void populateTable() {
         servers_ar = new Servers().SELECT_ALL_SERVERS();
-        serverList.addAll(servers_ar);
-    }
-
-    private void populateAvailableServers() {
-        servers_ar = new Servers().AVAILABLE_SERVERS();
         serverList.addAll(servers_ar);
     }
 

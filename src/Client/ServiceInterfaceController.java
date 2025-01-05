@@ -27,15 +27,6 @@ public class ServiceInterfaceController {
     @FXML private Label userLabel;
     @FXML private ImageView islandHostIcon;
     // Service Details Labels
-    @FXML private Label manilaLabel;
-    @FXML private VBox Manila;
-    @FXML private  VBox Davao;
-    @FXML private  VBox Cebu;
-    @FXML private Label davaoLabel;
-    @FXML private Label cebuLabel;
-    @FXML private Label davaoCount;
-    @FXML private Label manilaCount;
-    @FXML private Label cebuCount;
 
     private Users user;
     int m = 0, c = 0, d = 0;
@@ -55,11 +46,6 @@ public class ServiceInterfaceController {
         ticketsLabel.setText("Tickets");
         helpLabel.setText("Help");
         userLabel.setText("User");
-
-        manilaLabel.setText("Manila");
-        davaoLabel.setText("Davao");
-        cebuLabel.setText("Cebu");
-
         countStocks();
     }
 
@@ -76,9 +62,6 @@ public class ServiceInterfaceController {
         }
 
         System.out.println("Manila: " + m + " Davao: " + d + " Cebu: " + c);
-        manilaCount.setText(String.valueOf(m) + " Available");
-        davaoCount.setText(String.valueOf(d) + " Available");
-        cebuCount.setText(String.valueOf(c) + " Available");
     }
 
     @FXML
@@ -231,71 +214,6 @@ public class ServiceInterfaceController {
             popupStage.setScene(scene);
             popupStage.setTitle("Manila");
             popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog;
-            popupStage.centerOnScreen();
-            popupStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void onCebuClick() {
-        if (c == 0) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("No Server Available");
-            alert.setHeaderText("No Cebu Server Available");
-            alert.setContentText("Please try again later");
-            alert.showAndWait();
-            return;
-        }
-
-        System.out.println("Cebu clicked!");
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("cebuPopUp.fxml"));
-            Scene scene = new Scene(loader.load());
-    
-            // Create a new stage for the pop-up
-            CebuPopUpController controller = loader.getController();
-            controller.setUser(user);
-            controller.setServiceController(this);
-    
-            Stage popupStage = new Stage();
-            popupStage.setScene(scene);
-            popupStage.setTitle("Cebu");
-            popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog
-            popupStage.centerOnScreen();
-            popupStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void onDavaoClick() {
-        if (d == 0) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("No Server Available");
-            alert.setHeaderText("No Davao Server Available");
-            alert.setContentText("Please try again later");
-            alert.showAndWait();
-            return;
-        }
-
-        System.out.println("Davao clicked!");
-        try {
-            System.out.println("Manila clicked!");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("davaoPopUp.fxml"));
-            Scene scene = new Scene(loader.load());
-    
-            // Create a new stage for the pop-up
-            DavaoPopUpController controller = loader.getController();
-            controller.setUser(user);
-            controller.setServiceController(this);
-    
-            Stage popupStage = new Stage();
-            popupStage.setScene(scene);
-            popupStage.setTitle("Davao");
-            popupStage.initModality(Modality.APPLICATION_MODAL); // Makes it a modal dialog
             popupStage.centerOnScreen();
             popupStage.show();
         } catch (IOException e) {

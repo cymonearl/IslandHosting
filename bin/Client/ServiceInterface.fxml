@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -106,118 +112,40 @@
         </VBox>
       <Pane layoutX="171.0" layoutY="30.0" prefWidth="100.0" HBox.hgrow="SOMETIMES" />
     </HBox>
-
-    <!-- Services Section -->
-    <VBox alignment="CENTER" spacing="50.0">
-        <padding>
-            <Insets bottom="20" left="20" right="20" top="20" />
-        </padding>
-        <HBox alignment="CENTER" spacing="50.0">
-             <VBox fx:id="Manila" alignment="CENTER" onMouseClicked="#onManilaClick" spacing="10.0" styleClass="service-card" stylesheets="@../style.css">
-                 <padding>
-                     <Insets bottom="20.0" left="20.0" right="20.0" top="46.0" />
-                 </padding>
-            <ImageView fitHeight="117.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Pop%20Ups/Manila%20Icon.png" />
-               </image>
-            </ImageView>
-            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="235.0" style="-fx-background-color: red;">
-               <children>
-                       <Label fx:id="manilaLabel" style="-fx-text-fill: white; -fx-font-weight: bold;" text="Manila">
-                           <font>
-                               <Font size="20" />
-                           </font>
-                       </Label>
-               </children>
-            </HBox>
-                 <Label fx:id="manilaCard" prefHeight="131.0" prefWidth="260.0" style="-fx-text-fill: white;" text="• 4 GB RAM • Budget Hardware •  50GB SSD Storage • Up to 120 Gbps DDoS Protection" wrapText="true" />
-            <HBox>
-               <children>
-                       <Label style="-fx-text-fill: red; -fx-font-weight: bold;" text="P 250">
-                           <font>
-                               <Font size="18.0" />
-                           </font>
-                       </Label>
-                  <Pane HBox.hgrow="SOMETIMES" />
-                  <Label fx:id="manilaCount" layoutX="10.0" layoutY="10.0" style="-fx-text-fill: red; -fx-font-weight: bold;" text="left">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-             </VBox>
-             <VBox fx:id="Davao" alignment="CENTER" onMouseClicked="#onDavaoClick" spacing="10.0" styleClass="service-card" stylesheets="@../style.css">
-                 <padding>
-                     <Insets bottom="20" left="20" right="20" top="20" />
-                 </padding>
-            <ImageView fitHeight="117.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Pop%20Ups/Davao%20Icon.png" />
-               </image>
-            </ImageView>
-            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="235.0" style="-fx-background-color: #e7b416;">
-               <children>
-                       <Label fx:id="davaoLabel" style="-fx-text-fill: white; -fx-font-weight: bold;" text="Davao">
-                           <font>
-                               <Font size="20" />
-                           </font>
-                       </Label>
-               </children>
-            </HBox>
-                 <Label fx:id="davaoCard" prefHeight="131.0" prefWidth="258.0" style="-fx-text-fill: white;" text="• 2 GB RAM• Budget Hardware • 50GB SSD Storage • Up to 120 Gbps DDoS Protection" wrapText="true" />
-            <HBox>
-               <children>
-                       <Label style="-fx-text-fill: yellow; -fx-font-weight: bold;" text="P 175">
-                           <font>
-                               <Font size="18.0" />
-                           </font>
-                       </Label>
-                  <Pane HBox.hgrow="SOMETIMES" />
-                  <Label fx:id="davaoCount" layoutX="10.0" layoutY="10.0" style="-fx-text-fill: yellow; -fx-font-weight: bold;" text="left">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-             </VBox>
-             <VBox fx:id="Cebu" alignment="CENTER" onMouseClicked="#onCebuClick" spacing="10.0" styleClass="service-card" stylesheets="@../style.css">
-                 <padding>
-                     <Insets bottom="20" left="20" right="20" top="20" />
-                 </padding>
-            <ImageView fitHeight="116.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Pop%20Ups/Cebu%20Icon.png" />
-               </image>
-            </ImageView>
-            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="235.0" style="-fx-background-color: green;">
-               <children>
-                       <Label fx:id="cebuLabel" style="-fx-text-fill: White; -fx-font-weight: bold;" text="Cebu">
-                           <font>
-                               <Font size="20" />
-                           </font>
-                       </Label>
-               </children>
-            </HBox>
-                 <Label fx:id="cebuCard" prefHeight="132.0" prefWidth="260.0" style="-fx-text-fill: white;" text="• 1 GB RAM • Budget Hardware •  50GB SSD Storage • Up to 120 Gbps DDoS Protection" wrapText="true" />
-            <HBox>
-               <children>
-                       <Label style="-fx-text-fill: green; -fx-font-weight: bold;" text="P 100">
-                           <font>
-                               <Font size="18.0" />
-                           </font>
-                       </Label>
-                  <Pane HBox.hgrow="SOMETIMES" />
-                  <Label fx:id="cebuCount" layoutX="10.0" layoutY="10.0" style="-fx-text-fill: green; -fx-font-weight: bold;" text="left">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-             </VBox>
-        </HBox>
-    </VBox>
+   <VBox spacing="20.0" VBox.vgrow="SOMETIMES">
+      <children>
+         <HBox alignment="CENTER" spacing="40.0">
+            <children>
+               <Label styleClass="font-white" stylesheets="@../style.css" text="PLAN">
+                  <font>
+                     <Font name="System Bold" size="36.0" />
+                  </font>
+               </Label>
+               <ComboBox prefHeight="40.0" prefWidth="200.0" styleClass="combo-boxDesign" stylesheets="@../style.css" />
+            </children>
+         </HBox>
+         <Separator prefWidth="200.0" />
+         <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" VBox.vgrow="SOMETIMES">
+            <content>
+               <GridPane hgap="10.0" vgap="10.0">
+                 <columnConstraints>
+                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                  <padding>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </padding>
+               </GridPane>
+            </content>
+         </ScrollPane>
+      </children>
+      <padding>
+         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      </padding>
+   </VBox>
 </VBox>

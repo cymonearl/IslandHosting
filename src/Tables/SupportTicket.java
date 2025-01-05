@@ -2,6 +2,8 @@ package Tables;
 
 import java.sql.*;
 import java.util.ArrayList;
+
+import Tables.Views.SupportTicketView;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -157,17 +159,17 @@ public class SupportTicket {
         return true;
     }
 
-    public boolean UPDATE_SUPPORT_TICKET(SupportTicket supportTicket) {
+    public boolean UPDATE_SUPPORT_TICKET(SupportTicketView supportTicket) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("UPDATE support_tickets SET user_id = ?, server_id = ?, subject = ?, description = ?, status = ?, priority = ? WHERE ticket_id = ?");
-            statement.setInt(1, supportTicket.getUser_id());
-            statement.setInt(2, supportTicket.getServer_id());
+            statement.setInt(1, supportTicket.getUserId());
+            statement.setInt(2, supportTicket.getServerId());
             statement.setString(3, supportTicket.getSubject());
             statement.setString(4, supportTicket.getDescription());
             statement.setString(5, supportTicket.getStatus());
             statement.setString(6, supportTicket.getPriority());
-            statement.setInt(7, supportTicket.getTicket_id());
+            statement.setInt(7, supportTicket.getTicketId());
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -177,11 +179,11 @@ public class SupportTicket {
         return true;
     }
 
-    public boolean DELETE_SUPPORT_TICKET(SupportTicket supportTicket) {
+    public boolean DELETE_SUPPORT_TICKET(SupportTicketView supportTicket) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("DELETE FROM support_tickets WHERE ticket_id = ?");
-            statement.setInt(1, supportTicket.getTicket_id());
+            statement.setInt(1, supportTicket.getTicketId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -190,12 +192,12 @@ public class SupportTicket {
         return true;
     }
 
-    public void RESOLVE_TICKET(SupportTicket supportTicket) {
+    public void RESOLVE_TICKET(SupportTicketView supportTicket) {
         try {
             Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
             PreparedStatement statement = connect.prepareStatement("UPDATE support_tickets SET resolved_at = ?, status = 'resolved' WHERE ticket_id = ?");
             statement.setString(1, getCurrentDate());
-            statement.setInt(2, supportTicket.getTicket_id());
+            statement.setInt(2, supportTicket.getTicketId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

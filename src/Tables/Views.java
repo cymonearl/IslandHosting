@@ -124,6 +124,8 @@ public class Views {
         private  SimpleStringProperty createdAt; // Changed to String
         private  SimpleStringProperty resolvedAt; // Changed to String
 
+        public SupportTicketView() {}
+
         // Constructor with String dates
         public SupportTicketView(int ticketId, int userId, String userName, int serverId, String serverName,
                                  String subject, String description, String priority, String status,
@@ -193,9 +195,34 @@ public class Views {
                     ", Created At: " + createdAt.get() +
                     ", Resolved At: " + resolvedAt.get();
         }
-    }
 
-    
+        public ArrayList<SupportTicketView> getSupportTicketsWithUserAndServer() {
+            ArrayList<SupportTicketView> supportTickets = new ArrayList<>(); // Create an ArrayList of SupportTicketView objects
+            try {
+                Connection connect = DriverManager.getConnection(DB_URL, USER, PASS);
+                Statement statement = connect.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM SupportTicketsWithUserAndServer");
+                while (resultSet.next()) {
+                    int ticketId = resultSet.getInt("ticket_id");
+                    int userId = resultSet.getInt("user_id");
+                    String userName = resultSet.getString("user_name");
+                    int serverId = resultSet.getInt("server_id");
+                    String serverName = resultSet.getString("server_name");
+                    String subject = resultSet.getString("subject");
+                    String description = resultSet.getString("description");
+                    String priority = resultSet.getString("priority");
+                    String status = resultSet.getString("status");
+                    String createdAt = resultSet.getString("created_at");
+                    String resolvedAt = resultSet.getString("resolved_at");
+                    SupportTicketView supportTicketView = new SupportTicketView(ticketId, userId, userName, serverId, serverName, subject, description, priority, status, createdAt, resolvedAt);
+                    supportTickets.add(supportTicketView);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return supportTickets;
+        }
+    }    
 
     // Class for PaymentsWithUserServerAndOrder view
     public static class PaymentView {
