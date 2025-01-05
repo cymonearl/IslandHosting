@@ -1,6 +1,7 @@
 package CRUD;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 
@@ -9,39 +10,42 @@ import java.time.LocalDate;
 public class DashboardController {
 
     @FXML
-    private DatePicker fromDatePicker;
+    private DatePicker fromDatePicker, toDatePicker;
 
-    @FXML
-    private DatePicker toDatePicker;
 
     @FXML
     private TextArea reportArea;
 
-    // Handler for Orders button
     @FXML
-    public void handleOrders() {
+    private Button ordersButton, paymentsButton, supportTicketsButton, auditLogsButton;
+
+    @FXML
+    public void initialize() {
+        // Assign button click handlers
+        ordersButton.setOnAction(event -> handleOrders());
+        supportTicketsButton.setOnAction(event -> handleSupportTickets());
+        paymentsButton.setOnAction(event -> handlePayments());
+        auditLogsButton.setOnAction(event -> handleAuditLogs());
+
+        System.out.println("DashboardController initialized!");
+    }
+
+    private void handleOrders() {
         generateReport("Orders");
     }
 
-    // Handler for Support Tickets button
-    @FXML
-    public void handleSupportTickets() {
+    private void handleSupportTickets() {
         generateReport("Support Tickets");
     }
 
-    // Handler for Payments button
-    @FXML
-    public void handlePayments() {
+    private void handlePayments() {
         generateReport("Payments");
     }
 
-    // Handler for Audit Logs button
-    @FXML
-    public void handleAuditLogs() {
+    private void handleAuditLogs() {
         generateReport("Audit Logs");
     }
 
-    // Generic report generator
     private void generateReport(String reportType) {
         LocalDate fromDate = fromDatePicker.getValue();
         LocalDate toDate = toDatePicker.getValue();
@@ -56,9 +60,11 @@ public class DashboardController {
             return;
         }
 
-        // Simulate data fetching (replace this with actual database or logic calls)
-        String report = String.format("Summary for %s\nFrom: %s\nTo: %s\n\nTotal: %d items.",
-                reportType, fromDate, toDate, (int) (Math.random() * 100)); // Random count for demonstration
+        // Simulate data fetching (replace with actual database or logic calls)
+        String report = String.format(
+                "Summary for %s\nFrom: %s\nTo: %s\n\nTotal: %d items.",
+                reportType, fromDate, toDate, (int) (Math.random() * 100) // Random count for demonstration
+        );
 
         reportArea.setText(report);
     }

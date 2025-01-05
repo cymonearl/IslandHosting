@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
@@ -22,17 +21,18 @@
         </HBox>
 
         <HBox spacing="20">
-            <Button onAction="#handleOrders" styleClass="button-design" stylesheets="/style.css" text="Orders" />
-            <Button onAction="#handleSupportTickets" styleClass="button-design" stylesheets="/style.css" text="Support Tickets" />
-            <Button onAction="#handlePayments" styleClass="button-design" stylesheets="/style.css" text="Payments" />
-            <Button onAction="#handleAuditLogs" styleClass="button-design" stylesheets="/style.css" text="Audit Logs" />
+            <Button fx:id="ordersButton" styleClass="button-design" text="Orders" />
+            <Button fx:id="supportTicketsButton" styleClass="button-design" text="Support Tickets" />
+            <Button fx:id="paymentsButton" styleClass="button-design" text="Payments" />
+            <Button fx:id="auditLogsButton" styleClass="button-design" text="Audit Logs" />
         </HBox>
 
         <TextArea fx:id="reportArea" editable="false" prefHeight="200.0" prefWidth="389.0" stylesheets="@../style.css" wrapText="true">
-         <styleClass>
-            <String fx:value="background-marooon" />
-            <String fx:value="textarea-dark" />
-            <String fx:value="textfield-design" />
-         </styleClass></TextArea>
+            <styleClass>
+                <String fx:value="background-marooon" />
+                <String fx:value="textarea-dark" />
+                <String fx:value="textfield-design" />
+            </styleClass>
+        </TextArea>
     </VBox>
 </AnchorPane>
